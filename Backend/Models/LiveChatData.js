@@ -8,6 +8,7 @@ const ChatSchema = new mongoose.Schema(
       maxLength: 30
     },
     message: {
+      //min w el max dol zeyada
       type: String,
       minLength: 1,
       maxLength: 300
@@ -29,5 +30,5 @@ const ChatSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+//agent mlosh lazma!! aashan howa user 3ady.  either enum aw role {user,agent,manager,admin}
 module.exports = mongoose.model('LiveChatData', ChatSchema);
