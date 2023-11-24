@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema(
   {
+    reportid:{
+        type:Int32Array,
+        required: true,
+    },
+    
     status: {
         type: String,
         required: true,
