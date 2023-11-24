@@ -10,13 +10,11 @@ const reportSchema = new mongoose.Schema(
 
     opendedtime: {
         type: Date,
-        default: Date.now,
         required: true,
     },
 
     closetime: {
         type: Date,
-        default: Date.now,
         required: true,
     },
 

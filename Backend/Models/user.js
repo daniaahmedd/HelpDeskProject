@@ -93,3 +93,4 @@ function decrypt(text, salt) {
 mongooseBackup.init({ uri: 'mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software' });
 
 module.exports = mongoose.model('user', userschema);
+module.exports.Schema = userschema;   

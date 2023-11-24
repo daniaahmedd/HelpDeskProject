@@ -21,7 +21,7 @@ const ticketSchema = new mongoose.Schema(
 
         closetime: {
             type: Date,
-            default: Date.now,
+            default: null,
             required: true,
         },
 
@@ -52,13 +52,17 @@ const ticketSchema = new mongoose.Schema(
         },
 
         priorty: {
-            enum: ['high', 'low', 'meidum'],
+            enum: ['high', 'low', 'medium'],
             required: true
         },
 
         issueDescription: {
             type: String,
             required: true,
+        },
+        rating:{
+            type: Int32Array,
+            required: false
         }
 
     },{
