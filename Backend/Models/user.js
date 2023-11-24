@@ -7,7 +7,7 @@ const schemaOptions = {
 const userschema = new mongoose.Schema(
     {
         userID: {
-            type: Int32Array,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
         UserName: {
@@ -32,6 +32,13 @@ const userschema = new mongoose.Schema(
             required: true,
 
         },
+        firstName: 
+        { type: String,
+          required: true 
+        },
+        lastName:
+         { type: String,
+           required: true },
     },
     // schemaOptions
     {
@@ -53,17 +60,7 @@ const CryptoJS = require('crypto-js');
 // Use environment variable for encryption key
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'defaultEncryptionKey';
 
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    role: { type: String, required: true },
-    salt: { type: String, required: true }
-});
-
-userSchema.pre('save', async function (next) {
+userschema.pre('save', async function (next) {
     try {
         // Generate a random salt for password hashing
         const salt = await bcrypt.genSalt(10);
@@ -79,7 +76,7 @@ userSchema.pre('save', async function (next) {
 });
 
 // Virtual property for temporary password storage
-userSchema.virtual('tempPassword').set(function (password) {
+userschema.virtual('tempPassword').set(function (password) {
     // Store the unencrypted password in a temporary variable
     this._password = password;
     // Encrypt the password and store it in the 'password' field
@@ -121,10 +118,8 @@ function decrypt(text, salt) {
     return decrypted.toString('utf8').slice(0, -salt.length); // Remove salt from the decrypted text
 }
 
-// Initialize data backup and recovery procedures for MongoDB
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
 
-// Create a Mongoose model named 'user' based on the defined schema
 const user = mongoose.model('user', userschema);
 
 module.exports = mongoose.model('user', userschema);
