@@ -41,7 +41,13 @@ const ticketSchema = new mongoose.Schema(
             required: true,
         },
 
-        assignedto: {
+        userid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+            required: true
+        },
+
+        agentid: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'agent',
             required: true
