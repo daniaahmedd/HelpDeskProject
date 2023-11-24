@@ -23,4 +23,4 @@ const WorkFlowSchema = new mongoose.Schema(
         strict :true
     }
 )
-module.exports = mongoose.model ('WorkFlowModel', WorkFlowSchema);
+module.exports = mongoose.model ('WorkFlow', WorkFlowSchema);
