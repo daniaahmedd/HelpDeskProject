@@ -121,10 +121,8 @@ function decrypt(text, salt) {
     return decrypted.toString('utf8').slice(0, -salt.length); // Remove salt from the decrypted text
 }
 
-// Initialize data backup and recovery procedures for MongoDB
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
 
-// Create a Mongoose model named 'user' based on the defined schema
 const user = mongoose.model('user', userschema);
 
 module.exports = mongoose.model('user', userschema);
