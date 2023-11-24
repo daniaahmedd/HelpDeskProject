@@ -48,7 +48,7 @@ const ticketSchema = new mongoose.Schema(
         },
 
         priorty: {
-            type: String,
+            enum: ['high', 'low', 'meidum'],
             required: true
         },
 
