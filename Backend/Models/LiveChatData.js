@@ -1,33 +1,43 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
+// Schema for individual messages
+const MessageSchema = new mongoose.Schema({
+  text: {
+    type: String,
+    required: true,
+    maxLength: 300 
+  },
+  sender: {
+    type: String,
+    enum: ["user", "agent", "manager", "admin"],
+    default: "user",
+    required: true
+  },
+}, { timestamps: true });
+module.exports = mongoose.model("LiveChatData", MessageSchema);
 
 const ChatSchema = new mongoose.Schema(
   {
-    name: {
+    messages: [MessageSchema], // Array of messages following MessageSchema
+    role: {
       type: String,
-      minLength: 3,
-      maxLength: 30
-    },
-    message: { //array
-      type: String,
-      minLength: 1,
-      maxLength: 300
+      enum: ["user", "agent", "manager", "admin"],
+      default: "pending",
+      required: true
     },
     date: {
       type: Date,
-      default: Date.now
-    },
-    agentID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'agent',
+      default: Date.now,
       required: true
     },
+    messaage:[MessageSchema],
     userID: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true
-    }
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('LiveChatData', ChatSchema);
+module.exports = mongoose.model("LiveChatData", ChatSchema);

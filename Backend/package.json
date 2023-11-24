@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+<<<<<<< Updated upstream
+=======
+    "mongodb": "^6.3.0",
+>>>>>>> Stashed changes
+    "mongoose": "^8.0.1"
+  }
+}
