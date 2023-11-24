@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//const userSchema = require('./user').Schema;
+const userSchema = require('./user').Schema;
 
 const schemaOptions = {
   strict: false,
@@ -9,9 +9,9 @@ const schemaOptions = {
 const agentSchema = new mongoose.Schema( 
     {
         agentid: {
-            type: Int32Array,
-           
-            required: true,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+            required: true
         },
 
         rating: {
