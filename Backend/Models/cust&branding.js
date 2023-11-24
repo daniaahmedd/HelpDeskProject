@@ -86,17 +86,17 @@ const custAndBrandingSchema = new mongoose.Schema({
         type: Number,
         required: true,
         "default": 50
-    },
-    headerWidth: {
+  },
+  headerWidth: {
         type: Number,
         required: true,
         "default": 50
-    },
-    headerBackgroundColor: {
+  },
+  headerBackgroundColor: {
         type: String,
         required: true,
         "default": "#FFFFFF"
-    },
+  },
   }
    {
         strict :true
