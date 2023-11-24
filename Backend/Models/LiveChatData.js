@@ -30,6 +30,7 @@ const ChatSchema = new mongoose.Schema(
       default: Date.now,
       required: true
     },
+    messaage:[MessageSchema],
     userID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
