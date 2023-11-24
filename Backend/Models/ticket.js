@@ -47,6 +47,11 @@ const ticketSchema = new mongoose.Schema(
             required: true
         },
 
+        priorty: {
+            type: String,
+            required: true
+        },
+
     });
 
     module.exports.Schema = ticketSchema;
