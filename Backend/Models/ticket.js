@@ -59,6 +59,11 @@ const ticketSchema = new mongoose.Schema(
             required: true
         },
 
+        issue: {
+            type: String,
+            required: true,
+        }
+
     });
 
     module.exports.Schema = ticketSchema;
