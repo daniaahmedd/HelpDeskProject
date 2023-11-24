@@ -101,9 +101,9 @@ function encrypt(text, salt) {
 // Decryption function using AES-256-GCM
 function decrypt(text, salt) {
     const bufferText = Buffer.from(text, 'hex');
-    const iv = bufferText.slice(0, 16);
-    const tag = bufferText.slice(16, 32);
-    const encryptedText = bufferText.slice(32);
+    const iv = bufferText.Buffer.slice(0, 16);
+    const tag = bufferText.Buffer.slice(16, 32);
+    const encryptedText = bufferText.Buffer.slice(32);
     const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
     decipher.setAuthTag(tag);
     const decrypted = Buffer.concat([decipher.update(encryptedText), decipher.final()]);
