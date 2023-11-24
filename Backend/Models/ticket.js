@@ -32,8 +32,9 @@ const ticketSchema = new mongoose.Schema(
         },
 
         categories: {
-            type: String,
-            required: true,
+            type:String,
+           enum:[ "Software", "Hardware", "Network"],
+           required:true
         },
 
         subcategories: {
