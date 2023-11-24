@@ -64,7 +64,10 @@ const ticketSchema = new mongoose.Schema(
             required: true,
         }
 
-    });
+    },{
+        strict: false,
+        timestamps: true,
+      });
 
-    module.exports.Schema = ticketSchema;
+    module.exports = mongoose.model("ticket", ticketSchema);
    

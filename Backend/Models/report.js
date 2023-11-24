@@ -6,7 +6,7 @@ const reportSchema = new mongoose.Schema(
         type:Int32Array,
         required: true,
     },
-    
+
     status: {
         type: String,
         required: true,
@@ -30,4 +30,8 @@ const reportSchema = new mongoose.Schema(
     }
 
 
-  });module.exports.Schema = reportSchema;
+  }, {
+    strict: false,
+    timestamps: true,
+  });
+  module.exports = mongoose.model("report", reportSchema);
