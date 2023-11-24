@@ -1,15 +1,11 @@
 const mongoose = require('mongoose');
-const productSchema = require('./productModel').Schema;
-const schemaOptions = {
-    strict: false,
-    timestamps: true,
-};
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const mongooseBackup = require('mongoose-backup');
+const CryptoJS = require('crypto-js');
+
 const userschema = new mongoose.Schema(
     {
-        userID: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
         UserName: {
             type: String,
             minLength: 3,
@@ -17,6 +13,7 @@ const userschema = new mongoose.Schema(
         },
         userType: {
             type: String,
+            enum:[ "Manager", "Admin", "User", "Agent"],
             required: true,
         },
         password: {
@@ -27,11 +24,6 @@ const userschema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        roleid: {
-            type: Int32Array,
-            required: true,
-
-        },
         firstName: 
         { type: String,
           required: true 
@@ -40,23 +32,11 @@ const userschema = new mongoose.Schema(
          { type: String,
            required: true },
     },
-    // schemaOptions
     {
-        strict: false,
+        strict: true,
         timestamps: true,
     }
 );
-
-
-
-
-
-
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const mongooseBackup = require('mongoose-backup');
-const CryptoJS = require('crypto-js');
-
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'defaultEncryptionKey';
 
@@ -111,4 +91,5 @@ function decrypt(text, salt) {
 }
 
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
-module.exports = mongoose.model('user', userschema);
+
+module.exports = mongoose.model('User', userschema);
