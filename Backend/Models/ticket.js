@@ -32,8 +32,9 @@ const ticketSchema = new mongoose.Schema(
         },
 
         categories: {
-            type: String,
-            required: true,
+            type:String,
+           enum:[ "Software", "Hardware", "Network"],
+           required:true
         },
 
         subcategories: {
@@ -41,7 +42,13 @@ const ticketSchema = new mongoose.Schema(
             required: true,
         },
 
-        assignedto: {
+        userid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+            required: true
+        },
+
+        agentid: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'agent',
             required: true
@@ -51,6 +58,11 @@ const ticketSchema = new mongoose.Schema(
             enum: ['high', 'low', 'meidum'],
             required: true
         },
+
+        issue: {
+            type: String,
+            required: true,
+        }
 
     });
 
