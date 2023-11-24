@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const agentSchema = require('./agent').Schema;
 const userSchema = require('./user').Schema;
 
+
 const ticketSchema = new mongoose.Schema( 
     {
+
         status:{
             type: String,
             enum: ['Pending','Opened','Closed','Canceled'],
@@ -19,7 +21,7 @@ const ticketSchema = new mongoose.Schema(
 
         closetime: {
             type: Date,
-            default: null,
+            default: Date.now,
             required: true,
         },
 
@@ -57,19 +59,12 @@ const ticketSchema = new mongoose.Schema(
         issueDescription: {
             type: String,
             required: true,
-        },
-        rating: {
-            type: Int32Array,
-            required: false,
-        },
-    },
-    {
+        }
+
+    },{
         strict: true,
         timestamps: true,
-      }
-      );
+      });
 
-module.exports = mongoose.model('Ticket', ticketSchema);
-module.exports.Schema = ticketSchema;   
-
+      module.exports = mongoose.model('Ticket', ticketSchema);
    

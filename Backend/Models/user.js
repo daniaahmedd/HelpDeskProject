@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const mongooseBackup = require('mongoose-backup');
+const CryptoJS = require('crypto-js');
+
 const userschema = new mongoose.Schema(
     {
         UserName: {
@@ -32,17 +37,6 @@ const userschema = new mongoose.Schema(
         timestamps: true,
     }
 );
-
-
-
-
-
-
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const mongooseBackup = require('mongoose-backup');
-const CryptoJS = require('crypto-js');
-
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'defaultEncryptionKey';
 
@@ -96,7 +90,6 @@ function decrypt(text, salt) {
     return decrypted.toString('utf8').slice(0, -salt.length);
 }
 
-mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
+mongooseBackup.init({ uri: 'mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software' });
 
-module.exports = mongoose.model('User', userschema);
-module.exports.Schema = userschema;   
+module.exports = mongoose.model('user', userschema);
