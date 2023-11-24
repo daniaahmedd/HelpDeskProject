@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const custAndBrandingSchema = new mongoose.Schema({
+const custAndBrandingSchema = new mongoose.Schema(
+{
   organizationName: {
     type: String,
     required: true,
@@ -96,11 +97,11 @@ const custAndBrandingSchema = new mongoose.Schema({
     type: String,
     required: true,
     "default": "#FFFFFF"
-  },
   }
-   {
-        strict :true
-    }
+},
+{
+  strict :true
+}
   );
 
 const CustAndBranding = mongoose.model('CustAndBranding', custAndBrandingSchema);
