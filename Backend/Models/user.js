@@ -1,15 +1,6 @@
 const mongoose = require('mongoose');
-const productSchema = require('./productModel').Schema;
-const schemaOptions = {
-    strict: false,
-    timestamps: true,
-};
 const userschema = new mongoose.Schema(
     {
-        userID: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
         UserName: {
             type: String,
             minLength: 3,
@@ -17,6 +8,7 @@ const userschema = new mongoose.Schema(
         },
         userType: {
             type: String,
+            enum:[ "Manager", "Admin", "User", "Agent"],
             required: true,
         },
         password: {
@@ -27,11 +19,6 @@ const userschema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        roleid: {
-            type: Int32Array,
-            required: true,
-
-        },
         firstName: 
         { type: String,
           required: true 
@@ -40,9 +27,8 @@ const userschema = new mongoose.Schema(
          { type: String,
            required: true },
     },
-    // schemaOptions
     {
-        strict: false,
+        strict: true,
         timestamps: true,
     }
 );
@@ -112,6 +98,5 @@ function decrypt(text, salt) {
 
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
 
-const user = mongoose.model('user', userschema);
-
-module.exports = mongoose.model('user', userschema);
+module.exports = mongoose.model('User', userschema);
+module.exports.Schema = userschema;   

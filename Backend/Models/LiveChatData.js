@@ -1,32 +1,25 @@
 const mongoose = require("mongoose");
 const MessageSchema = require('./Message').Schema;
-const schemaOptions = {
-  strict: false,
-  timestamps: true,
-};
+const agentSchema = require('./agent').Schema;
+const userSchema = require('./user').Schema;
 
 
 const ChatSchema = new mongoose.Schema(
   {
-    messages: [MessageSchema], // Array of messages following MessageSchema
-    role: {
-      type: String,
-      enum: ["user", "agent", "manager", "admin"],
-      default: "pending",
-      required: true
-    },
-    date: {
-      type: Date,
-      default: Date.now,
-      required: true
-    },
-    userID: {
+    messages: [{ type: String }], // Array of messages following MessageSchema
+    userid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: userSchema,
       required: true
-    },
   },
-  { timestamps: true }
+
+  agentid: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: agentSchema,
+      required: true
+  },
+  },
+  { strict:false, timestamps: true }
 );
 
 module.exports = mongoose.model("LiveChatData", ChatSchema);

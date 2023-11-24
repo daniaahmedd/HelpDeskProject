@@ -1,34 +1,25 @@
 const mongoose = require('mongoose');
 const userSchema = require('./user').Schema;
 
-const schemaOptions = {
-  strict: false,
-  timestamps: true,
-};
 
 const agentSchema = new mongoose.Schema( 
     {
         agentid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: userSchema ,
             required: true
         },
-
-        rating: {
-            type: Int32Array,
-            required: true,
-        },
-
-        mainmajor: {
+        mainMajor: {
             type: String,
             required: true
         },
+    },
+    {
+    strict: true,
+    timestamps: true,
+  }
+  );
 
-        submajor: {
-            type: String,
-            required: true,
-        }
 
-    });
-
-    module.exports.Schema = agentSchema; 
+module.exports = mongoose.model('Agent', agentSchema);
+module.exports.Schema = agentSchema;   
