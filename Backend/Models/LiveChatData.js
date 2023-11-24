@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 const mongoose = require("mongoose");
 
 // Schema for individual messages
@@ -16,14 +15,6 @@ const MessageSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 module.exports = mongoose.model("LiveChatData", MessageSchema);
-=======
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/Test', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-})
->>>>>>> Stashed changes
 
 const ChatSchema = new mongoose.Schema(
   {
@@ -36,7 +27,6 @@ const ChatSchema = new mongoose.Schema(
     },
     date: {
       type: Date,
-<<<<<<< Updated upstream
       default: Date.now,
       required: true
     },
@@ -45,20 +35,6 @@ const ChatSchema = new mongoose.Schema(
       ref: "User",
       required: true
     },
-=======
-      default: Date.now
-    },
-    // agentID: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'agent',
-    //   required: true
-    // },
-    // userID: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'User',
-    //   required: true
-    // }
->>>>>>> Stashed changes
   },
   { timestamps: true }
 );
