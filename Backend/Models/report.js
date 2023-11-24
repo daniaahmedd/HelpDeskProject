@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema(
   {
-    reportid:{
-        type:Int32Array,
-        required: true,
-    },
 
     status: {
         type: String,
@@ -31,7 +27,7 @@ const reportSchema = new mongoose.Schema(
 
 
   }, {
-    strict: false,
-    timestamps: true,
+    strict: true,
+ 
   });
-  module.exports = mongoose.model("report", reportSchema);
+  module.exports= mongoose.model("Report", reportSchema)

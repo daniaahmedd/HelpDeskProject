@@ -1,21 +1,15 @@
 const mongoose = require('mongoose');
 const agentSchema = require('./agent').Schema;
-const schemaOptions = {
-  strict: false,
-  timestamps: true,
-};
+const userSchema = require('./user').Schema;
+
 
 const ticketSchema = new mongoose.Schema( 
     {
-        ticketid: {
-            type: Int32Array,
-            required: true,
-        },
 
         status:{
             type: String,
-            enum: ['active','inactive','pending'],
-            default: 'pending',
+            enum: ['Pending','Opened','Closed','Canceled'],
+            default: 'Opened',
             required: true,
         },
 
@@ -39,18 +33,21 @@ const ticketSchema = new mongoose.Schema(
 
         subcategories: {
             type: String,
+            enum:["Desktops", "Laptops", "Printers", "Servers", "Networking equipment", 
+            " Operating system"," Application software"," Custom software"," Integration issues",
+            "Email issues", "Internet connection problems", "Website errors"],
             required: true,
         },
 
         userid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+            ref: userSchema,
             required: true
         },
 
         agentid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'agent',
+            ref: agentSchema,
             required: true
         },
 
@@ -59,15 +56,15 @@ const ticketSchema = new mongoose.Schema(
             required: true
         },
 
-        issue: {
+        issueDescription: {
             type: String,
             required: true,
         }
 
     },{
-        strict: false,
+        strict: true,
         timestamps: true,
       });
 
-    module.exports = mongoose.model("ticket", ticketSchema);
+      module.exports = mongoose.model('Ticket', ticketSchema);
    
