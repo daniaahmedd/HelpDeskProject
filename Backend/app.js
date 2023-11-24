@@ -12,7 +12,6 @@ app.use((req, res, next) => {
 });
 
 const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-//const db_url = `mongodb://127.0.0.1:27017/${db_name}`; 
 
 const connectionOptions = {
   useUnifiedTopology: true,
