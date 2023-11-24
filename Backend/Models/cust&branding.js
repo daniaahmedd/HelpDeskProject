@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const custAndBrandingSchema = new mongoose.Schema({
+const custAndBrandingSchema = new mongoose.Schema(
+{
   organizationName: {
     type: String,
     required: true,
@@ -83,21 +84,25 @@ const custAndBrandingSchema = new mongoose.Schema({
     "default": "#FFFFFF"
   },
   headerHeight: {
-        type: Number,
-        required: true,
-        "default": 50
-    },
-    headerWidth: {
-        type: Number,
-        required: true,
-        "default": 50
-    },
-    headerBackgroundColor: {
-        type: String,
-        required: true,
-        "default": "#FFFFFF"
-    },
-  });
+    type: Number,
+    required: true,
+    "default": 50
+  },
+  headerWidth: {
+    type: Number,
+    required: true,
+    "default": 50
+  },
+  headerBackgroundColor: {
+    type: String,
+    required: true,
+    "default": "#FFFFFF"
+  },
+},
+{
+  strict :true
+}
+  );
 
 const CustAndBranding = mongoose.model('CustAndBranding', custAndBrandingSchema);
 
