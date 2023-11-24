@@ -97,7 +97,11 @@ const custAndBrandingSchema = new mongoose.Schema({
         required: true,
         "default": "#FFFFFF"
     },
-  });
+  }
+   {
+        strict :true
+    }
+  );
 
 const CustAndBranding = mongoose.model('CustAndBranding', custAndBrandingSchema);
 
