@@ -42,9 +42,9 @@ const userschema = new mongoose.Schema(
 
 
 
-module.exports = mongoose.model('userModel', userschema);
 
-const mongoose = require('mongoose');
+
+
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const mongooseBackup = require('mongoose-backup');
@@ -124,8 +124,7 @@ function decrypt(text, salt) {
 // Initialize data backup and recovery procedures for MongoDB
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
 
-// Create a Mongoose model named 'User' based on the defined schema
-const User = mongoose.model('User', userSchema);
+// Create a Mongoose model named 'user' based on the defined schema
+const user = mongoose.model('user', userschema);
 
-// Export the 'User' model for use in other parts of the application
-module.exports = User;
+module.exports = mongoose.model('user', userschema);
