@@ -104,6 +104,4 @@ const BrandingSchema = new mongoose.Schema(
 }
  );
 
-const CustAndBranding = mongoose.model('BrandingModel', BrandingSchema);
-
-module.exports = CustAndBranding;
+ module.exports = mongoose.model('BrandingModel', BrandingSchema);
