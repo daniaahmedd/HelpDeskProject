@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const custAndBrandingSchema = new mongoose.Schema(
+const BrandingSchema = new mongoose.Schema(
 {
   organizationName: {
     type: String,
@@ -10,93 +10,93 @@ const custAndBrandingSchema = new mongoose.Schema(
   logoURL: { 
     type: String,
     required: true,
-    "default": "https://default_logo.png"
+    default: "https://default_logo.png"
     //stores the URL of the organization's logo
   },
   primaryColor: {
     type: String,
     required: true,
-    "default": "#20DFDB"
+    default: "#20DFDB"
   },
   secondaryColor: {
     type: String,
     required: true,
-    "default": "#7D8584"
+    default: "#7D8584"
   },
   accentColor: {
     type: String,
     required: true,
-    "default": "#187468"
+    default: "#187468"
   },  
   backgroundColor: {
     type: String,
     required: true,
-    "default": "#D4BDD3"
+    default: "#D4BDD3"
   },
   titlesFontColor: {
     type: String,
     required: true,
-    "default": "#FFFFFF"
+    default: "#FFFFFF"
   },
   fontColor: {
     type: String,
     required: true,
-    "default": "#FFFFFF"
+    default: "#FFFFFF"
   },
   titlesFontSize: {
     type: Number,
     required: true,
-    "default": 22
+    default: 22
   },
   fontSize: {
     type: Number,
     required: true,
-    "default": 18
+    default: 18
   },
   titlesFontFamily: {
     type: String,
     required: true,
-    "default": "Arial"
+    default: "Arial"
   },
   fontFamily: {
     type: String,
     required: true,
-    "default": "Arial-Black"
+    default: "Arial-Black"
   },
   logoHeight: {
     type: Number,
     required: true,
-    "default": 50
+    default: 50
   },
   logoWidth: {
     type: Number,
     required: true,
-    "default": 50
+    default: 50
   },
   logoBorderColor: {
     type: String,
     required: true,
-    "default": "#FFFFFF"
+    default: "#FFFFFF"
   },
   logoBackgroundColor: {
     type: String,
     required: true,
-    "default": "#FFFFFF"
+    default: "#FFFFFF"
   },
   headerHeight: {
     type: Number,
     required: true,
-    "default": 50
+    default: 50
   },
   headerWidth: {
     type: Number,
     required: true,
-    "default": 50
+    default: 50
   },
   headerBackgroundColor: {
     type: String,
     required: true,
-    "default": "#FFFFFF"
+    default: "#FFFFFF"
   },
 },
 {
@@ -104,6 +104,4 @@ const custAndBrandingSchema = new mongoose.Schema(
 }
  );
 
-const CustAndBranding = mongoose.model('CustAndBranding', custAndBrandingSchema);
-
-module.exports = CustAndBranding;
+ module.exports = mongoose.model('BrandingModel', BrandingSchema);
