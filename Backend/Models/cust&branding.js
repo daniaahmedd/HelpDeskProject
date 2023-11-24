@@ -97,7 +97,7 @@ const custAndBrandingSchema = new mongoose.Schema(
     type: String,
     required: true,
     "default": "#FFFFFF"
-  }
+  },
 },
 {
   strict :true
