@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const custAndBrandingSchema = new mongoose.Schema(
+const BrandingSchema = new mongoose.Schema(
 {
   organizationName: {
     type: String,
@@ -104,6 +104,6 @@ const custAndBrandingSchema = new mongoose.Schema(
 }
  );
 
-const CustAndBranding = mongoose.model('CustAndBranding', custAndBrandingSchema);
+const CustAndBranding = mongoose.model('BrandingModel', BrandingSchema);
 
 module.exports = CustAndBranding;
