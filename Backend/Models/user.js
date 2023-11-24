@@ -111,7 +111,4 @@ function decrypt(text, salt) {
 }
 
 mongooseBackup.init({ uri: 'mongodb://localhost:27017/your-database-name' });
-
-const user = mongoose.model('user', userschema);
-
 module.exports = mongoose.model('user', userschema);
