@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
@@ -28,3 +29,4 @@ app.use(function (req, res, next) {
 });
 
 app.listen(3000, () => console.log("server started"));
+
