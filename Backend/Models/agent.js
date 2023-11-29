@@ -9,9 +9,10 @@ const agentSchema = new mongoose.Schema(
             ref: userSchema ,
             required: true
         },
-        mainMajor: {
-            type: String,
-            required: true
+        categories: {
+            type:String,
+           enum:[ "Software", "Hardware", "Network"],
+           required:true
         },
     },
     {
