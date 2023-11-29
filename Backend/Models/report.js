@@ -8,12 +8,12 @@ const reportSchema = new mongoose.Schema(
         required: true,
     },
 
-    opendedtime: {
+    opendtime: {
         type: Date,
         required: true,
     },
 
-    closetime: {
+    closedtime: {
         type: Date,
         required: true,
     },

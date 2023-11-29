@@ -17,7 +17,13 @@ const ChatSchema = new mongoose.Schema(
       ref: agentSchema,
       required: true
   },
-  },
+  status:{
+    type: String,
+    enum: ['Open','Close'],
+    default: 'Open',
+    required: true,
+  }
+},
   { strict:false, timestamps: true }
 );
 

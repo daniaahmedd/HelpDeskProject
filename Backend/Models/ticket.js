@@ -52,6 +52,7 @@ const ticketSchema = new mongoose.Schema(
         },
 
         priorty: {
+            type:String,
             enum: ['high', 'low', 'medium'],
             required: true
         },
@@ -59,6 +60,10 @@ const ticketSchema = new mongoose.Schema(
         issueDescription: {
             type: String,
             required: true,
+        },
+        issueSolution:{
+            type: String,
+            required: false,
         },
         rating:{
             type: Int32Array,

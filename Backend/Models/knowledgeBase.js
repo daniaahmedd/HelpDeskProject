@@ -21,6 +21,11 @@ const knowledgeBaseschema = new mongoose.Schema(
       enum: ['Software','Hardware','Network'],
       required: true,
     },
+    question_subcategory:{
+      type: String,
+      enum: ['Desktops','Laptops','Printers','Servers','Networking equipment','Operating system','Application software','Custom software','Integration issues','Email issues','Internet connection problems','Website errors'],
+      required: true,
+    },
   },
   {
     strict: false,
