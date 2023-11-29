@@ -5,7 +5,10 @@ const userSchema = require('./user').Schema;
 
 const ticketSchema = new mongoose.Schema( 
     {
-
+        ticketId: {
+            type: mongoose.Schema.Types.ObjectId,
+            requied: true,
+          },
         status:{
             type: String,
             enum: ['Pending','Opened','Closed','Canceled'],
@@ -48,12 +51,12 @@ const ticketSchema = new mongoose.Schema(
         agentid: {
             type: mongoose.Schema.Types.ObjectId,
             ref: agentSchema,
-            required: true
+            required: false
         },
 
         priorty: {
             enum: ['high', 'low', 'medium'],
-            required: true
+            required: false
         },
 
         issueDescription: {
