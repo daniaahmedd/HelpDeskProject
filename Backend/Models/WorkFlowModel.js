@@ -12,7 +12,7 @@ const WorkFlowSchema = new mongoose.Schema(
             " Operating system"," Application software"," Custom software"," Integration issues",
             "Email issues", "Internet connection problems", "Website errors"],
             required:true,
-            unique:true
+            unique: true
         },
         expectedSolution:{
             type:String,
