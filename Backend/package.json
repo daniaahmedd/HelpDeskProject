@@ -1,7 +1,7 @@
 {
-  "name": "studentsexample",
+  "name": "helpdeskproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "Desktop Help project",
   "main": "app.js",
   "scripts": {
     "start": "node secret-key-generator.js && nodemon app.js",

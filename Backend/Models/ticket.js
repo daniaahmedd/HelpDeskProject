@@ -44,13 +44,13 @@ const ticketSchema = new mongoose.Schema(
 
         userid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: userSchema,
+            ref: "userSchema",
             required: true
         },
 
         agentid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: agentSchema,
+            ref: "agentSchema",
             required: false
         },
 
@@ -79,4 +79,6 @@ const ticketSchema = new mongoose.Schema(
       });
 
       module.exports = mongoose.model('Ticket', ticketSchema);
+      module.exports.Schema = ticketSchema;   
+
    
