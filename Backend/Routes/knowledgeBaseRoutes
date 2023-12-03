@@ -1,15 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const knowledgeBase = require("../Models/knowledgeBaseController");
+const knowledgeBaseController = require("../Models/knowledgeBaseController");
 
 
+router.get("/view", knowledgeBaseController.viewknowledgeBase);
 
-
-// router.get("/api/knowledge/view", async (req, res) => {
-//   try {
-//     const data = await knowledgeBase.find();
-//     return res.status(200).json(data);
-//   } catch (e) {
-//     return res.status(500).json({ message: e.message });
-//   }
-// });
+module.exports = router;
