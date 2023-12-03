@@ -10,7 +10,7 @@ app.use(cookieParser())
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 // app.use(authenticationMiddleware);
 
-const workflowRouter = require("./Routes/workFlow");
+const workflowRouter = require("./Routes/workFlowRoutes");
 app.use('/api/workflow',workflowRouter);
 const knowledgeBaseRouter = require("./Routes/knowledgeBaseRoutes");
 app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter);
