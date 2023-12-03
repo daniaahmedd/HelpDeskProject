@@ -6,7 +6,7 @@ const agentSchema = new mongoose.Schema(
     {
         agentid: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: userSchema ,
+            ref: "userSchema" ,
             required: true
         },
         categories: {

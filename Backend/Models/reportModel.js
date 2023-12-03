@@ -30,7 +30,7 @@ const reportSchema = new mongoose.Schema(
     },
     agentid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: agentSchema,
+      ref: "agentSchema",
       required: false
   },
 

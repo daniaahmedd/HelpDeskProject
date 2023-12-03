@@ -1,20 +1,25 @@
 const mongoose = require("mongoose");
 const agentSchema = require('./agent').Schema;
 const userSchema = require('./user').Schema;
-
+const ticketschema = require('./ticket').Schema;
 
 const ChatSchema = new mongoose.Schema(
   {
+    ticketid:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ticketschema",
+      required: false
+    },
     messages: [{ type: String }], // Array of messages
     userid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: userSchema,
+      ref: "userSchema",
       required: true
   },
 
   agentid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: agentSchema,
+      ref: "agentSchema",
       required: true
   },
   status:{
@@ -28,3 +33,4 @@ const ChatSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("LiveChatData", ChatSchema);
+
