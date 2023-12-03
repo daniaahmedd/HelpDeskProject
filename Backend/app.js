@@ -9,6 +9,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser()) 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
+//Uncomment when you're gonna use.
+//const backupRoutes = require('./Routes/backupRoutes');
+//app.use('/backup', backupRoutes);
 
 app.use(
   cors({
