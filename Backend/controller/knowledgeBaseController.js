@@ -4,7 +4,7 @@ const knowledgeBaseModel = require("../Models/knowledgeBaseModel");
 
 const knowledgeBaseController = {
 
-viewknowledgeBase:async(req,res)=>{
+  viewknowledgeBase:async(req,res)=>{
   try{
 
     const { Category, Subcategory } = req.body;
@@ -33,3 +33,4 @@ viewknowledgeBase:async(req,res)=>{
   // Check if category is null
 },
 };
+module.exports = knowledgeBaseController;

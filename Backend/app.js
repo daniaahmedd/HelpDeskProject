@@ -12,6 +12,8 @@ const authenticationMiddleware = require("./Middleware/authenticationMiddleware"
 
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
+const knowledgeBaseRouter = require("./Routes/knowledgeBaseRoutes");
+app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter);
 
 
 app.use(
