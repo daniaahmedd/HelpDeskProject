@@ -1,11 +1,14 @@
 const { subtle } = require("crypto");
 const knowledgeBaseModel = require("../Models/knowledgeBaseModel");
 
-view:async(req,res)=>{
+
+const knowledgeBaseController = {
+
+viewknowledgeBase:async(req,res)=>{
   try{
     const allowedCategories = ['Software', 'Hardware', 'Network'];
-const allowedSubCatogries=['Desktops','Laptops','Printers','Servers','Networking equipment','Operating system','Application software','Custom software','Integration issues','Email issues','Internet connection problems','Website errors']
-  const { Category, Subcategory } = req.body;
+    const allowedSubCatogries=['Desktops','Laptops','Printers','Servers','Networking equipment','Operating system','Application software','Custom software','Integration issues','Email issues','Internet connection problems','Website errors']
+    const { Category, Subcategory } = req.body;
 
     if (!allowedCategories.includes(Category)) {
       const data = await knowledgeBaseModel.find();
@@ -29,4 +32,5 @@ const allowedSubCatogries=['Desktops','Laptops','Printers','Servers','Networking
   }
 
   // Check if category is null
+},
 };

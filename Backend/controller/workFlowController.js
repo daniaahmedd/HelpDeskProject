@@ -15,7 +15,7 @@ const workFlowController = {
                 return res.status(400).json({ message: "Category and subcategory must be provided" });
             }
 
-            const workFlow = await workFlowModel.find({ category, subcategory },{ expectedSolution: 1, _id: 0 });
+            const workFlow = await workFlowModel.find({ category, subcategory },{expectedSolution:1 , _id:0});
 
             if (!workFlow || workFlow.length === 0) {
                 return res.status(404).json({ message: `No workflows found for category: ${category} and subcategory: ${subcategory}` });
@@ -27,6 +27,8 @@ const workFlowController = {
             return res.status(500).json({ message: `An error occurred while fetching workflows: ${error.message}` });
         }
     },
+
+    
 loadDistributionMap : {
     'Agent 1': ['Software', 'Medium Network', 'Low Hardware'],
     'Agent 2': ['Hardware', 'Medium Software', 'Low Network'],
