@@ -18,7 +18,7 @@ app.use(
   })
 );
 
-const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
+const db_url = `mongodb+srv://Rawan:czcTD3Vg4qjBMIj2@cluster0.qebr03m.mongodb.net/?retryWrites=true&w=majority`;
 
 const connectionOptions = {
   useUnifiedTopology: true,
