@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const agentSchema = require('./agent').Schema;
+const agentSchema = require('./agentModel').Schema;
 
 
 const reportSchema = new mongoose.Schema(
@@ -25,7 +25,7 @@ const reportSchema = new mongoose.Schema(
     },
 
     rating: {
-        type: Int32Array,
+        type: Number,
         required: true
     },
     agentid: {

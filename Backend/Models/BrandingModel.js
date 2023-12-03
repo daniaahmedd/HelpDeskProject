@@ -44,12 +44,12 @@ const BrandingSchema = new mongoose.Schema(
     default: "#FFFFFF"
   },
   titlesFontSize: {
-    type: Int32Array,
+    type: Number,
     required: true,
     default: 22
   },
   fontSize: {
-    type: Int32Array,
+    type: Number,
     required: true,
     default: 18
   },
@@ -64,12 +64,12 @@ const BrandingSchema = new mongoose.Schema(
     default: "Arial-Black"
   },
   logoHeight: {
-    type: Int32Array,
+    type: Number,
     required: true,
     default: 50
   },
   logoWidth: {
-    type: Int32Array,
+    type: Number,
     required: true,
     default: 50
   },

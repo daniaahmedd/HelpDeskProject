@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const agentSchema = require('./agent').Schema;
-const userSchema = require('./user').Schema;
-const ticketschema = require('./ticket').Schema;
+const agentSchema = require('./agentModel').Schema;
+const userSchema = require('./userModel').Schema;
+const ticketschema = require('./ticketModel').Schema;
 
 const ChatSchema = new mongoose.Schema(
   {
