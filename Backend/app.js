@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false })); 
 app.use(cookieParser()) 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-// app.use(authenticationMiddleware);
+app.use(authenticationMiddleware);
 
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
