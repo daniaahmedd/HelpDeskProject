@@ -6,6 +6,9 @@ const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 // * Register Users
 router.post("/api/users/",  authorizationMiddleware(['Admin']),userController.registerUser);
 
+// * Verify Users
+router.post("/api/users/login", userController.login);
+
 // * Login Users
 router.post("/api/users/login", userController.login);
 
@@ -15,8 +18,11 @@ router.put("/api/users/assign", authorizationMiddleware(['Admin']), userControll
 // * Update User Profiles
 router.put("/api/users/profile", userController.updateProfile);
 
+// * Forgot User Passwords
+router.put("/api/users/password", userController.forgotPassword);
+
 // * Reset User Passwords
-router.put("/api/users/password", userController.resetPassword);
+router.put("/api/users/change/password", userController.resetPassword);
 
 
 module.exports = router;

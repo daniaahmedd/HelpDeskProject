@@ -6,7 +6,9 @@ const knowledgeBaseController = {
 
   viewknowledgeBase:async(req,res)=>{
   try{
+
     const { Category, Subcategory } = req.body;
+
     if (!allowedCategories.includes(Category)) {
       const data = await knowledgeBaseModel.find();
       return res.status(200).json(data);
