@@ -10,11 +10,18 @@ app.use(cookieParser())
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
 
+<<<<<<< Updated upstream
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter);
 
+=======
+//const customizationroute=require("./Routes/customization")
+//const customizationroute2=require("./Routes/customization")
+//app.use('/api/styleCustomize',customizationroute)
+//app.use('/api/styleCustomize/edit',customizationroute2)
+>>>>>>> Stashed changes
 
 app.use(
   cors({
@@ -24,9 +31,13 @@ app.use(
   })
 );
 
+<<<<<<< Updated upstream
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
 const db_url = 'mongodb://127.0.0.1:27017/try';
 
+=======
+const db_url = `mongodb://127.0.0.1:27017/HelpDesk`;
+>>>>>>> Stashed changes
 
 const connectionOptions = {
   useUnifiedTopology: true,
