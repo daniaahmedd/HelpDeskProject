@@ -1,7 +1,6 @@
 const workFlowModel = require('../Models/workFlowModel');
 const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
-const assignOrQueueTicket = require('../utils/assignOrQueueTicket');
 
 let agents = [];
 
@@ -95,52 +94,36 @@ async function assignOrQueueTicket(ticket) {
     }
 }
 
-// Define an asynchronous function named calculateWorkloadDistribution
 async function calculateWorkloadDistribution() {
-    // Define a constant for the maximum workload per agent
     const maxWorkloadPerAgent = 5;
 
-    // Loop over each agent in the agents array
     for (const agent of agents) {
-        // Initialize an empty object to store the workload distribution by expertise
         const workloadByExpertise = {};
-        // Initialize a variable to keep track of the total workload
         let totalWorkload = 0;
 
-        // Loop over each ticket in the agent's workload
         for (const ticketId of agent.workload) {
-            // If the total workload reaches the maximum, stop processing tickets
             if (totalWorkload >= maxWorkloadPerAgent)
             break;
 
             try {
-                // Fetch the ticket from the database using its ID
                 const ticket = await ticketModel.findById(ticketId);
-                // Determine the expertise required for the ticket
                 const expertise = getExpertise(ticket.category);
-                // Increment the count of tickets for that expertise in workloadByExpertise
                 workloadByExpertise[expertise] = (workloadByExpertise[expertise] || 0) + 1;
-                // Increment the total workload
                 totalWorkload++;
             } catch (error) {
-                // If there's an error while fetching the ticket, log the error to the console
                 console.error(`Failed to find ticket with id ${ticketId}: `, error);
             }
         }
 
-        // If the total workload exceeds the maximum workload per agent, trim the agent's workload to the maximum
         if (totalWorkload > maxWorkloadPerAgent) {
             agent.workload = agent.workload.slice(0, maxWorkloadPerAgent);
         }
 
-        // Update the agent's workloadDistribution with workloadByExpertise
         agent.workloadDistribution = workloadByExpertise;
 
         try {
-            // Update the agent in the database
             await agentModel.findByIdAndUpdate(agent._id, agent);
         } catch (error) {
-            // If there's an error while updating the agent, log the error to the console
             console.error(`Failed to update agent with id ${agent._id}: `, error);
         }
     }
