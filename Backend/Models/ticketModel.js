@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const agentSchema = require('./agent').Schema;
+const agentSchema = require('./agentModel').Schema;
 const userSchema = require('./userModel').Schema;
 
 
@@ -69,7 +69,7 @@ const ticketSchema = new mongoose.Schema(
             required: false,
         },
         rating:{
-            type: Int32Array,
+            type: Number,
             required: false
         }
 

@@ -2,6 +2,156 @@ const workFlowModel = require('../Models/workFlowModel');
 const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
 
+let agents = [];
+
+const highPriorityQueue = [];
+const mediumPriorityQueue = [];
+const lowPriorityQueue = [];
+
+function getExpertise(category) {
+
+    const expertiseMap = {
+        'category1': 'software',
+        'category2': 'hardware',
+        'category3': 'network',
+    };
+
+    return expertiseMap[category] || 'unknown';
+}
+
+async function loadAgents() {
+    try {
+        agents = await agentModel.find().limit(3);
+        calculateWorkloadDistribution();
+    } catch (error) {
+        console.error(`Error loading agents: ${error}`);
+    }
+}
+
+function findAvailableAgent(major, expertise) {
+    return agents.find(
+        agent =>
+            agent.major === major && agent.expertise === expertise && agent.workload.length < agent.maxWorkload && agent.workloadDistribution[expertise] > 0
+    );
+}
+
+async function assignTicketToAgent(ticket, agent) {
+    agent.workload.push(ticket._id);
+    agent.workloadDistribution[getExpertise(ticket.category)]--;
+
+    ticket.assigned = true;
+    ticket.status = 'Pending';
+
+    ticket.assignedTo = agent._id;
+    ticket.assignedAt = Date.now();
+
+    await ticket.save();
+    await agent.save();
+
+    await ticketModel.findByIdAndUpdate(ticket._id, ticket);
+    await agentModel.findByIdAndUpdate(agent._id, agent);
+}
+
+async function assignOrQueueTicket(ticket) {
+
+    const { major, expertise } = getExpertise(ticket.category);
+    let availableAgent = findAvailableAgent(major, expertise);
+
+    if (availableAgent) {
+        await assignTicketToAgent(ticket, availableAgent);
+        availableAgent.workloadDistribution[expertise]--;
+    } 
+    else {
+        if (ticket.priority === "medium") {
+            availableAgent = agents.find(agent => agent.workloadDistribution[major] > 0);
+            if (availableAgent) {
+                await assignTicketToAgent(ticket, availableAgent);
+                availableAgent.workloadDistribution[major]--;
+            } 
+            else {
+                mediumPriorityQueue.push(ticket);
+            }
+        } 
+        else if (ticket.priority === "high") {
+            availableAgent = agents.find(agent => agent.workloadDistribution[major] > 0);
+            if (availableAgent) {
+                await assignTicketToAgent(ticket, availableAgent);
+                availableAgent.workloadDistribution[major]--;
+            } 
+            else {
+                highPriorityQueue.push(ticket);
+            }
+        } 
+        else if (ticket.priority === "low") {
+            availableAgent = agents.find(agent => agent.workload < agent.maxWorkload);
+            if (availableAgent) {
+                await assignTicketToAgent(ticket, availableAgent);
+            } 
+            else {
+                lowPriorityQueue.push(ticket);
+            }
+        }
+    }
+}
+
+async function calculateWorkloadDistribution() {
+    const maxWorkloadPerAgent = 5;
+
+    for (const agent of agents) {
+        const workloadByExpertise = {};
+        let totalWorkload = 0;
+
+        for (const ticketId of agent.workload) {
+            if (totalWorkload >= maxWorkloadPerAgent)
+            break;
+
+            try {
+                const ticket = await ticketModel.findById(ticketId);
+                const expertise = getExpertise(ticket.category);
+                workloadByExpertise[expertise] = (workloadByExpertise[expertise] || 0) + 1;
+                totalWorkload++;
+            } catch (error) {
+                console.error(`Failed to find ticket with id ${ticketId}: `, error);
+            }
+        }
+
+        if (totalWorkload > maxWorkloadPerAgent) {
+            agent.workload = agent.workload.slice(0, maxWorkloadPerAgent);
+        }
+
+        agent.workloadDistribution = workloadByExpertise;
+
+        try {
+            await agentModel.findByIdAndUpdate(agent._id, agent);
+        } catch (error) {
+            console.error(`Failed to update agent with id ${agent._id}: `, error);
+        }
+    }
+}
+
+async function checkQueues() {
+
+    const queues = [highPriorityQueue, mediumPriorityQueue, lowPriorityQueue];
+    for (const queue of queues) {
+
+        for (let i = 0; i < queue.length; i++) {
+            const ticket = queue[i];
+            const { major, expertise } = getExpertise(ticket.category);
+            const availableAgent = findAvailableAgent(major, expertise);
+
+            if (availableAgent) {
+                await assignTicketToAgent(ticket, availableAgent);
+                queue.splice(i, 1);
+                i--;
+            }
+        }
+    }
+}
+
+setInterval(checkQueues, 1000);
+
+loadAgents();
+
 const workFlowController = {
 
     getAllWorkFlow: async (req, res) => {
@@ -12,78 +162,29 @@ const workFlowController = {
                 return res.status(400).json({ message: "Category and subcategory must be provided" });
             }
 
-            const workFlow = await workFlowModel.find({ category, subcategory });
-
+            const workFlow = await workFlowModel.find({ category, subcategory }, { expectedSolution: 1, _id: 0 });
             if (!workFlow || workFlow.length === 0) {
                 return res.status(404).json({ message: `No workflows found for category: ${category} and subcategory: ${subcategory}` });
             }
 
+            workFlow.forEach(ticket => {
+                if (category === 'category1') {
+                    ticket.priority = 'high';
+                } else if (category === 'category2') {
+                    ticket.priority = 'medium';
+                } else {
+                    ticket.priority = 'low';
+                }
+                assignOrQueueTicket(ticket);
+            });
             return res.status(200).json(workFlow);
 
         } catch (error) {
-            return res.status(500).json({ message: `An error occurred while fetching workflows: ${error.message}` });
+            return res.status(500).json({ message: 'An error occurred while fetching workflows: ' + error.message });
         }
     },
-loadDistributionMap : {
-    'Agent 1': ['Software', 'Medium Network', 'Low Hardware'],
-    'Agent 2': ['Hardware', 'Medium Software', 'Low Network'],
-    'Agent 3': ['Network', 'Medium Hardware', 'Low Software']
-},
-
-assignTicket: async (req, res) => {
-    try {
-        const agents = await agentModel.find({ availability: true }).sort({ workload: 1 }).exec();
-
-        const highPriorityTickets = await ticketModel.find({ agentAssigned: null, priority: 'high' }).exec();
-        const mediumPriorityTickets = await ticketModel.find({ agentAssigned: null, priority: 'medium' }).exec();
-        const lowPriorityTickets = await ticketModel.find({ agentAssigned: null, priority: 'low' }).exec();
-
-        // Function to assign tickets to available agents
-        // This function takes a list of tickets and assigns each ticket to an available agent
-        const assignTickets = async (tickets, priority) => {
-            for (let ticket of tickets) {
-                // Try to find an available agent with matching major and workload less than 5
-                // This ensures that tickets are assigned to agents who are experts in the ticket's major
-                let availableAgent = agents.find(agent => agent.major === ticket.major && agent.workload < 5);
-
-                // If no agent with matching major is available, assign based on the predefined load distribution
-                // This ensures that tickets are still assigned even if no agents with the same major are available
-                if (!availableAgent) {
-                    for (let agentName in loadDistributionMap) {
-                        const agentExpertise = loadDistributionMap[agentName];
-                        if (agentExpertise.includes(priority + ' ' + ticket.major)) {
-                            availableAgent = agents.find(agent => agent.name === agentName && agent.workload < 5);
-                            if (availableAgent) break;
-                        }
-                    }
-                }
-
-                // If an available agent is found, assign the ticket to the agent and update the ticket and agent's status
-                if (availableAgent) {
-                    ticket.agentAssigned = availableAgent._id;
-                    ticket.status = 'pending';
-                    availableAgent.workload++;
-                    availableAgent.availability = availableAgent.workload < 5;
-                    await Promise.all([ticket.save(), availableAgent.save()]);
-                }
-            }
-        };
-
-        // Assign tickets based on their priority
-        // High priority tickets are assigned first, followed by medium and low priority tickets
-        await assignTickets(highPriorityTickets, 'high');
-        await assignTickets(mediumPriorityTickets, 'medium');
-        await assignTickets(lowPriorityTickets, 'low');
-
-        // If all operations are successful, send a success message
-        res.status(200).send('Tickets assigned successfully');
-    } catch (error) {
-        // If an error occurs, log the error and send an error message
-        console.error(error);
-        res.status(500).send('An error occurred while assigning tickets');
-    }
-},
-
+    
 };
+
 
 module.exports = workFlowController;

@@ -8,7 +8,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false })); 
 app.use(cookieParser()) 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-app.use(authenticationMiddleware);
+// app.use(authenticationMiddleware);
+
+const workflowRouter = require("./Routes/workFlow");
+app.use('/api/workflow',workflowRouter);
+const knowledgeBaseRouter = require("./Routes/knowledgeBase");
+app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
+
 
 app.use(
   cors({
@@ -18,7 +24,9 @@ app.use(
   })
 );
 
-const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
+//const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
+const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
+
 
 const connectionOptions = {
   useUnifiedTopology: true,
@@ -35,3 +43,4 @@ app.use(function (req, res, next) {
 });
 
 app.listen(process.env.PORT, () => console.log("server started"));  
+
