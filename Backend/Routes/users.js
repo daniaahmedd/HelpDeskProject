@@ -3,26 +3,20 @@ const router = express.Router();
 const userController = require("../controller/userController");
 const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 
-// * Register Users
-router.post("/api/users/",  authorizationMiddleware(['Admin']),userController.registerUser);
-
-// * Verify Users
-router.post("/api/users/login", userController.login);
-
-// * Login Users
-router.post("/api/users/login", userController.login);
-
 // * Assign Roles
-router.put("/api/users/assign", authorizationMiddleware(['Admin']), userController.assignRole);
+router.put("/assign", authorizationMiddleware(['Admin']), userController.assignRole);
 
 // * Update User Profiles
-router.put("/api/users/profile", userController.updateProfile);
+router.put("/profile", userController.updateProfile);
 
 // * Forgot User Passwords
-router.put("/api/users/password", userController.forgotPassword);
+router.put("/password", userController.forgotPassword);
 
 // * Reset User Passwords
-router.put("/api/users/change/password", userController.resetPassword);
+router.put("/change/password", userController.resetPassword);
+
+// * Logout
+router.put("/logout", userController.logout);
 
 
 module.exports = router;

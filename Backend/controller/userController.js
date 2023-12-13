@@ -8,13 +8,17 @@ const bcrypt = require("bcrypt");
 const speakeasy = require('speakeasy');
 const { getSessionToken } = require("../../utils/session");
 
-const getUser = async function (req) {
+const getUser = async function (req, res) {
+  console.log('hena')
   const sessionToken = getSessionToken(req);
+  console.log(getSessionToken(req))
+  console.log(sessionToken)
   if (!sessionToken) {
     return res.status(301).redirect("/");
   }
 
   const session = await sessionModel.findOne({ token: sessionToken });
+  console.log(session)
   if (session) {
     const user = await userModel.findOne({ _id: session.userId });
     if (user) {
@@ -28,12 +32,20 @@ const getUser = async function (req) {
 const userController = {
     registerUser: async (req, res) => {
       try {
-        const { userName, firstName, lastName, userType, email, password} = req.body;
-  
-        const existingUser = await userModel.findOne({ email });
-        if (existingUser) {
-          return res.status(409).json({ message: "User already exists" });
-        }
+        const { userName, firstName, lastName, email, password, userType} = req.body;
+        /*user's type is automatically set to normal user only admins are later allowed to change
+        a user's type through assignRole api*/
+
+        // if(req.cookies.token){
+          console.log('user email =>', email)
+          const usermodell = await userModel.find({});
+          const existingUser = await userModel.findOne({ email });
+          console.log('user =>', existingUser)
+          console.log('user model =>', usermodell)
+          if (existingUser) {
+            return res.status(409).send("User already exists");
+          }
+        // }
         
         const secret = speakeasy.generateSecret({ length: 20 }); 
         const code = speakeasy.totp({ 
@@ -171,7 +183,7 @@ const userController = {
                             <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                               <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px">
                                 <tr>
-                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:5173/verifyOTPRegister?email=${encryptedUserEmail}otp=${encryptedCode}password=${encryptedUserPassword}username=${encryptedUserName}userfirstname=${encryptedUserFirstName}userlastname=${encryptedUserLastName}usertype=${encryptedUserType}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Register</a></span></td>
+                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:3000/api/auth/verifyOTPRegister?email=${encryptedUserEmail}&otp=${encryptedCode}&password=${encryptedUserPassword}&username=${encryptedUserName}&userfirstname=${encryptedUserFirstName}&userlastname=${encryptedUserLastName}&usertype=${encryptedUserType}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Register</a></span></td>
                                 </tr>
                               </table></td>
                             </tr>
@@ -220,13 +232,13 @@ const userController = {
       try {
         const inputOTP = req.body.inputOTP;
 
-        const encryptedOTP  = req.params.otp;
-        const encryptedUserName  = req.params.username;
-        const encryptedFirstName  = req.params.userfirstname;
-        const encryptedLastName  = req.params.userlastname;
-        const encryptedUserType  = req.params.usertype;
-        const encryptedUserPassword  = req.params.password;
-        const encryptedUserEmail  = req.params.email;
+        const encryptedOTP  = req.query.otp;
+        const encryptedUserName  = req.query.username;
+        const encryptedFirstName  = req.query.userfirstname;
+        const encryptedLastName  = req.query.userlastname;
+        const encryptedUserType  = req.query.usertype;
+        const encryptedUserPassword  = req.query.password;
+        const encryptedUserEmail  = req.query.email;
 
         var decodedOTP
         var decodedUserName
@@ -412,7 +424,7 @@ const userController = {
                             <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                               <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px">
                                 <tr>
-                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:5173/verifyOTPLogin?email=${encryptedUserEmail}otp=${encryptedCode}password=${encryptedUserPassword}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Login</a></span></td>
+                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:3000/api/auth/verifyOTPLogin?email=${encryptedUserEmail}&otp=${encryptedCode}&password=${encryptedUserPassword}&secretkey=${secretKey}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Login</a></span></td>
                                 </tr>
                               </table></td>
                             </tr>
@@ -459,63 +471,70 @@ const userController = {
         }
     },
     verifyOTPLogin : async (req, res) => {
-      try {
-          const { inputOTP } = req.body;
+      const { inputOTP } = req.body;
 
-          const encryptedUserEmail = req.params.email;
-          const encryptedUserPassword = req.params.password;
-          const encryptedOTP = req.params.otp;
+      const encryptedUserEmail = req.query.email;
+      const encryptedUserPassword = req.query.password;
+      const encryptedOTP = req.query.otp;
+      const prevUsedSecret = req.query.secretkey;
 
-          var decodedOTP
-          var decodedUserPassword
-          var decodedUserEmail
-          
-          if(encryptedUserEmail && encryptedUserPassword && encryptedOTP) {
-              decodedOTP = jwt.verify(encryptedOTP, secretKey);
-              decodedUserPassword = jwt.verify(encryptedUserPassword, secretKey);
-              decodedUserEmail = jwt.verify(encryptedUserEmail, secretKey);
-          }
-  
-          if(!inputOTP){
-            res.status(400).send("Input OTP can't be empty");
-          }
+      var decodedOTP
+      var decodedUserPassword
+      var decodedUserEmail
 
-          if(inputOTP == decodedOTP){
-            const user = await userModel.findOne({ decodedUserEmail });
-            const passwordMatch = await bcrypt.compare(decodedUserPassword, user.password);
-            if (!passwordMatch) {
-              return res.status(405).json({ message: "incorect password" });
-            }
-      
-            const currentDateTime = new Date();
-            const expiresAt = new Date(+currentDateTime + 1800000); // expire in 3 minutes
+      if(encryptedUserEmail && encryptedUserPassword && encryptedOTP && prevUsedSecret) {
+          decodedOTP = jwt.verify(encryptedOTP, prevUsedSecret);
+          decodedUserPassword = jwt.verify(encryptedUserPassword, prevUsedSecret);
+          decodedUserEmail = jwt.verify(encryptedUserEmail, prevUsedSecret);
+      }
 
-            const token = jwt.sign(
-              { user: { userId: user._id, userType: user.userType } },
-              secretKey,
-              {
-                expiresIn: 3 * 60 * 60,
-              }
-            );
-            let newSession = new sessionModel({
-              userId: user._id,
-              token,
-              expiresAt: expiresAt,
-            });
-            await newSession.save();
-            return res
-              .cookie("token", token, {
-                expires: expiresAt,
-                withCredentials: true,
-                httpOnly: false,
-                SameSite:'none'
-              })
-              .status(200)
-              .json({ message: "login successfully", user });
-          }
-        } catch (error) {
-          res.status(500).json({ message: "Server error" });
+      if(!inputOTP){
+        res.status(400).send("Input OTP can't be empty");
+      }
+      const actualUserEmail = decodedUserEmail.email;
+      const actualUserPassword = decodedUserPassword.password;
+
+      if(inputOTP == decodedOTP.code){
+        const user = await userModel.findOne({ actualUserEmail });
+        const userPass = await userModel.find({"email": actualUserEmail},{"password":1,"_id":0});
+
+        if (!(userPass[0].password == actualUserPassword)) {
+          return res.status(405).json({ message: "incorect password" });
         }
+  
+        const currentDateTime = new Date();
+        const expiresAt = new Date(+currentDateTime + 1800000); // expire in 3 minutes
+
+        const userId = await userModel.find({"email": actualUserEmail},{"_id":1});
+        const userType = await userModel.find({"email": actualUserEmail},{"userType":1,"_id":0});
+
+        const token = jwt.sign(
+          { user: { userId: userId[0]._id, userType: userType[0].userType } },
+          secretKey,
+          {
+            expiresIn: 3 * 60 * 60,
+          }
+        );
+        console.log('SECRET KEY WHEN LOGGING IN =>', secretKey)
+        let newSession = new sessionModel({
+          userId: userId[0]._id,
+          token,
+          expiresAt: expiresAt,
+        });
+        await newSession.save();
+        const actualUser = await userModel.find({"email": actualUserEmail});
+        return res
+          .cookie("token", token, {
+            expires: expiresAt,
+            withCredentials: true,
+            httpOnly: false,
+            SameSite:'none'
+          })
+          .status(200)
+          .json({ message: "login successfull", actualUser });
+      }else{
+        return res.status(405).json({ message: "incorect otp" });
+      } 
     },
     assignRole : async (req, res) => {
       try {
@@ -820,7 +839,7 @@ const userController = {
                           <td valign="top" align="center" style="padding:0;Margin:0;width:540px">
                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                               <tr style="border-collapse:collapse">
-                              <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:40px;padding-bottom:40px"><span class="es-button-border" style="border-style:solid;border-color:#7C72DC;background:#7C72DC;border-width:1px;display:inline-block;border-radius:2px;width:auto"><a href="http://localhost:5173/resetPassword?email=${encryptedUserEmail}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;display:inline-block;background:#7C72DC;border-radius:2px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;padding:15px 25px 15px 25px;mso-padding-alt:0;mso-border-alt:10px solid #7C72DC">Reset Password</a></span></td>
+                              <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:40px;padding-bottom:40px"><span class="es-button-border" style="border-style:solid;border-color:#7C72DC;background:#7C72DC;border-width:1px;display:inline-block;border-radius:2px;width:auto"><a href="http://localhost:3000/api/users/resetPassword?email=${encryptedUserEmail}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;display:inline-block;background:#7C72DC;border-radius:2px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;padding:15px 25px 15px 25px;mso-padding-alt:0;mso-border-alt:10px solid #7C72DC">Reset Password</a></span></td>
                               </tr>
                             </table></td>
                           </tr>
@@ -977,8 +996,9 @@ const userController = {
     }
     },
     logout: async (req, res) => {
-      const user = await getUser(req);
+      const user = await getUser(req, res);
 
+      console.log(user)
       const userSession = await sessionModel.findOne({ userId: user._id });
 
       if(!userSession){
@@ -993,6 +1013,5 @@ const userController = {
 
       return res.status(200).send('Logged out successfully');
   }
-
 };
 module.exports = userController;

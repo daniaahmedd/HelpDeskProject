@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const userSchema = require('./user').Schema;
+const userSchema = require('./userModel').Schema;
 
 const sessionSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: userSchema,
+      ref: "userSchema",
       requied: true,
     },
     token: {

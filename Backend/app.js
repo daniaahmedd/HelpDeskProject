@@ -8,12 +8,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false })); 
 app.use(cookieParser()) 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-// app.use(authenticationMiddleware);
+const authRouter = require("./Routes/auth");
+
+app.use("/api/auth", authRouter);
+app.use(authenticationMiddleware);
 
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
+const usersRouter = require("./Routes/users");
+app.use('/api/users', usersRouter);
 
 
 app.use(
@@ -25,7 +30,7 @@ app.use(
 );
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
+const db_url = 'mongodb://127.0.0.1:27017/LocalHelpDesk';
 
 
 const connectionOptions = {
