@@ -3,11 +3,8 @@ const router = express.Router();
 const userController = require("../controller/userController");
 const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 
-// * Send OTP Register
-router.post("/",  authorizationMiddleware(['Admin']),userController.registerUser);
-
 // * Verify OTP Register
-router.post("/verifyOTPRegister", userController.registerUser);
+router.post("/verifyOTPRegister", userController.verifyOTPRegister);
 
 // * Login
 router.post("/login", userController.login);

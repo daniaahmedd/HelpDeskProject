@@ -3,6 +3,9 @@ const router = express.Router();
 const userController = require("../controller/userController");
 const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 
+// * Send OTP Register
+router.post("/",  authorizationMiddleware(['Admin']), userController.registerUser);
+
 // * Assign Roles
 router.put("/assign", authorizationMiddleware(['Admin']), userController.assignRole);
 
@@ -16,7 +19,7 @@ router.put("/password", userController.forgotPassword);
 router.put("/change/password", userController.resetPassword);
 
 // * Logout
-router.put("/logout", userController.logout);
+router.delete("/logout", userController.logout);
 
 
 module.exports = router;

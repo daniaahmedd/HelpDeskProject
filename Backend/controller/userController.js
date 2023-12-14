@@ -9,16 +9,14 @@ const speakeasy = require('speakeasy');
 const { getSessionToken } = require("../../utils/session");
 
 const getUser = async function (req, res) {
-  console.log('hena')
   const sessionToken = getSessionToken(req);
-  console.log(getSessionToken(req))
-  console.log(sessionToken)
+
   if (!sessionToken) {
     return res.status(301).redirect("/");
   }
 
   const session = await sessionModel.findOne({ token: sessionToken });
-  console.log(session)
+
   if (session) {
     const user = await userModel.findOne({ _id: session.userId });
     if (user) {
@@ -36,16 +34,11 @@ const userController = {
         /*user's type is automatically set to normal user only admins are later allowed to change
         a user's type through assignRole api*/
 
-        // if(req.cookies.token){
-          console.log('user email =>', email)
-          const usermodell = await userModel.find({});
-          const existingUser = await userModel.findOne({ email });
-          console.log('user =>', existingUser)
-          console.log('user model =>', usermodell)
-          if (existingUser) {
-            return res.status(409).send("User already exists");
-          }
-        // }
+        const existingUser = await userModel.findOne({ email });
+
+        if (existingUser) {
+          return res.status(409).send("User already exists");
+        }
         
         const secret = speakeasy.generateSecret({ length: 20 }); 
         const code = speakeasy.totp({ 
@@ -229,7 +222,6 @@ const userController = {
       }
     },
     verifyOTPRegister: async (req, res) => {
-      try {
         const inputOTP = req.body.inputOTP;
 
         const encryptedOTP  = req.query.otp;
@@ -263,25 +255,29 @@ const userController = {
           res.status(400).send("Input OTP can't be empty");
         }
 
-        if(decodedOTP == inputOTP){
-          const hashedPassword = await bcrypt.hash(decodedUserPassword, 10);
-  
+        if(decodedOTP.code == inputOTP){
+          const hashedPassword = await bcrypt.hash(decodedUserPassword.password, 10);
+          
+          const userName = decodedUserName.userName;
+          const userType = decodedUserType.userType;
+          const userFirstName = decodedFirstName.firstName;
+          const userLastName = decodedLastName.lastName;
+          const userEmail = decodedUserEmail.email;
+
           const newUser = new userModel({
-            decodedUserName,
-            decodedUserType,
+            userName,
             password: hashedPassword,
-            decodedUserEmail,
-            decodedFirstName,
-            decodedLastName
+            email: userEmail,
+            firstName: userFirstName,
+            lastName: userLastName,
+            userType
           });
           await newUser.save();
 
           return res.status(200).send("User registered successfully");
         }
         return res.status(400).send("Incorrect OTP");
-      } catch (error) {
-        res.status(500).json({ message: "Server error" });
-      }
+
     },
     login: async (req, res) => {
         try {
@@ -515,7 +511,6 @@ const userController = {
             expiresIn: 3 * 60 * 60,
           }
         );
-        console.log('SECRET KEY WHEN LOGGING IN =>', secretKey)
         let newSession = new sessionModel({
           userId: userId[0]._id,
           token,
@@ -998,7 +993,9 @@ const userController = {
     logout: async (req, res) => {
       const user = await getUser(req, res);
 
-      console.log(user)
+      console.log('req.headers.cookie.token =>', req.headers.cookie.token)
+      const reqToken = req.headers.cookie;
+      console.log(reqToken)
       const userSession = await sessionModel.findOne({ userId: user._id });
 
       if(!userSession){
