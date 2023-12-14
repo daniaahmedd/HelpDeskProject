@@ -542,9 +542,11 @@ const userController = {
           if (!userType) {
               return res.status(404).json({ message: "user type input can't be empty" });
           }
-          
+
+          const userId = await userModel.find({"email": email},{"_id":1});
+
           const user = await userModel.findByIdAndUpdate(
-              req.params.userid,
+              userId,
               { userType: req.body.userType },
               {
                 new: true,
@@ -560,23 +562,63 @@ const userController = {
     updateProfile: async (req, res) => {
       try {
           const { userid, email, password, userName} = req.body;
+          const hashedPassword = await bcrypt.hash(password, 10);
 
           if (!userid) {
               return res.status(404).json({ message: "User id input can't be empty" });
           }
 
+          if(userName && email && !password){
+            var user = await userModel.findByIdAndUpdate(
+              userid,
+              { 
+                  email: email,
+                  UserName: req.body.userName
+              },
+              {
+                new: true,
+              }
+            );
+          }
+
+          if(email && password && !userName){
+            var user = await userModel.findByIdAndUpdate(
+              userid,
+              { 
+                  email: email,
+                  password: hashedPassword
+              },
+              {
+                new: true,
+              }
+            );
+          }
+
+          if(password && userName && !email){
+            var user = await userModel.findByIdAndUpdate(
+              userid,
+              { 
+                  UserName: userName,
+                  password: hashedPassword
+              },
+              {
+                new: true,
+              }
+            );
+          }
+
           //law email bas el null update password and userName
           if (!email) { 
-              var user = await userModel.findByIdAndUpdate(
-                  userid,
-                  { 
-                      password: req.body.password,
-                      userName: req.body.userName
-                  },
-                  {
-                    new: true,
-                  }
-              );
+            var user = await userModel.findByIdAndUpdate(
+                userid,
+                { 
+                    password: hashedPassword,
+                    UserName: req.body.userName
+                },
+                {
+                  new: true,
+                }
+            );
           }
 
           //law password bas el null update email and userName
@@ -585,7 +627,7 @@ const userController = {
                   userid,
                   { 
                       email: req.body.email,
-                      userName: req.body.userName
+                      UserName: req.body.userName
                   },
                   {
                     new: true,
@@ -599,7 +641,7 @@ const userController = {
                   userid,
                   { 
                       email: req.body.email,
-                      password: req.body.password
+                      password: hashedPassword
                   },
                   {
                     new: true,
@@ -613,8 +655,8 @@ const userController = {
             userid,
             { 
                 email: req.body.email,
-                password: req.body.password,
-                userName: req.body.userName
+                password: hashedPassword,
+                UserName: req.body.userName
             },
             {
               new: true,
@@ -629,7 +671,8 @@ const userController = {
     forgotPassword: async (req, res) => {
       const { userEmail } = req.body;
 
-      const user = await userModel.findOne({ email });
+      const user = await userModel.findOne({ email:userEmail });
+
       if (!user) {
         return res.status(404).json({ message: "email not found" });
       }
@@ -834,7 +877,7 @@ const userController = {
                           <td valign="top" align="center" style="padding:0;Margin:0;width:540px">
                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                               <tr style="border-collapse:collapse">
-                              <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:40px;padding-bottom:40px"><span class="es-button-border" style="border-style:solid;border-color:#7C72DC;background:#7C72DC;border-width:1px;display:inline-block;border-radius:2px;width:auto"><a href="http://localhost:3000/api/users/resetPassword?email=${encryptedUserEmail}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;display:inline-block;background:#7C72DC;border-radius:2px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;padding:15px 25px 15px 25px;mso-padding-alt:0;mso-border-alt:10px solid #7C72DC">Reset Password</a></span></td>
+                              <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:40px;padding-bottom:40px"><span class="es-button-border" style="border-style:solid;border-color:#7C72DC;background:#7C72DC;border-width:1px;display:inline-block;border-radius:2px;width:auto"><a href="http://localhost:3000/api/users/change/password?email=${encryptedUserEmail}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;display:inline-block;background:#7C72DC;border-radius:2px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;padding:15px 25px 15px 25px;mso-padding-alt:0;mso-border-alt:10px solid #7C72DC">Reset Password</a></span></td>
                               </tr>
                             </table></td>
                           </tr>
@@ -960,8 +1003,9 @@ const userController = {
     },
     resetPassword: async (req, res) => {
       const { newPassword } = req.body;
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
       try {
-        const token = req.params.email;
+        const token = req.query.email;
 
         var decoded
 
@@ -971,7 +1015,7 @@ const userController = {
 
         const decodedEmail = decoded.userEmail;
 
-        const user = await userModel.findOne({ decodedEmail });
+        const user = await userModel.findOne({ email:decodedEmail });
 
         if(!user) {
           res.status(400).json({ message: 'We could not find a match for this link' });
@@ -981,7 +1025,7 @@ const userController = {
           res.status(401).send('New password can\'t be empty')
         }
 
-        const newUser = await userModel.findOneAndUpdate({ email: decodedEmail }, { password: newPassword }, {
+        const newUser = await userModel.findOneAndUpdate({ email: decodedEmail }, { password: hashedPassword }, {
           new: true
         });
         return res.status(200).json(newUser);
@@ -993,21 +1037,18 @@ const userController = {
     logout: async (req, res) => {
       const user = await getUser(req, res);
 
-      console.log('req.headers.cookie.token =>', req.headers.cookie.token)
-      const reqToken = req.headers.cookie;
-      console.log(reqToken)
-      const userSession = await sessionModel.findOne({ userId: user._id });
+      const reqCookie = req.headers.cookie;
+      const searchTerm = 'token=';
+      const searchIndex = reqCookie.indexOf(searchTerm);
+      const reqToken = reqCookie.substr(searchIndex + searchTerm.length)
+
+      const userSession = await sessionModel.find({token: reqToken},{"userId":1,"_id":0});
 
       if(!userSession){
         return res.status(400).send("error : user's session doesn't exist");
       }
 
-      try{
-        await sessionModel.deleteOne({ userId: user._id });
-      }catch(e){
-        return res.status(400).send("error :" + e);
-      }
-
+      await sessionModel.deleteMany({ userId: userSession[0].userId });
       return res.status(200).send('Logged out successfully');
   }
 };
