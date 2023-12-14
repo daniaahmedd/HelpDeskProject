@@ -6,26 +6,6 @@ const nodemailer = require('nodemailer');
 const secretKey = process.env.SECRET_KEY ;
 const bcrypt = require("bcrypt");
 const speakeasy = require('speakeasy');
-const { getSessionToken } = require("../../utils/session");
-
-const getUser = async function (req, res) {
-  const sessionToken = getSessionToken(req);
-
-  if (!sessionToken) {
-    return res.status(301).redirect("/");
-  }
-
-  const session = await sessionModel.findOne({ token: sessionToken });
-
-  if (session) {
-    const user = await userModel.findOne({ _id: session.userId });
-    if (user) {
-        return user;
-    }
-  }
-
-  return res.status(301).redirect("/");
-};
 
 const userController = {
     registerUser: async (req, res) => {
@@ -1035,8 +1015,6 @@ const userController = {
     }
     },
     logout: async (req, res) => {
-      const user = await getUser(req, res);
-
       const reqCookie = req.headers.cookie;
       const searchTerm = 'token=';
       const searchIndex = reqCookie.indexOf(searchTerm);
@@ -1047,9 +1025,14 @@ const userController = {
       if(!userSession){
         return res.status(400).send("error : user's session doesn't exist");
       }
-
+      try{
       await sessionModel.deleteMany({ userId: userSession[0].userId });
+      }catch(e){
+        return res.status(400).send("error :" + e);
+      }
+
       return res.status(200).send('Logged out successfully');
   }
 };
+
 module.exports = userController;
