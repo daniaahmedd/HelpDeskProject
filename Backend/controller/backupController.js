@@ -4,7 +4,7 @@ const backupController = {
   createBackup: async (req, res) => {
     try {
       // Execute the mongodump command
-      exec('mongodump --gzip --uri="mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/"', (error, stdout, stderr) => {
+      exec('mongodump --gzip --uri="mongodb://127.0.0.1:27017/LocalHelpDesk"', (error, stdout, stderr) => {
         if (error) {
           console.error(stderr);
           return res.status(500).json({ error: 'Backup failed' });
@@ -22,7 +22,7 @@ const backupController = {
   restoreBackup: async (req, res) => {
     try {
       // Execute the mongorestore command
-      exec('mongorestore --gzip --uri="mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/"', (error, stdout, stderr) => {
+      exec('mongorestore --gzip --uri="mongodb://127.0.0.1:27017/LocalHelpDesk"', (error, stdout, stderr) => {
         if (error) {
           console.error(stderr);
           return res.status(500).json({ error: 'Restore failed' });
