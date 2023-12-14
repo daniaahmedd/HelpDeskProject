@@ -19,7 +19,7 @@ const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
 const usersRouter = require("./Routes/users");
 app.use('/api/users', usersRouter);
-
+const backupRouter = require("./Routes/backup");
 
 app.use(
   cors({
