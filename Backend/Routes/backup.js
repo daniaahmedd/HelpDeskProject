@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const backupController = require('../controller/backupController'); 
 // POST /backup/create
-router.post('/create', backupController.createBackup);
+router.post('/create',  authorizationMiddleware(['Admin']) ,backupController.createBackup);
 
 // POST /backup/restore
-router.post('/restore', backupController.restoreBackup);
+router.post('/restore', authorizationMiddleware(['Admin']) , backupController.restoreBackup);
 
 module.exports = router;
