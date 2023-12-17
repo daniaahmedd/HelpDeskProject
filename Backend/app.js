@@ -20,6 +20,10 @@ app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
 const usersRouter = require("./Routes/users");
 app.use('/api/users', usersRouter);
 const backupRouter = require("./Routes/backup");
+const reportRouter = require("./Routes/Report");
+app.use('/api/report', reportRouter);
+const ticketRouter = require("./Routes/Ticket");
+app.use('/api/ticket', ticketRouter);
 
 app.use(
   cors({
@@ -30,7 +34,7 @@ app.use(
 );
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/LocalHelpDesk';
+const db_url = 'mongodb://127.0.0.1:27017/tickets';
 
 
 const connectionOptions = {

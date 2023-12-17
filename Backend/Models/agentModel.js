@@ -19,13 +19,16 @@ const agentSchema = new mongoose.Schema(
             type: Number,
             default: 5
         },
+        Agentrating:{
+            type: Number,
+            require: false
+        }
     },
     {
     strict: true,
     timestamps: true,
   }
   );
-
 
 module.exports = mongoose.model('Agent', agentSchema);
 module.exports.Schema = agentSchema;   

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const backupController = require('../controller/backupController'); 
+const authorizationMiddleware = require("../Middleware/authorizationMiddleware");
+
 // POST /backup/create
 router.post('/create',  authorizationMiddleware(['Admin']) ,backupController.createBackup);
 

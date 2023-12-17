@@ -14,19 +14,23 @@ const reportSchema = new mongoose.Schema(
         required: true,
     },
 
-    opendtime: {
+    openedtime: {
         type: Date,
         required: true,
     },
 
     closedtime: {
         type: Date,
-        required: true,
+        required: false,
+    },
+    resolutiontime: {
+      type : Date,
+      required: false
     },
 
     rating: {
         type: Number,
-        required: true
+        required: false
     },
     agentid: {
       type: mongoose.Schema.Types.ObjectId,

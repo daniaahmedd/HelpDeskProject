@@ -42,7 +42,7 @@ const ticketSchema = new mongoose.Schema(
             required: true,
         },
 
-        userid: {
+        userid: {   
             type: mongoose.Schema.Types.ObjectId,
             ref: "userSchema",
             required: true
