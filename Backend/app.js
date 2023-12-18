@@ -7,6 +7,13 @@ const cors = require("cors");
 app.use(express.json()) 
 app.use(express.urlencoded({ extended: false })); 
 app.use(cookieParser()) 
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+  })
+);
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 const authRouter = require("./Routes/auth");
 
@@ -20,18 +27,13 @@ app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
 const usersRouter = require("./Routes/users");
 app.use('/api/users', usersRouter);
 const backupRouter = require("./Routes/backup");
+app.use('/api/backup', backupRouter);
 const reportRouter = require("./Routes/Report");
 app.use('/api/report', reportRouter);
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
 
-app.use(
-  cors({
-    origin: process.env.ORIGIN,
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true,
-  })
-);
+
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
 const db_url = 'mongodb://127.0.0.1:27017/tickets';
