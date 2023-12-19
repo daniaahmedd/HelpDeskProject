@@ -8,3 +8,5 @@ Backend/.env
 app.js
 node_modules/.package-lock.json
 package-lock.json
+Backend/node_modules/.package-lock.json
+Backend/node_modules/.package-lock.json
