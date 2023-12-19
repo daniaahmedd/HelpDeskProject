@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const userSchema = require('./userModel').Schema;
+const knowledgeBase = require('D://GIU//Year 3//Semster 5//Software Project//HelpDeskProject//Backend//Models//knowledgeBaseModel.js');
 
 
 const agentSchema = new mongoose.Schema( 

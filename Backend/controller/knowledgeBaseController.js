@@ -1,4 +1,3 @@
-const { subtle } = require("crypto");
 const knowledgeBaseModel = require("../Models/knowledgeBaseModel");
 
 const knowledgeBaseController = {
@@ -8,7 +7,7 @@ const knowledgeBaseController = {
       const allowedSubCatogries = [
         "Desktops",
         "Laptops",
-        "Printers",
+        "Printers", 
         "Servers",
         "Networking equipment",
         "Operating system",
