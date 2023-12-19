@@ -32,11 +32,13 @@ const reportRouter = require("./Routes/Report");
 app.use('/api/report', reportRouter);
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
+const reportRouter = require("./Routes/Report");
+app.use('/api/report', reportRouter);
 
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/tickets';
+const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
 
 
 const connectionOptions = {
