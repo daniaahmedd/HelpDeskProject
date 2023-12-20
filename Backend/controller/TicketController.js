@@ -64,7 +64,7 @@ const TicketController = {
       return priority;
     }},
    
-    updateticket:async(req,res)=>{
+    updateTicket:async(req,res)=>{
 try{
   const {status,issueSolution}=req.body;
 

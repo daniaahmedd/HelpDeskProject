@@ -6,9 +6,7 @@ const TicketController = require("../controller/TicketController");
 
 
 router.post("/", TicketController.createTicket);
-//router.put("/:ticketid", TicketController.updateTicket);
-//router.post("/update/:ticketId",authorizationMiddleware(['Agent']), ReportController.createReport)
-
+router.put("/:ticketid", TicketController.updateTicket);
 router.put("/rate/:ticketid", TicketController.rateTicket);
 //router.get
 module.exports = router;
