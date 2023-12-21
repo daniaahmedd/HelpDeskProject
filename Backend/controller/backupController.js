@@ -11,6 +11,7 @@ const backupController = {
         }
 
         console.log('Backup completed successfully');
+        console.log('Data will be Backed up every 24 hrs ;)');
         res.status(200).json({ message: 'Backup created' });
       });
     } catch (error) {
@@ -37,5 +38,7 @@ const backupController = {
     }
   },
 };
-
+cron.schedule('0 0 */24 * * *', () => {
+  backupController.createBackup();
+});
 module.exports = backupController;
