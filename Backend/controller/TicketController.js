@@ -4,7 +4,10 @@ const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
 const ticketschema = require('../Models/ticketModel');
 const nodemailer = require('nodemailer');
-
+const { default: mongoose } = require('mongoose');
+const {
+  ObjectId
+} = mongoose.Types
 async function calcagentpreformance(userRating , agentId){
   var Userratingsum = 0;
   var countratingnum =0;
@@ -30,45 +33,60 @@ async function calcagentpreformance(userRating , agentId){
 }
 
 const TicketController = {
-
-    createTicket: async (req, res) => {
-        const ticket = new ticketModel({
-            categories: req.body.categories,
-            subcategories: req.body.subcategories,
-            issueDescription: req.body.issueDescription,
-        });
-    
+  createTicket: async (req, res) => {
     const valuePriorityMap = {
-        1: 'High',
-        2: 'Medium',
-        3: 'Low'
-    };
-
-    function assignPriority(subcategories) {
-        let value;
+      1: 'High',
+      2: 'Medium',
+      3: 'Low'
+    }
+    const { categories, subcategories, issueDescription } = req.body;
+      let priority;
         if (subcategories === 'Desktops' || subcategories === 'Laptops' || subcategories === 'Operating system'
          || subcategories === 'Application software') {
-          value = 2;
+          priority = 2;
         } else if (subcategories === 'Printers' || subcategories === 'Servers' 
           || subcategories === 'Networking equipment' || subcategories === 'Integration issues' 
           || subcategories === 'Internet connection problems' || subcategories === 'Website errors') {
-        value = 1;
+        priority = 1;
        } else if (subcategories === 'Custom software' || subcategories === 'Email issues')
-        value = 3;
+        priority = 3;
         else{
-        value = 0;
+        priority = 0;
       }
+      
+     //const newTicket = await ticket.save();
+     //return res.status(201).json(newTicket);
     
-      const priority = valuePriorityMap[value] || 'Unknown';
+      //const priority = valuePriorityMap[value] || 'Unknown';
 
-      return priority;
-    }},
+      //return priority;
+    
+      try {
+        const ticketId = new ObjectId();
+        const agentId = req.params.agentId;
+        const ticket = new ticketModel({
+          ticketId: ticketId,
+          categories: categories,
+          subcategories: subcategories,
+          issueDescription: issueDescription,
+          priorty: valuePriorityMap[priority], // Assuming 'priorty' is the correct field name in your schema
+          status: "Open", // Assuming 'status' is a required field with a default value
+          closetime: Date.now(),
+          openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,
+          agentid: agentId,
+          userid: userid,
+        });
+        const newTicket = await ticket.save();
+        return res.status(201).json(newTicket);
+      } catch (e) {
+        return res.status(500).json({ message: e.message });
+      }},
    
     updateTicket:async(req,res)=>{
-try{
-  const {status,issueSolution}=req.body;
+    try{
+    const {status,issueSolution}=req.body;
 
-  if(status=="Close"&&issueSolution!=null){
+    if(status=="Close"&&issueSolution!=null){
 
     const ticketid = await ticketschema.findByIdAndUpdate(
       req.params.ticketId,
