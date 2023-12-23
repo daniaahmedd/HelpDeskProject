@@ -2,6 +2,7 @@ $dot-color-1: #AD158F;
 $dot-color-2: #215aab;
 $dot-color-3: #eb0c65;
 
+.Home{
 @mixin dots($count) {
   $text-shadow: ();
   @for $i from 0 through $count {
@@ -77,4 +78,6 @@ head::after {
   to {
     transform: rotate(180deg) scale(45) translateY(20px);
   }
+}
+
 }

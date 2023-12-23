@@ -8,7 +8,7 @@ export default function HomePage() {
 
     return (
         <>
-          <div>
+          <div className="Home">
             <Navbar />
             <HomeBody />
           </div>
