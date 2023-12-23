@@ -16,6 +16,10 @@
   font-weight: bold !important;
 }
 
+.homeTitle:hover{
+  text-decoration: underline;
+}
+
 .introSecText{
   margin-left: 15px;
   margin-right: 5px;
@@ -27,6 +31,21 @@
 }
 
 .introSecButton:hover{
-  margin-top: 10px;
-  border: red 1px solid;
+  box-shadow: 0 5px 15px #afe0f5;
+  background-color: transparent;
+}
+
+.loginSection{
+  margin-top: 20px;
+  margin-left: 12px;
+  background-color: #00000069;
+  border-radius: 20px;
+  width: 55%;
+  height: fit-content;
+  padding-bottom: 40px;
+}
+
+.loginSecText{
+  margin-left: 15px;
+  margin-right: 5px;
 }
