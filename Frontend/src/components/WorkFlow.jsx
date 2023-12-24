@@ -1,20 +1,17 @@
-// WorkflowForm.jsx
 import React, { useState } from 'react';
-//import styles from './WorkFlow.css';  // Updated import for CSS module
+//import styles from './WorkFlow.css';  
 
-// Consider fetching these from your backend if they are dynamic
-const categories = ["Software", "Hardware", "Network"]; // Example categories
+const categories = ["Software", "Hardware", "Network"]; 
 
 const WorkflowForm = ({ addWorkflow }) => {
     const [category, setCategory] = useState(categories[0]);
     const [subcategory, setSubcategory] = useState('');
     const [solution, setSolution] = useState('');
-    const [error, setError] = useState(''); // State for error handling
+    const [error, setError] = useState(''); 
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!category || !subcategory || !solution) {
-            // Provide specific feedback based on missing field
             setError(`Please fill in all fields: 
                       ${!category ? 'Category, ' : ''} 
                       ${!subcategory ? 'Subcategory, ' : ''} 
@@ -25,14 +22,14 @@ const WorkflowForm = ({ addWorkflow }) => {
         setCategory(categories[0]);
         setSubcategory('');
         setSolution('');
-        setError(''); // Clear error on successful submission
+        setError(''); 
     };
 
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <h2 className={styles.heading}>Add a Workflow</h2>
-                {error && <p className={styles.error}>{error.trim()}</p>} {/* Display error if exists */}
+                {error && <p className={styles.error}>{error.trim()}</p>}
                 <label className={styles.label}>
                     Category:
                     <select 
