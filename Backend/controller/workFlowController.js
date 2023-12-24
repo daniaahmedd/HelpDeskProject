@@ -145,8 +145,9 @@ const workFlowController = {
             console.error('Error fetching workflows:', error);
             res.status(500).json({ message: `Error fetching workflows: ${error.message}` });
         }
-    }
+    },
 };
 
-TicketRouter.init();
+//TicketRouter.init();
 module.exports = workFlowController;
+module.exports = TicketRouter;
