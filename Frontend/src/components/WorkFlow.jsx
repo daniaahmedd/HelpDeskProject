@@ -68,4 +68,4 @@ const WorkflowForm = ({ addWorkflow }) => {
     );
 };
 
-export default WorkFlow;
+export default WorkflowForm;
