@@ -62,10 +62,8 @@ const TicketController = {
       //return priority;
     
       try {
-        const ticketId = new ObjectId();
         const agentId = req.params.agentId;
         const ticket = new ticketModel({
-          ticketId: ticketId,
           categories: categories,
           subcategories: subcategories,
           issueDescription: issueDescription,

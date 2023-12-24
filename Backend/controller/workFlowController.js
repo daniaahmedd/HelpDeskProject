@@ -1,7 +1,6 @@
 const workFlowModel = require('../Models/WorkFlowModel');
 const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
-
 const MAX_WORKLOAD_PER_AGENT = 5;
 
 const TicketRouter = {

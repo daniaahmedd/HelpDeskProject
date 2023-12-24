@@ -31,8 +31,6 @@ const usersRouter = require("./Routes/users");
 app.use('/api/users', usersRouter);
 const backupRouter = require("./Routes/backup");
 app.use('/api/backup', backupRouter);
-const agentrooter = require("./Routes/Agent");
-app.use('/api/agent', agentrooter);
 const reportRouter = require("./Routes/Report");
 app.use('/api/report', reportRouter);
 
@@ -40,7 +38,7 @@ app.use('/api/report', reportRouter);
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/helpdesk';
+const db_url = 'mongodb://127.0.0.1:27017/tickets';
 
 const connectionOptions = {
   useUnifiedTopology: true,
