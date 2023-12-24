@@ -290,7 +290,11 @@ catch (e) {
             } catch (error) {
                 return res.status(400).json({ message: error.message });
             }
-    }  
+    },
+    getTicket: async (req, res) =>{
+      const tickets = await ticketModel.find()
+      return res.status(200).send("recieved");
+    }
 };
 // Start the server
   // app.listen(3000, () => {

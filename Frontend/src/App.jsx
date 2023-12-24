@@ -3,7 +3,7 @@ import Homepage from "./pages/HomePage";
 import Knowldgebasess from "./pages/knowldgebases";
 import WorkFlowPage from "./pages/WorkFlowPage";
 import ReportPage from "./pages/ReportPage";
-
+import Ticket from "./pages/Ticket";
 
 function App() {
     return (
@@ -14,6 +14,7 @@ function App() {
                 <Route path="/login" element={<Homepage />} />
                 <Route path="/workflow" element={<WorkFlowPage />} />
                 <Route path="/report" element={<ReportPage />} />
+                <Route path="/Ticket" element={<Ticket />} />
             </Routes>
         </>
     );

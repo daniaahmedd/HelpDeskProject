@@ -9,5 +9,5 @@ router.post("/create/:agentid", TicketController.createTicket);
 router.post("/create", TicketController.createTicket);
 router.put("/:ticketid", TicketController.updateTicket);
 router.put("/rate/:ticketid", TicketController.rateTicket);
-//router.get
+router.get("/ticket", TicketController.getTicket);
 module.exports = router;
