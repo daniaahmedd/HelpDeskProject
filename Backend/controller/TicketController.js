@@ -35,9 +35,9 @@ async function calcagentpreformance(userRating , agentId){
 const TicketController = {
   createTicket: async (req, res) => {
     const valuePriorityMap = {
-      1: 'High',
-      2: 'Medium',
-      3: 'Low'
+      1: 'high',
+      2: 'medium',
+      3: 'low'
     }
     const { categories, subcategories, issueDescription } = req.body;
       let priority;
@@ -62,7 +62,7 @@ const TicketController = {
       //return priority;
     
       try {
-        const agentId = req.params.agentId;
+        const agentId = null;
         const ticket = new ticketModel({
           categories: categories,
           subcategories: subcategories,
@@ -71,8 +71,8 @@ const TicketController = {
           status: "Open", // Assuming 'status' is a required field with a default value
           closetime: Date.now(),
           openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,
-          agentid: agentId,
-          userid: userid,
+          //agentid: agentId,
+          //userid: userid,
         });
         const newTicket = await ticket.save();
         return res.status(201).json(newTicket);
@@ -293,7 +293,7 @@ catch (e) {
     },
     getTicket: async (req, res) =>{
       const tickets = await ticketModel.find()
-      return res.status(200).send("recieved");
+      return res.status(200).send(tickets);
     }
 };
 // Start the server

@@ -3,27 +3,25 @@ import Homepage from "./pages/Homepage";
 import Knowledgebases from "./pages/Knowledgebases";
 import WorkFlowPage from "./pages/WorkFlowPage";
 import ReportPage from "./pages/ReportPage";
+import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
-import StartRestore from '../components/StartRestore';
-import CustomizationCheck from '../components/CustomizationCheck';
-import CustomizationForm from './CustomizationForm';
-import UpdateCustomization from './UpdateCustomization';
+import UpdateTicket from "./pages/UpdateTicket";
+import RateTicket from "./pages/RateTicket";
 
 function App() {
     return (
         <>
-<Routes>
-    <Route path="/" element={<Homepage />} />
-    <Route path="/FAQ" element={<Knowledgebases />} />
-    <Route path="/login" element={<Homepage />} />
-    <Route path="/workflow" element={<WorkFlowPage />} />
-    <Route path="/report" element={<ReportPage />} />
-    <Route path="/Ticket" element={<Ticket />} />
-    <Route path="/restore" element={<StartRestore />} />
-    <Route path="/CustomizationForm" element={<CustomizationForm />} />
-    <Route path="/UpdateCustomization" element={<UpdateCustomization />} />
-    <Route path="/CustomizationCheck" element={<CustomizationCheck />} />
-</Routes>
+            <Routes>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/FAQ" element={<Knowldgebasess/>} />
+                <Route path="/login" element={<Homepage />} />
+                <Route path="/workflow" element={<WorkFlowPage />} />
+                <Route path="/report" element={<ReportPage />} />
+                <Route path="/TicketHome" element={<TicketHome />} />
+                <Route path="/Ticket" element={<Ticket />} />
+                <Route path="/UpdateTicket" element={<UpdateTicket />} />
+                <Route path="/RateTicket" element={<RateTicket />} />
+            </Routes>
         </>
     );
 }
