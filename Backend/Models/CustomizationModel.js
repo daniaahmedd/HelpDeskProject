@@ -84,12 +84,12 @@ const CustomizationSchema = new mongoose.Schema(
     default: "#FFFFFF"
   },
   headerHeight: {
-    type: Int32Array,
+    type: [Number],
     required: true,
     default: 50
   },
   headerWidth: {
-    type: Int32Array,
+    type: [Number],
     required: true,
     default: 50
   },
