@@ -2,8 +2,16 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const secretKey =process.env.SECRET_KEY ;
 
+
+
 module.exports = function authenticationMiddleware(req, res, next) {
-  const cookie = req.cookies;
+
+
+if (req.path === "/api/chat/triallogin"){
+  return next();
+}
+
+  const cookie = req.cookies;  
   if (!cookie) {
     return res.status(401).json({ message: "No Cookie provided" });
   }
@@ -12,12 +20,12 @@ module.exports = function authenticationMiddleware(req, res, next) {
     return res.status(405).json({ message: "No token provided" });
   }
 
+
   jwt.verify(token, secretKey, (error, decoded) => {
     if (error) {
       return res.status(403).json({ message: "Invalid token" });
     }
-        
-    req.user = decoded.user;
+            req.User = decoded.User;
   next();
   });
 };

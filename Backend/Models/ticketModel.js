@@ -21,7 +21,7 @@ const ticketSchema = new mongoose.Schema(
         closetime: {
             type: Date,
             default: null,
-            required: true,
+            required: false,
         },
 
         categories: {

@@ -23,7 +23,11 @@ const agentSchema = new mongoose.Schema(
         Agentrating:{
             type: Number,
             require: false
-        }
+        },
+        isOnline:{
+            type: Boolean,
+            default: false
+        },
     },
     {
     strict: true,
