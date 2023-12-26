@@ -1,5 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
+import Homepage from "./pages/Homepage";
+import Knowldgebasess from "./pages/Knowldgebases";
+import WorkFlowPage from "./pages/WorkFlowPage";
+import ReportPage from "./pages/ReportPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";

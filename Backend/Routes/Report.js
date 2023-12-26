@@ -7,7 +7,7 @@ const authorizationMiddleware = require("../Middleware/authorizationMiddleware")
 
 router.get("/create",authorizationMiddleware(['Manager']) ,ReportController.gettickets)
 router.post("/create/:ticketId", authorizationMiddleware(['Manager']),ReportController.createReport)
-router.post("/view", authorizationMiddleware(['Manager']),ReportController.getReport)
+router.get("/view", authorizationMiddleware(['Manager']),ReportController.getReport)
 router.get("/tickets",authorizationMiddleware(['Manager']),ReportController.getTicket)
 
 module.exports = router;
