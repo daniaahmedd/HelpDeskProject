@@ -9,8 +9,8 @@ import Ticket from "./pages/Ticket";
 import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
 import Knowldgebasess from "./components/knowledgebases"
+import StartRestore from "./components/restore";
 // import WorkFlowPage from "./pages/"
-
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
@@ -39,6 +39,8 @@ function App() {
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
+                <Route path="/restore" element={<StartRestore />} />
+
       </Routes>
     </>
   );
