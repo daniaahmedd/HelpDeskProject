@@ -6,11 +6,6 @@ const secretKey =process.env.SECRET_KEY ;
 
 module.exports = function authenticationMiddleware(req, res, next) {
 
-
-if (req.path === "/api/chat/triallogin"){
-  return next();
-}
-
   const cookie = req.cookies;  
   if (!cookie) {
     return res.status(401).json({ message: "No Cookie provided" });
