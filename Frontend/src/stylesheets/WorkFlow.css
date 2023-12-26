@@ -1,74 +1,72 @@
 :root {
     --bg-color: #f7f7f7;
     --button-color: #0056b3;
+    --button-hover-color: #004c9c;
     --error-color: #ff6b6b;
     --border-radius: 4px;
     --box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     --input-border: 1px solid #ddd;
     --font-size-normal: 16px;
     --font-size-small: 14px;
-}
-
-.workflow, .workflow-container {
+  }
+  
+  .workflow,
+  .workflow-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: var(--bg-color, #f7f7f7);
-    border-radius: var(--border-radius, 8px);
-    box-shadow: var(--box-shadow, 0px 0px 10px rgba(0, 0, 0, 0.1));
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     max-width: 500px;
     margin: auto;
     margin-top: 20px;
-}
-
-.workflow input,
-.workflow textarea,
-.workflow-input,
-.workflow-textarea {
+  }
+  
+  .workflow input,
+  .workflow textarea {
     padding: 10px;
     margin: 5px 0;
-    border-radius: var(--border-radius, 4px);
-    border: var(--input-border, 1px solid #ddd);
-    width: calc(100% - 22px); 
-    font-size: var(--font-size-normal, 16px);
-    line-height: 1.5; 
-}
-
-.workflow textarea,
-.workflow-textarea {
+    border-radius: var(--border-radius);
+    border: var(--input-border);
+    width: calc(100% - 22px);
+    font-size: var(--font-size-normal);
+    line-height: 1.5;
+  }
+  
+  .workflow textarea {
     height: 100px;
-    resize: vertical; 
-
-.workflow button,
-.workflow-button {
+    resize: vertical;
+  }
+  
+  .workflow button {
     padding: 10px 20px;
-    background-color: var(--button-color, #0056b3);
+    background-color: var(--button-color);
     color: white;
     border: none;
-    border-radius: var(--border-radius, 4px);
+    border-radius: var(--border-radius);
     cursor: pointer;
     margin-top: 10px;
-    transition: background-color 0.3s; 
-}
-
-.workflow button:hover,
-.workflow button:focus,
-.workflow-button:hover,
-.workflow-button:focus {
-    background-color: #004c9c; 
-}
-
-.error-message {
-    color: var(--error-color, #ff6b6b);
+    transition: background-color 0.3s;
+  }
+  
+  .workflow button:hover,
+  .workflow button:focus {
+    background-color: var(--button-hover-color);
+  }
+  
+  .error-message {
+    color: var(--error-color);
     margin-bottom: 10px;
-    font-size: var(--font-size-small, 14px); 
-}
-
-@media (max-width: 600px) {
-    .workflow, .workflow-container {
-        width: 90%;
-        padding: 15px; 
+    font-size: var(--font-size-small);
+  }
+  
+  @media (max-width: 600px) {
+    .workflow,
+    .workflow-container {
+      width: 90%;
+      padding: 15px;
     }
-}
-};
+  }
+  
