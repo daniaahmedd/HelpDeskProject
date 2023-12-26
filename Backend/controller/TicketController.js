@@ -4,7 +4,6 @@ const agentModel = require('../Models/agentModel');
 const ticketschema = require('../Models/ticketModel');
 const nodemailer = require('nodemailer');
 const sessionModel = require("../Models/sessionModel");
-
 const { default: mongoose } = require('mongoose');
 const {
   ObjectId

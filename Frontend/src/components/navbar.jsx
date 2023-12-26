@@ -70,6 +70,21 @@ const Navbar = () => {
     } });
     }
 
+    async function handleCreateReport(){
+      navigate("/report", { state: { id: id, 
+        userName: userName, 
+        userType:  userType,
+        token: token
+    } });
+    }
+    async function handlereportchart(){
+      navigate("/charts", { state: { id: id, 
+        userName: userName, 
+        userType:  userType,
+        token: token
+    } });
+    }
+
     async function handleCustomization(){
       const response = await axios.get(`http://localhost:3000/api/customization/styleCustomize/find`, {
           withCredentials: true 
@@ -164,6 +179,8 @@ const Navbar = () => {
             <Dropdown.Menu>
               <Dropdown.Item type="button" onClick={handleNavUpdate}>Update Profile</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleLogout}>Logout</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleCreateReport}>Create Report</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handlereportchart}>Create Report</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
           }

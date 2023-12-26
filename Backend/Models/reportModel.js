@@ -37,6 +37,11 @@ const reportSchema = new mongoose.Schema(
       ref: "agentSchema",
       required: false
   },
+  Agentrating: {
+    type: Number,
+    required: false
+}
+
 
 
   }, {
