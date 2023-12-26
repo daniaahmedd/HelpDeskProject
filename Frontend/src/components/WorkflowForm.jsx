@@ -1,69 +1,52 @@
-import React, { useState } from 'react';
-//import styles from './WorkFlow.css';  
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const categories = ["Software", "Hardware", "Network"]; 
-
-const WorkflowForm = ({ addWorkflow }) => {
-    const [category, setCategory] = useState(categories[0]);
+const WorkflowForm = () => {
+    const [category, setCategory] = useState('');
     const [subcategory, setSubcategory] = useState('');
-    const [solution, setSolution] = useState('');
-    const [error, setError] = useState(''); 
+    const [workflows, setWorkflows] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!category || !subcategory || !solution) {
-            setError(`Please fill in all fields: 
-                      ${!category ? 'Category, ' : ''} 
-                      ${!subcategory ? 'Subcategory, ' : ''} 
-                      ${!solution ? 'Expected Solution' : ''}`);
-            return;
+    const getAllWorkflows = async () => {
+        try {
+            if (!category || !subcategory) {
+                setErrorMessage('Category and subcategory must be provided');
+                return;
+            }
+
+            const response = await axios.post('/api/workflows', { category, subcategory });
+            const { data } = response.data;
+
+            if (data.length === 0) {
+                setErrorMessage(`No workflows found for category: ${category} and subcategory: ${subcategory}`);
+            } else {
+                setWorkflows(data);
+                setErrorMessage('');
+            }
+        } catch (error) {
+            console.error('Error fetching workflows:', error);
+            setErrorMessage(`Error fetching workflows: ${error.message}`);
         }
-        addWorkflow({ category, subcategory, expectedSolution: solution });
-        setCategory(categories[0]);
-        setSubcategory('');
-        setSolution('');
-        setError(''); 
     };
 
+    useEffect(() => {
+        getAllWorkflows();
+    }, []);
+
     return (
-        <div className={styles.container}>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                <h2 className={styles.heading}>Add a Workflow</h2>
-                {error && <p className={styles.error}>{error.trim()}</p>}
-                <label className={styles.label}>
-                    Category:
-                    <select 
-                        value={category} 
-                        onChange={(e) => setCategory(e.target.value)} 
-                        className={styles.input}
-                        required
-                    >
-                        {categories.map(cat => (
-                            <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                    </select>
-                </label>
-                <label className={styles.label}>
-                    Subcategory:
-                    <input
-                        type="text"
-                        value={subcategory}
-                        onChange={(e) => setSubcategory(e.target.value)}
-                        required
-                        className={styles.input}
-                    />
-                </label>
-                <label className={styles.label}>
-                    Expected Solution:
-                    <textarea
-                        value={solution}
-                        onChange={(e) => setSolution(e.target.value)}
-                        required
-                        className={styles.textarea}
-                    ></textarea>
-                </label>
-                <button type="submit" className={styles.button}>Add Workflow</button>
-            </form>
+        <div>
+            <h1>Workflow Form</h1>
+            <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
+            <input type="text" value={subcategory} onChange={(e) => setSubcategory(e.target.value)} placeholder="Subcategory" />
+            <button onClick={getAllWorkflows}>Get Workflows</button>
+            {errorMessage && <p>{errorMessage}</p>}
+            {workflows.length > 0 && (
+                <ul>
+                    {workflows.map((workflow) => (
+                        <li key={workflow.id}>{workflow.name}</li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

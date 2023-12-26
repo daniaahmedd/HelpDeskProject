@@ -9,14 +9,14 @@ import Ticket from "./pages/Ticket";
 import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
 import Knowldgebasess from "./components/knowledgebases"
+import StartRestore from "./components/restore";
 // import WorkFlowPage from "./pages/"
-
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
 import Register from "./pages/Register";
 import VerifyOTPRegister from "./pages/VerifyOTPRegister";
-
+import CustomizationPage from "./pages/CustomizationPage";
 
 function App() {
   return (
@@ -39,6 +39,9 @@ function App() {
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
+                <Route path="/styleCustomize" element={<CustomizationPage />} />
+                <Route path="/restore" element={<StartRestore />} />
+
       </Routes>
     </>
   );
