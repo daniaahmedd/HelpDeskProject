@@ -16,7 +16,7 @@ import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
 import Register from "./pages/Register";
 import VerifyOTPRegister from "./pages/VerifyOTPRegister";
-
+import CustomizationPage from "./pages/CustomizationPage";
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
+                <Route path="/styleCustomize" element={<CustomizationPage />} />
       </Routes>
     </>
   );

@@ -61,6 +61,7 @@ const Navbar = () => {
       
     }
 
+   
     async function handleRegister(){
       navigate("/register", { state: { id: id, 
         userName: userName, 
@@ -68,6 +69,23 @@ const Navbar = () => {
         token: token
     } });
     }
+
+    async function handleCustomization(){
+      const response = await axios.get(`http://localhost:3000/api/customization/styleCustomize/find`, {
+          withCredentials: true 
+      });
+      console.log('handleCustomization', response.data);
+      if(response.status == 200){
+        navigate("/styleCustomize", { state: { id: id, 
+          userName: userName, 
+          userType:  userType,
+          token: token, 
+          users: response.data
+      } });
+      }
+      
+    }
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position:'relative'}}>
@@ -120,7 +138,9 @@ const Navbar = () => {
               <Dropdown.Item type="button" onClick={handleRegister}>Register User</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleAssignRole}>Assign Roles</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleNavUpdate}>Update Profile</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleCustomization}>Style Customize</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleLogout}>Logout</Dropdown.Item>
+              
             </Dropdown.Menu>
             </Dropdown>
           }
