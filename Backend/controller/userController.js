@@ -6,6 +6,8 @@ const nodemailer = require('nodemailer');
 const secretKey = process.env.SECRET_KEY ;
 const bcrypt = require("bcrypt");
 const speakeasy = require('speakeasy');
+const Cookies = require('js-cookie');
+
 
 const userController = {
     registerUser: async (req, res) => {
@@ -31,7 +33,7 @@ const userController = {
           service: 'gmail',
           auth: {
             user: 'daniaahmed133@gmail.com',
-            pass: 'tcdzmehkjfrkxmcl'
+            pass: 'qjuw vwcd dycb tgrs'
           },
           tls: {
             rejectUnauthorized: false
@@ -156,7 +158,7 @@ const userController = {
                             <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                               <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:5px">
                                 <tr>
-                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:5173/api/auth/verifyOTPRegister?email=${encryptedUserEmail}&otp=${encryptedCode}&password=${encryptedUserPassword}&username=${encryptedUserName}&userfirstname=${encryptedUserFirstName}&userlastname=${encryptedUserLastName}&usertype=${encryptedUserType}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Register</a></span></td>
+                                <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#5C68E2;border-width:0px;display:inline-block;border-radius:6px;width:auto"><a href="http://localhost:5173/api/auth/verifyOTPRegister?email=${encryptedUserEmail}&otp=${encryptedCode}&password=${encryptedUserPassword}&username=${encryptedUserName}&userfirstname=${encryptedUserFirstName}&userlastname=${encryptedUserLastName}&usertype=${encryptedUserType}&secretkey=${secretKey}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:10px 30px 10px 30px;display:inline-block;background:#5C68E2;border-radius:6px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #5C68E2;padding-left:30px;padding-right:30px">Register</a></span></td>
                                 </tr>
                               </table></td>
                             </tr>
@@ -235,9 +237,7 @@ const userController = {
           res.status(400).send("Input OTP can't be empty");
         }
 
-        if(decodedOTP.code == inputOTP){
-          const hashedPassword = await bcrypt.hash(decodedUserPassword.password, 10);
-          
+        if(decodedOTP.code == inputOTP){          
           const userName = decodedUserName.userName;
           const userType = decodedUserType.userType;
           const userFirstName = decodedFirstName.firstName;
@@ -245,8 +245,8 @@ const userController = {
           const userEmail = decodedUserEmail.email;
 
           const newUser = new userModel({
-            userName,
-            password: hashedPassword,
+            UserName: userName,
+            password: decodedUserPassword.password,
             email: userEmail,
             firstName: userFirstName,
             lastName: userLastName,
@@ -274,12 +274,11 @@ const userController = {
             encoding: 'base32'
           }); 
           const encryptedCode = jwt.sign({code}, secretKey);
-
         let config = {
           service: 'gmail',
           auth: {
             user: 'daniaahmed133@gmail.com',
-            pass: 'tcdzmehkjfrkxmcl'
+            pass: 'qjuw vwcd dycb tgrs'
           },
           tls: {
             rejectUnauthorized: false
@@ -475,7 +474,7 @@ const userController = {
         const userPass = await userModel.find({"email": actualUserEmail},{"password":1,"_id":0});
 
         if (!(userPass[0].password == actualUserPassword)) {
-          return res.status(405).json({ message: "incorect password" });
+          return res.status(405).send("incorect password");
         }
   
         const currentDateTime = new Date();
@@ -498,6 +497,7 @@ const userController = {
         });
         await newSession.save();
         const actualUser = await userModel.find({"email": actualUserEmail});
+
         return res
           .cookie("token", token, {
             expires: expiresAt,
@@ -506,7 +506,7 @@ const userController = {
             SameSite:'none'
           })
           .status(200)
-          .json({ message: "login successfull", actualUser });
+          .json({ message: "login successfull", actualUser, token});
       }else{
         return res.status(405).json({ message: "incorect otp" });
       } 
@@ -542,101 +542,106 @@ const userController = {
     updateProfile: async (req, res) => {
       try {
           const { userid, email, password, userName} = req.body;
-          const hashedPassword = await bcrypt.hash(password, 10);
+          // const hashedPassword = await bcrypt.hash(password, 10);
 
           if (!userid) {
               return res.status(404).json({ message: "User id input can't be empty" });
           }
 
-          if(userName && email && !password){
+          if(userName && email && password.length === 0){
             var user = await userModel.findByIdAndUpdate(
               userid,
               { 
                   email: email,
-                  UserName: req.body.userName
+                  UserName: userName
               },
               {
                 new: true,
               }
             );
+          return res.status(200).json({ user, msg: "User info updated successfully" });
           }
 
-          if(email && password && !userName){
+          if(email && password && userName.length === 0){
             var user = await userModel.findByIdAndUpdate(
               userid,
               { 
                   email: email,
-                  password: hashedPassword
+                  password: password
               },
               {
                 new: true,
               }
             );
+          return res.status(200).json({ user, msg: "User info updated successfully" });
           }
 
-          if(password && userName && !email){
+          if(password && userName && email.length === 0){
             var user = await userModel.findByIdAndUpdate(
               userid,
               { 
                   UserName: userName,
-                  password: hashedPassword
+                  password: password
               },
               {
                 new: true,
               }
             );
+          return res.status(200).json({ user, msg: "User info updated successfully" });
           }
 
-          //law email bas el null update password and userName
-          if (!email) { 
+          //law email bas el not null update password and userName
+          if (email && userName.length === 0 && password.length === 0) { 
             var user = await userModel.findByIdAndUpdate(
                 userid,
                 { 
-                    password: hashedPassword,
-                    UserName: req.body.userName
+                    email: email
                 },
                 {
                   new: true,
                 }
             );
+          return res.status(200).json({ user, msg: "User info updated successfully" });
+
           }
 
-          //law password bas el null update email and userName
-          if (!password) { 
+          //law password bas el not null update email and userName
+          if (password && email.length === 0 && userName.length === 0) { 
               var user = await userModel.findByIdAndUpdate(
                   userid,
                   { 
-                      email: req.body.email,
-                      UserName: req.body.userName
+                      password: password
                   },
                   {
                     new: true,
                   }
               );
+            return res.status(200).json({ user, msg: "User info updated successfully" });
           }
 
-          //law userName bas el null update email and password
-          if (!userName) { 
+          //law userName bas el not null update email and password
+          if (userName && email.length === 0 && password.length === 0) { 
               var user = await userModel.findByIdAndUpdate(
                   userid,
                   { 
-                      email: req.body.email,
-                      password: hashedPassword
+                    UserName: userName
                   },
                   {
                     new: true,
                   }
               );
+            return res.status(200).json({ user, msg: "User info updated successfully" });
           }
           
           //if none are null; update all of them
           //frontend button yedy option to update all at once
+          else{
           var user = await userModel.findByIdAndUpdate(
             userid,
             { 
-                email: req.body.email,
-                password: hashedPassword,
-                UserName: req.body.userName
+                email: email,
+                password: password,
+                UserName: userName
             },
             {
               new: true,
@@ -644,6 +649,7 @@ const userController = {
           );
 
           return res.status(200).json({ user, msg: "User info updated successfully" });
+          }
       } catch (error) {
         return res.status(500).json({ message: error.message });
       }
@@ -661,7 +667,7 @@ const userController = {
         service: 'gmail',
         auth: {
           user: 'daniaahmed133@gmail.com',
-          pass: 'tcdzmehkjfrkxmcl'
+          pass: 'qjuw vwcd dycb tgrs'
         },
         tls: {
           rejectUnauthorized: false
@@ -909,6 +915,28 @@ const userController = {
           new: true
         });
         return res.status(200).json(newUser);
+  
+      } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+    },
+    getUsers: async (req, res) => {
+      const reqCookie = req.headers.cookie;
+      const searchTerm = 'token=';
+      const searchIndex = reqCookie.indexOf(searchTerm);
+      const reqToken = reqCookie.substr(searchIndex + searchTerm.length)
+
+      //logged in user id
+      const userSession = await sessionModel.find({token: reqToken},{"userId":1,"_id":0});
+
+      if(!userSession){
+        return res.status(400).send("error : user's session doesn't exist");
+      }
+
+      try {
+        const users =  await userModel.find({ _id: { $ne: userSession[0].userId } })
+
+        return res.status(200).json(users);
   
       } catch (error) {
       return res.status(500).json({ message: error.message });

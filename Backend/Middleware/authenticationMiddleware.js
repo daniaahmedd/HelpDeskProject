@@ -25,7 +25,7 @@ if (req.path === "/api/chat/triallogin"){
     if (error) {
       return res.status(403).json({ message: "Invalid token" });
     }
-            req.User = decoded.User;
+            req.user = decoded.user;
   next();
   });
 };

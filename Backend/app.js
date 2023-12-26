@@ -18,29 +18,25 @@ app.use(
 const http = require('http');
 const server = http.createServer(app);
 const socketIO = require("socket.io");
-const io = socketIO(server, {
-  cors:{
-    origin:'*'
-  }
-}).listen(4000);
-module.exports= {io};
+// const io = socketIO(server, {
+//   cors:{
+//     origin:'*'
+//   }
+// }).listen(4000);
+// module.exports= {io};
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api',knowledgeBaseRouter);
+const authRouter = require("./Routes/auth");
+app.use("/api/auth", authRouter);
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
 
 
-const liveChat = require("./Routes/LiveChatRouter");
-app.use("/api/chat", liveChat)
+// const liveChat = require("./Routes/LiveChatRouter");
+// app.use("/api/chat", liveChat)
 
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
-
-
-const authRouter = require("./Routes/auth");
-
-app.use("/api/auth", authRouter);
-
 
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
@@ -56,7 +52,7 @@ app.use('/api/report', reportRouter);
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
+const db_url = 'mongodb://127.0.0.1:27017/LocalHelpDesk';
 
 const connectionOptions = {
   useUnifiedTopology: true,

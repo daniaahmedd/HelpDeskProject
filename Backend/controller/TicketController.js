@@ -35,9 +35,9 @@ async function calcagentpreformance(userRating , agentId){
 const TicketController = {
   createTicket: async (req, res) => {
     const valuePriorityMap = {
-      1: 'high',
-      2: 'medium',
-      3: 'low'
+      1: 'High',
+      2: 'Medium',
+      3: 'Low'
     }
     const { categories, subcategories, issueDescription } = req.body;
       let priority;
@@ -53,20 +53,26 @@ const TicketController = {
         else{
         priority = 0;
       }
+      
+     //const newTicket = await ticket.save();
+     //return res.status(201).json(newTicket);
+    
+      //const priority = valuePriorityMap[value] || 'Unknown';
+
+      //return priority;
+    
       try {
-        const ticketId = new ObjectId();
         const agentId = req.params.agentId;
         const ticket = new ticketModel({
-          ticketId: ticketId,
           categories: categories,
           subcategories: subcategories,
           issueDescription: issueDescription,
-          priorty: valuePriorityMap[priority], 
+          priorty: valuePriorityMap[priority], // Assuming 'priorty' is the correct field name in your schema
           status: "Open", // Assuming 'status' is a required field with a default value
           closetime: Date.now(),
           openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,
-          //agentid: agentId,
-          //userid: userid,
+          agentid: agentId,
+          userid: userid,
         });
         const newTicket = await ticket.save();
         return res.status(201).json(newTicket);
@@ -90,7 +96,7 @@ const TicketController = {
       service: 'gmail',
       auth: {
         user: 'daniaahmed133@gmail.com',
-        pass: 'tcdzmehkjfrkxmcl'
+        pass: 'qjuw vwcd dycb tgrs'
       },
       tls: {
         rejectUnauthorized: false
@@ -287,7 +293,7 @@ catch (e) {
     },
     getTicket: async (req, res) =>{
       const tickets = await ticketModel.find()
-      return res.status(200).send(tickets);
+      return res.status(200).send("recieved");
     }
 };
 // Start the server

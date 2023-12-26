@@ -1,14 +1,17 @@
 .home_body{
   position: absolute;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   width: 100%;
+  height: 100%;
 }
 
 .introSection{
+  margin-left: 20px;
   margin-top: 30px;
   background-color: rgba(0, 0, 0, 0.413);
   border-radius: 20px;
   width: 40%;
+  height: 55%;
   padding-bottom: 40px;
 }
 
@@ -27,6 +30,7 @@
 
 .introSecButton{
   margin-top: 10px;
+  z-index: 100;
   border: white 1px solid;
 }
 
@@ -41,7 +45,7 @@
   background-color: #00000069;
   border-radius: 20px;
   width: 55%;
-  height: fit-content;
+  height: 55%;
   padding-bottom: 40px;
 }
 

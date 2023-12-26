@@ -18,13 +18,13 @@ $dot-color-3: #eb0c65;
   text-shadow: $text-shadow;
 }
 
- .home_body {
-margin-left: 10%;
+.home_body {
+  // margin-left: 10%;
   overflow: hidden;
   background: #123;
   display: block;
- font-size: 52px;
-color: white;
+  // font-size: 52px;
+  // color: white;
 }
 
 .home_body::before, .home_body::after {
@@ -52,17 +52,17 @@ color: white;
   animation-delay: -22s;
 }
 
-head::before {
-  @include dots(50);
-  animation-duration: 32s;
-  animation-delay: -13s;
-}
+// head::before {
+//   @include dots(50);
+//   animation-duration: 32s;
+//   animation-delay: -13s;
+// }
 
-head::after {
-  @include dots(50);
-  animation-duration: 31s;
-  animation-delay: -9s;
-}
+// head::after {
+//   @include dots(50);
+//   animation-duration: 31s;
+//   animation-delay: -9s;
+// }
 
 
 @keyframes move {
