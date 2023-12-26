@@ -1,15 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";
 import Getreports from "./components/view-reports";
-
 import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
 import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
+import Knowldgebasess from "./components/knowledgebases"
+// import WorkFlowPage from "./pages/"
+
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/FAQ" element={<Knowldgebasess />} />
         <Route path="/login" element={<Homepage />} />
-        <Route path="/workflow" element={<WorkFlowPage />} />
+        {/* <Route path="/workflow" element={<WorkFlowPage />} /> */}
         <Route path="/chat" element={<LiveChat />} />
         <Route path="/TicketHome" element={<TicketHome />} />
         <Route path="/Ticket" element={<Ticket />} />
@@ -31,3 +32,4 @@ function App() {
     </>
   );
 }
+export default App

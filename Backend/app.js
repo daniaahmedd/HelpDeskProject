@@ -25,7 +25,7 @@ const io = socketIO(server, {
 }).listen(4000);
 module.exports= {io};
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
-app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter);
+app.use('/api',knowledgeBaseRouter);
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
 
@@ -72,5 +72,5 @@ app.use(function (req, res, next) {
   return res.status(404).send(e.message);
 });
 
-app.listen(process.env.PORT, () => console.log(`server started and listening on port ${process.env.PORT}`));  
+app.listen(process.env.PORT, () => console.log(`server started and listening on port`));  
 

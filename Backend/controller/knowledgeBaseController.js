@@ -24,7 +24,7 @@ const knowledgeBaseController = {
       const { question_category, question_subcategory } = req.body;
 
 
-      if (question_category==null&&question_subcategory==null) {
+      if (question_category==""&&question_subcategory=="") {
         const data = await knowledgeBaseModel.find().lean().exec();
         return res.status(200).json(data);
       }

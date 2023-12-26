@@ -3,7 +3,6 @@ import HomeBody from "../components/homeBody";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../stylesheets/homePage.css";
 import "../stylesheets/homePageBackground.scss";
-import "../components/knowledgebases.jsx"
 
 export default function HomePage() {
 
@@ -12,7 +11,6 @@ export default function HomePage() {
           <div className="Home">
             <Navbar />
             <HomeBody />
-            <KnowledgeBase/>
           </div>
         </>
     );
