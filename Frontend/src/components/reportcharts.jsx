@@ -37,7 +37,7 @@ const TicketCharts = () => {
       createBarChart(categoryCtx, categories, categoryCounts, 'Categories');
 
       const statusCtx = document.getElementById('statusChart').getContext('2d');
-      createBarChart(statusCtx, status, statusCounts, 'Status');
+      createBarChart(statusCtx, status, statusCounts, 'SubCategories');
     }
   }, [data, showCharts]);
 
@@ -95,7 +95,7 @@ const TicketCharts = () => {
             <canvas id="categoryChart" width="400" height="300"></canvas>
           </div>
           <div className="chart">
-            <h2 className="chart-title">Status</h2>
+            <h2 className="chart-title">subCategories</h2>
             <canvas id="statusChart" width="400" height="300"></canvas>          </div>
         </div>
       )}

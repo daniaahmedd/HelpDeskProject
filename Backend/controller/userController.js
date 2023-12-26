@@ -472,6 +472,7 @@ const userController = {
       if(inputOTP == decodedOTP.code){
         const user = await userModel.findOne({ actualUserEmail });
         const userPass = await userModel.find({"email": actualUserEmail},{"password":1,"_id":0});
+        console.log("userPass",userPass)
 
         if (!(userPass[0].password == actualUserPassword)) {
           return res.status(405).send("incorect password");
