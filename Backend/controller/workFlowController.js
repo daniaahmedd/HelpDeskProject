@@ -1,6 +1,7 @@
 const workFlowModel = require('../Models/WorkFlowModel');
 const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
+
 const MAX_WORKLOAD_PER_AGENT = 5;
 
 const TicketRouter = {
@@ -144,9 +145,8 @@ const workFlowController = {
             console.error('Error fetching workflows:', error);
             res.status(500).json({ message: `Error fetching workflows: ${error.message}` });
         }
-    },
+    }
 };
 
-//TicketRouter.init();
+TicketRouter.init();
 module.exports = workFlowController;
-module.exports = TicketRouter;

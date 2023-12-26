@@ -39,7 +39,7 @@ const TicketController = {
       2: 'medium',
       3: 'low'
     }
-    const { categories, subcategories, issueDescription } = req.body;
+    const { categories, subcategories, issueDescription,userid } = req.body;
       let priority;
         if (subcategories === 'Desktops' || subcategories === 'Laptops' || subcategories === 'Operating system'
          || subcategories === 'Application software') {
@@ -53,21 +53,19 @@ const TicketController = {
         else{
         priority = 0;
       }
-      
-     //const newTicket = await ticket.save();
-     //return res.status(201).json(newTicket);
-    
-      //const priority = valuePriorityMap[value] || 'Unknown';
-
-      //return priority;
-    
       try {
+<<<<<<< Updated upstream
         const agentId = null;
+=======
+        const ticketId = new ObjectId();
+        const agentId = req.params.agentId;
+>>>>>>> Stashed changes
         const ticket = new ticketModel({
+          ticketId: ticketId,
           categories: categories,
           subcategories: subcategories,
           issueDescription: issueDescription,
-          priorty: valuePriorityMap[priority], // Assuming 'priorty' is the correct field name in your schema
+          priorty: valuePriorityMap[priority], 
           status: "Open", // Assuming 'status' is a required field with a default value
           closetime: Date.now(),
           openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,

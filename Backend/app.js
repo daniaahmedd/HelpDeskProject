@@ -24,6 +24,8 @@ const io = socketIO(server, {
   }
 }).listen(4000);
 module.exports= {io};
+const knowledgeBaseRouter = require("./Routes/knowledgeBase");
+app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
@@ -34,8 +36,7 @@ app.use("/api/chat", liveChat)
 
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
-const knowledgeBaseRouter = require("./Routes/knowledgeBase");
-app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
+
 
 const authRouter = require("./Routes/auth");
 
@@ -52,12 +53,14 @@ app.use('/api/backup', backupRouter);
 const reportRouter = require("./Routes/Report");
 const e = require("express");
 app.use('/api/report', reportRouter);
+const agentrooter = require("./Routes/Agent");
+app.use('/api/agent', agentrooter);
 
 
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/trial';
+const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
 
 const connectionOptions = {
   useUnifiedTopology: true,

@@ -1,18 +1,18 @@
-const workFlowModel = require('../Models/WorkFlowModel');
+const workFlowModel = require('../Models/workFlowModel');
 const mongoose = require('mongoose');
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
 const db_url = 'mongodb://127.0.0.1:27017/try';
 
 const connectionOptions = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
 };
 
 mongoose
-    .connect(db_url, connectionOptions)
-    .then(() => console.log("mongoDB connected"))
-    .catch((e) => console.log(e));
+  .connect(db_url, connectionOptions)
+  .then(() => console.log("mongoDB connected"))
+  .catch((e) => console.log(e));
 
 async function main(){
     const workFlow1 = new workFlowModel({
