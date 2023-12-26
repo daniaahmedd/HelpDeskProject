@@ -1,0 +1,58 @@
+/* Style for the charts */
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .chart {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, #000000, #b73d9e);
+  }
+  
+  
+  .chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Optional: Customize colors for individual bars */
+  .chart .bar {
+    background-color: #5f9f9f;
+  }
+  .canvas-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .canvas-container canvas {
+    width: 400px;
+    height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .chart .bar {
+    background-color: #5f9f9f; /* Adjust this color to suit your preference */
+  }
+  .chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white; /* Change label color to white */
+  }
+  .Navbar {
+    margin-bottom: 20px; /* Adjust the margin as needed */
+  }
+  
+  /* Add margin above the button */
+  button {
+    margin-top: 20px; /* Adjust the margin as needed */
+  }

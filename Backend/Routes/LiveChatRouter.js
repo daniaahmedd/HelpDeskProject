@@ -101,6 +101,7 @@ liveChat.on("connection", socket=>
               socket.join(chat._id);
             }
 
+          //  console.log(onlineUsers);           
     })
 
 })
@@ -110,7 +111,7 @@ router.post("/openchat",authorizationMiddleware(['User']) ,LiveChatController.op
 router.put("/close/:id", authorizationMiddleware(['User','Agent']), LiveChatController.closeChat);
 router.get("/viewchat", authorizationMiddleware(['Agent']),  LiveChatController.viewChat); 
 router.put("/sendmessage", authorizationMiddleware(['User','Agent']),  LiveChatController.sendmessage);
-router.get("/view/:id", LiveChatController.viewMessages);  
+router.get("/view/:id", LiveChatController.viewMessages);   //to get all agent chats see which role has access to this
 router.get("/user",authorizationMiddleware(['User','Agent']), LiveChatController.currentUser);
 router.get("/currentchat", authorizationMiddleware(['User']), LiveChatController.currentChat);
 
@@ -118,3 +119,8 @@ router.post ("/triallogin", LiveChatController.triallogin);
 
 
 module.exports = router;
+
+//think about linking the agents IDs to the socketIds, and the user to the socketId
+//socket.emit to sent to the one who sent the event
+//io.emit to send to all 
+//socket.broadcast.emit to send to all except the one who sent the event

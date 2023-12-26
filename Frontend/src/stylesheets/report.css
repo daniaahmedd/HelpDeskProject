@@ -1,3 +1,230 @@
+/* Styles for .div */
+/* Styles for .div */
 .div {
-    background-color: white !important ;
+    background: linear-gradient(to right, #000000, #AD158F); /*     background-size: cover; /* Adjusts the size to cover the entire element */
+    background-repeat: no-repeat; 
 }
+
+/* Styles for .custom-card */
+.custom-card {
+  background: linear-gradient(
+    to right,
+    #000000,
+    #ad158f
+  ); /* Black to purple gradient */
+  color: white;
+  border: 2px solid #ad158f; /* Adjust border color to match gradient */
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+}
+
+/* Styles for .introSection */
+.introSection {
+  margin-left: 20px;
+  margin-top: 30px;
+  background-color: rgba(0, 0, 0, 0.413);
+  border-radius: 20px;
+  width: 40%;
+  padding-bottom: 40px;
+}
+
+/* Styles for .header */
+.header {
+  background-color: #211c20;
+  font-weight: bold;
+  color: white;
+  padding: 20px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.header p {
+  font-size: 1.2em;
+  /* Adjust the font size of the paragraph */
+}
+
+/* Styles for .custom-btn */
+.custom-btn {
+  background-color: rgb(38, 35, 35);
+  /* Add any other styles as needed */
+}
+
+/* Additional styles for .header */
+.header {
+  background: linear-gradient(to right, #000000, #ad158f); /* Gradient colors */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Change font family */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+}
+
+.header p {
+  font-size: 1.2em;
+  /* Adjust the font size of the paragraph */
+}
+/* Modal styles */
+
+/* Modal header */
+.modal-header {
+  background-color: #ad158f; /* Adjust as needed */
+  color: rgb(54, 50, 50);
+  padding: 15px;
+  border-bottom: none;
+}
+
+/* Modal title */
+.modal-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: aliceblue;
+}
+
+/* Modal body */
+.modal-body {
+  background-color: #312929; /* Adjust as needed */
+  padding: 20px;
+  color: aliceblue;
+}
+
+/* Modal footer */
+.modal-footer {
+  background-color: #ad158f; /* Adjust as needed */
+  padding: 15px;
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Modal footer buttons */
+.modal-footer .btn {
+  margin-left: 10px;
+}
+
+/* Close button in the modal header */
+.modal-header .close {
+  color: white;
+  font-size: 1.5em;
+  opacity: 1;
+}
+
+/* Optional: Add additional styles for different elements within the modal */
+
+/* Styles for .custom-card */
+.custom-card {
+  background-color: #ad158f;
+  color: white;
+  border: 2px solid #ad158f;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+}
+
+/* Styles for .introSection */
+.introSection {
+  margin-left: 20px;
+  margin-top: 30px;
+  background-color: rgba(0, 0, 0, 0.413);
+  border-radius: 20px;
+  width: 40%;
+  padding-bottom: 40px;
+}
+
+/* Styles for .header */
+.header {
+  background-color: #211c20;
+  font-weight: bold;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Styles for .custom-btn */
+.custom-btn {
+  background-color: rgb(38, 35, 35);
+  /* Add any other styles as needed */
+}
+
+/* Additional styles for .header */
+.header {
+  background: linear-gradient(to right, #000000, #ad158f); /* Gradient colors */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Change font family */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+}
+
+.header p {
+  font-size: 1.2em;
+  /* Adjust the font size of the paragraph */
+}
+/* Modal styles */
+
+/* Modal header */
+.modal-header {
+  background-color: #ad158f; /* Adjust as needed */
+  color: white;
+  padding: 15px;
+  border-bottom: none;
+}
+
+/* Modal title */
+.modal-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: aliceblue;
+}
+
+/* Modal body */
+.modal-body {
+  background-color: #312929; /* Adjust as needed */
+  padding: 20px;
+  color: aliceblue;
+}
+
+/* Modal footer */
+.modal-footer {
+  background-color: #ad158f; /* Adjust as needed */
+  padding: 15px;
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Modal footer buttons */
+.modal-footer .btn {
+    margin-left: 10px;
+  }
+
+/* Close button in the modal header */
+.modal-header .close {
+    color: white;
+    font-size: 1.5em;
+    opacity: 1;
+  }
+  
+
+/* Optional: Add additional styles for different elements within the modal */

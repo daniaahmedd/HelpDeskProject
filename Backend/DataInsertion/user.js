@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const ticket = require('../Models/ticketModel.js');
 const livechat= require('../Models/LiveChatModel.js');
 
-const db_url = 'mongodb://127.0.0.1:27017/trial';
+const db_url = 'mongodb://127.0.0.1:27017/zeft';
 
 const connectionOptions = {
     useUnifiedTopology: true,

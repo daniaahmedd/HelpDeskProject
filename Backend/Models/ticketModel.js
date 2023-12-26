@@ -5,6 +5,10 @@ const userSchema = require('./userModel').Schema;
 
 const ticketSchema = new mongoose.Schema( 
     {
+        ticketId: {
+            type: mongoose.Schema.Types.ObjectId,
+            requied: true,
+          },
         status:{
             type: String,
             enum: ['Pending','Open','Closed'],
@@ -33,7 +37,7 @@ const ticketSchema = new mongoose.Schema(
         subcategories: {
             type: String,
             enum:["Desktops", "Laptops", "Printers", "Servers", "Networking equipment", 
-            " Operating system"," Application software"," Custom software"," Integration issues",
+            "Operating system","Application software","Custom software","Integration issues",
             "Email issues", "Internet connection problems", "Website errors"],
             required: true,
         },
@@ -70,12 +74,12 @@ const ticketSchema = new mongoose.Schema(
         },
         Agentrating:{
             type: Number,
-            require: false
+            required: false
         }
 
     },{
         strict: true,
-        timestamps: true,
+        timestamps: false,
       });
 
       module.exports = mongoose.model('Ticket', ticketSchema);

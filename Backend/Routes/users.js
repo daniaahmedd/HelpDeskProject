@@ -18,6 +18,9 @@ router.put("/password", userController.forgotPassword);
 // * Reset User Passwords
 router.put("/change/password", userController.resetPassword);
 
+// * Get All users ma3ada el logged in
+router.get("/getUsers", userController.getUsers);
+
 // * Logout
 router.delete("/logout", userController.logout);
 

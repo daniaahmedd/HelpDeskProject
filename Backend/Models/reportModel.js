@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const agentSchema = require('./agentModel').Schema;
-const ticketSchema = require('./ticketModel').Schema;
-
 
 
 const reportSchema = new mongoose.Schema(
@@ -34,24 +32,21 @@ const reportSchema = new mongoose.Schema(
         type: Number,
         required: false
     },
-    Agentrating:{
-      type: Number,
-      require: false
-    },
     agentid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "agentSchema",
       required: false
-  },    
-  ticketid: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref: "ticketSchema",
-    required: true
-  }
+  },
+  Agentrating: {
+    type: Number,
+    required: false
+}
+
 
 
   }, {
     strict: true,
+    timestamps : false
  
   });
   module.exports= mongoose.model("Report", reportSchema)

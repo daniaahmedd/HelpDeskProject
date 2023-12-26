@@ -1,9 +1,9 @@
-//const workFlowModel = require('../Models/workFlowModel');
-// const workFlowModel = require('../Models/workFlowModel');
+const WorkFlowModel = require('../Models/WorkFlowModel');
 const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
 const ticketschema = require('../Models/ticketModel');
 const nodemailer = require('nodemailer');
+const sessionModel = require("../Models/sessionModel");
 const { default: mongoose } = require('mongoose');
 const {
   ObjectId
@@ -32,14 +32,355 @@ async function calcagentpreformance(userRating , agentId){
   console.log(countratingnum)
 }
 
+var agent1_tickets = [];
+var agent2_tickets = [];
+var agent3_tickets = [];
+
+var highPriority = [];
+var mediumPriority = [];
+var lowPriority = [];
+
+
+var myagent1;
+var myagent2;
+var myagent3;
+
+
+
+
+    //--------------------------function 1 save agents (in create ticket api)-------------------------------
+    async function loadAgents() {
+        console.log("loadahent func1")
+        try {
+            //get first 3 agents (get ticket of agent)
+            const agentsData = await agentModel.find({}).limit(3);
+        
+            //law el agent el 3andy sw major yb2a medium network w low hardware w so on hasab CMS doc
+            agentsData.map((agentData) => {
+                switch(agentData.categories){
+                    //save my agents 3ashan a3raf a-access them ba3den
+                    case "Software": myagent1 = agentData._id; break;
+                    case "Hardware": myagent2 = agentData._id; break;
+                    case "Network": myagent3 = agentData._id; break;
+                }
+            });
+        } catch (error) {
+            console.error('Error loading agents:', error);
+        }
+    }
+
+    //-------------------------------------function 2 divide tickets based on priority (in create ticket api)-------------------------------
+    async function prioritiseTicket(ticket) {
+      console.log("func2")
+        try {
+            /* awel ma a new ticket is created call this function (in create ticket api) to 
+            put ticket in corresponding priority queue */
+            //const category = ticket.categories;
+            const priority = ticket.priorty;
+            console.log("pri",priority)
+            console.log("ticket", ticket)
+            switch(priority){
+                case 'high': highPriority.push(ticket._id); break;
+                case 'medium': mediumPriority.push(ticket._id); break;
+                case 'low': lowPriority.push(ticket._id); break;
+            }
+            console.log("high", highPriority)
+            console.log("med", mediumPriority)
+            console.log("low", lowPriority)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    //--------------------------function 3 distribute tickets on agents-------------------------------
+
+    async function assignTicket(ticket){
+      console.log("func 3")
+      try{
+      for (const ticketId of highPriority)  {
+        console.log("highpri")
+        console.log("ticket",ticket)
+          const ticketId = highPriority[0];
+          if (!ticketId || ticketId.length === 0) {
+              break;
+          }
+          //const ticket = await ticketModel.findById(ticketId);
+          const category = ticket.categories;
+          const agent1 = await agentModel.find(myagent1);
+          const agent2 = await agentModel.find(myagent2);
+          const agent3 = await agentModel.find(myagent3);
+
+          console.log("agent1", agent1);
+          console.log("myagent1",myagent1);
+          console.log("worklaod", agent1[0].workload)
+
+          if(agent1[0].workload < 5 && category=="Software"){
+              agent1_tickets.push(ticketId)
+              ticket.status= "Pending"
+              ticket = await ticketModel.findByIdAndUpdate(
+                ticketId,
+                { status: "Pending" , agentid:myagent1 },
+                {
+                  new: true,
+                }
+            );console.log("newupdatedtic",ticket);
+              agent1[0].workload+=1
+              highPriority.shift()
+              }
+          else if(agent2[0].workload < 5 && category=="Hardware"){
+            console.log("hardwareeeeeeeeeeeeeeeeeeeeeee")
+            console.log(ticketId)
+            console.log("agent2", agent2)
+              agent2_tickets.push(ticketId)
+              ticket.status= "Pending"
+              ticket = await ticketModel.findByIdAndUpdate(
+                ticketId,
+                { status: "Pending" , agentid:myagent2 },
+                {
+                  new: true,
+                }
+            );console.log("newupdatedtic",ticket);
+              agent2[0].workload+=1
+              highPriority.shift()
+              }  
+          else if(agent3[0].workload < 5 && category=="Network"){
+              agent3_tickets.push(ticketId)
+              ticket.status= "Pending"
+              ticket = await ticketModel.findByIdAndUpdate(
+                ticketId,
+                { status: "Pending" , agentid:myagent3 },
+                {
+                  new: true,
+                }
+            );console.log("newupdatedtic",ticket);
+              agent3[0].workload+=1
+              highPriority.shift()
+              }        
+          }
+      
+      for (const ticketId of mediumPriority)  {
+        console.log("medpri")
+
+          const ticketId = mediumPriority[0];
+          if (!ticketId || ticketId.length === 0) {
+              break;
+          }
+          var ticket = await ticketModel.findById(ticketId);
+          const category = ticket.categories;
+          const agent1 = await agentModel.find(myagent1);
+          const agent2 = await agentModel.find(myagent2);
+          const agent3 = await agentModel.find(myagent3);
+          if(category=="Software"){
+              if (agent1[0].workload < 5 ){
+                  agent1_tickets.push(ticketId)
+                  ticket.status= "Pending"
+                  ticket = await ticketModel.findByIdAndUpdate(
+                    ticketId,
+                    { status: "Pending" , agentid:myagent1 },
+                    {
+                      new: true,
+                    }
+                );console.log("newupdatedtic",ticket);
+                  agent1[0].workload+=1
+                  mediumPriority.shift()     
+              }else if(agent2[0].workload < 5){
+                  agent2_tickets.push(ticketId)
+                  ticket.status= "Pending"
+                  ticket = await ticketModel.findByIdAndUpdate(
+                    ticketId,
+                    { status: "Pending" , agentid:myagent2 },
+                    {
+                      new: true,
+                    }
+                );console.log("newupdatedtic",ticket);
+                  agent2[0].workload+=1
+                  mediumPriority.shift()
+              }
+              }
+
+              else if(category=="Hardware"){
+                  if (agent2[0].workload < 5 ){
+                      agent2_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                      ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent2 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent2[0].workload+=1
+                      mediumPriority.shift()
+                  }else if(agent3[0].workload < 5){
+                      agent3_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                      ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent3 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent3[0].workload+=1          
+                      mediumPriority.shift()
+                  }
+                  }
+          else if(category=="Network"){
+              if (agent3[0].workload < 5 ){
+                  agent3_tickets.push(ticketId)
+                  ticket.status= "Pending"
+                  ticket = await ticketModel.findByIdAndUpdate(
+                    ticketId,
+                    { status: "Pending" , agentid:myagent3 },
+                    {
+                      new: true,
+                    }
+                );console.log("newupdatedtic",ticket);
+                  agent3[0].workload+=1
+                  mediumPriority.shift()
+              }else if(agent1[0].workload < 5){
+                  agent1_tickets.push(ticketId)
+                  ticket.status= "Pending"
+                  ticket = await ticketModel.findByIdAndUpdate(
+                    ticketId,
+                    { status: "Pending" , agentid:myagent1 },
+                    {
+                      new: true,
+                    }
+                );console.log("newupdatedtic",ticket);
+                  agent1[0].workload+=1
+                  mediumPriority.shift()
+              }
+              }        
+          }
+
+          for (const ticketId of lowPriority)  {
+        console.log("lowpri")
+
+              const ticketId = lowPriority[0];
+              if (!ticketId || ticketId.length === 0) {
+                  break;
+              }
+              var ticket = await ticketModel.findById(ticketId);
+              const category = ticket.categories;
+              const agent1 = await agentModel.find(myagent1);
+          const agent2 = await agentModel.find(myagent2);
+          const agent3 = await agentModel.find(myagent3);
+              if(category=="Software"){
+                  if (agent1[0].workload < 5 ){
+                      agent1_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                      ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent1 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent1[0].workload+=1
+                      lowPriority.shift()
+                  }else if(agent3[0].workload < 5){
+                      agent3_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                      ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent3 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent3[0].workload+=1
+                      lowPriority.shift()
+                  }
+                  }
+  
+                else if(category=="Hardware"){
+                      if (agent2[0].workload < 5 ){
+                          agent2_tickets.push(ticketId)
+                          ticket.status= "Pending"
+                          ticket = await ticketModel.findByIdAndUpdate(
+                            ticketId,
+                            { status: "Pending" , agentid:myagent2 },
+                            {
+                              new: true,
+                            }
+                        );console.log("newupdatedtic",ticket);
+                          agent2[0].workload+=1
+                          lowPriority.shift()
+                      }else if(agent1[0].workload < 5){
+                          agent1_tickets.push(ticketId)
+                          ticket.status= "Pending"
+                          ticket = await ticketModel.findByIdAndUpdate(
+                            ticketId,
+                            { status: "Pending" , agentid:myagent1 },
+                            {
+                              new: true,
+                            }
+                        );console.log("newupdatedtic",ticket);
+                          agent1[0].workload+=1
+                          lowPriority.shift()
+                      }
+                      }
+             else if(category=="Network"){
+                  if (agent3[0].workload < 5 ){
+                      agent3_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                      ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent3 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent3[0].workload+=1
+                      lowPriority.shift()
+                  }else if(agent2[0].workload < 5){
+                      agent2_tickets.push(ticketId)
+                      ticket.status= "Pending"
+                       ticket = await ticketModel.findByIdAndUpdate(
+                        ticketId,
+                        { status: "Pending" , agentid:myagent2 },
+                        {
+                          new: true,
+                        }
+                    );console.log("newupdatedtic",ticket);
+                      agent2[0].workload+=1
+                      lowPriority.shift()
+                  }
+                  } 
+              }
+              console.log("agent111",agent1_tickets);
+              console.log("agent2",agent2_tickets);
+              console.log("agent3",agent3_tickets);
+
+          }catch (error) {
+              console.error(error);
+          }
+
+  }
+  //---------------------------------------------ticketcontroller -------------------------------------------------
 const TicketController = {
   createTicket: async (req, res) => {
     const valuePriorityMap = {
-      1: 'high',
-      2: 'medium',
-      3: 'low'
+      1: 'High',
+      2: 'Medium',
+      3: 'Low'
     }
-    const { categories, subcategories, issueDescription } = req.body;
+      const reqCookie = req.headers.cookie;
+      const searchTerm = 'token=';
+      const searchIndex = reqCookie.indexOf(searchTerm);
+      const reqToken = reqCookie.substr(searchIndex + searchTerm.length)
+
+      const userSession = await sessionModel.find({token: reqToken},{"userId":1,"_id":0});
+
+      if(!userSession){
+        return res.status(400).send("error : user's session doesn't exist");
+      }
+
+      const userid =  userSession[0].userId
+
+    const { categories, subcategories, issueDescription} = req.body;
       let priority;
         if (subcategories === 'Desktops' || subcategories === 'Laptops' || subcategories === 'Operating system'
          || subcategories === 'Application software') {
@@ -62,7 +403,7 @@ const TicketController = {
       //return priority;
     
       try {
-        const agentId = null;
+        const agentId = req.params.agentId;
         const ticket = new ticketModel({
           categories: categories,
           subcategories: subcategories,
@@ -71,9 +412,14 @@ const TicketController = {
           status: "Open", // Assuming 'status' is a required field with a default value
           closetime: Date.now(),
           openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,
-          //agentid: agentId,
-          //userid: userid,
+          agentid: agentId,
+          userid: userid,
         });
+        loadAgents();
+        prioritiseTicket(ticket);
+        assignTicket(ticket);
+       
+
         const newTicket = await ticket.save();
         return res.status(201).json(newTicket);
       } catch (e) {
@@ -82,12 +428,12 @@ const TicketController = {
    
     updateTicket:async(req,res)=>{
     try{
-    const {status,issueSolution}=req.body;
+    const {status,issueSolution,emailuser}=req.body;
 
     if(status=="Close"&&issueSolution!=null){
 
     const ticketid = await ticketschema.findByIdAndUpdate(
-      req.params.ticketId,
+      req.params.ticketid,
       { issueSolution:issueSolution },
       { new: true }
     );
@@ -96,7 +442,7 @@ const TicketController = {
       service: 'gmail',
       auth: {
         user: 'daniaahmed133@gmail.com',
-        pass: 'tcdzmehkjfrkxmcl'
+        pass: 'qjuw vwcd dycb tgrs'
       },
       tls: {
         rejectUnauthorized: false
@@ -106,7 +452,7 @@ const TicketController = {
   
     let message = {
       from: 'daniaahmed133@gmail.com',
-      to: 'alaa.rawan2020@gmail.com',
+      to: emailuser,
       subject: "Ticket Update Confirmation",
       attachments: [
       ],
@@ -244,33 +590,7 @@ catch (e) {
 }
 
 },
-    // updateTicket: async (req, res) => {
-    //     const ticket = new ticketModel({
-    //         ticketId: req.body.ticketId,
-    //         status: req.body.status,
-    //         issueSolution: req.body.issueSolution,
-    //     });
-    //     try{
-    //     const updatedTicket = await ticketModel.findOneAndUpdate(
-    //         { _id: ticket.ticketId },
-    //         { status, issueSolution },
-    //         { new: true }
-    //       );
-    //     const userEmail = updatedTicket.userEmail; // Assuming you have the user's email stored in the ticket object
-    //     const emailContent = `Your ticket (ID: ${ticket.ticketId}) has been updated.\n\nStatus:
-    //      ${ticket.status}\n\nIssue Solution: ${ticket.issueSolution}`;
-
-    //     // Logic to send the email to the user (using a library or custom implementation)
-    //     sendEmail(userEmail, 'Ticket Update', emailContent);
-
-    //     // Return the updated ticket or a success message
-    //     res.json({ success: true, updatedTicket });
-
-    //     } catch (error) {
-    //     // Handle any errors that occur during the update or email sending
-    //     console.error('Error updating ticket:', error);
-    //     res.status(500).json({ success: false, error: 'Failed to update ticket and send email.' });
-    // }},
+   
     rateTicket: async (req, res) => {
         
         try {
@@ -293,19 +613,9 @@ catch (e) {
     },
     getTicket: async (req, res) =>{
       const tickets = await ticketModel.find()
-      return res.status(200).send(tickets);
+      return res.status(200).send("recieved");
     }
 };
-// Start the server
-  // app.listen(3000, () => {
-  // console.log('Server listening on port 3000');
-  //  });
-  //   if (subcategories) {
-  //       ticket.agentAssigned = availableAgent._id;
-  //       ticket.status = 'pending';
-  //       availableAgent.workload++;
-  //       availableAgent.availability = availableAgent.workload < 5;
-  //       await Promise.all([ticket.save(), availableAgent.save()]);
-  //   }
 
 module.exports = TicketController;
+

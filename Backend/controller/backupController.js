@@ -1,4 +1,3 @@
-const cron = require('node-cron');
 const { exec } = require('child_process');
 require('dotenv').config();
 const backupController = {
@@ -39,7 +38,7 @@ const backupController = {
     }
   },
 };
-cron.schedule('0 0 */24 * * *', () => {
-  backupController.createBackup();
-});
+// cron.schedule('0 0 */24 * * *', () => {
+//   backupController.createBackup();
+// });
 module.exports = backupController;

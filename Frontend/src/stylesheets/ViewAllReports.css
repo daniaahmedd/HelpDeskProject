@@ -1,0 +1,79 @@
+.report-container {
+    font-family: Arial;
+    margin: 20px;
+  }
+  
+  /* Stylish header */
+  .div{
+    background: linear-gradient(to right, #7303c0, #ec38bc, #fdeff9);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .header p {
+    font-size: 1.2em;
+    /* Adjust the font size of the paragraph */
+  }
+  
+  /* Table styles */
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Table header style */
+  .report-table th {
+    background-color: #ad158f;
+    color: white;
+    font-weight: bold;
+    padding: 12px 8px;
+    text-align: left;
+  }
+  
+  /* Table row style */
+  .report-table tr {
+    background-color: #f9f9f9;
+  }
+  
+  /* Alternate row background color for better readability */
+  .report-table tr:nth-child(even) {
+    background-color: #f0f0f0;
+  }
+  
+  /* Table cell style */
+  .report-table td {
+    padding: 8px;
+  }
+  
+  /* Hover effect for table rows */
+  .report-table tbody tr:hover {
+    background-color: #e6e6e6;
+    cursor: pointer;
+  }
+  
+  /* Border radius for first and last rows */
+  .report-table tr:first-child th {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .report-table tr:last-child td {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
