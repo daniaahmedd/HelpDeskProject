@@ -37,7 +37,7 @@ const ticketSchema = new mongoose.Schema(
         subcategories: {
             type: String,
             enum:["Desktops", "Laptops", "Printers", "Servers", "Networking equipment", 
-            " Operating system"," Application software"," Custom software"," Integration issues",
+            "Operating system","Application software","Custom software","Integration issues",
             "Email issues", "Internet connection problems", "Website errors"],
             required: true,
         },

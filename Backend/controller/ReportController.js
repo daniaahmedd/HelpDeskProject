@@ -28,7 +28,7 @@ const ReportController = {
        
 
         // Check if the status is "Closed"
-        if (ticket.status !== "Closed") {
+        if (ticket.status == "Open") {
             console.log("helllllllllllllllo")
             // If not closed, create a new report without closing time
             reportData = {
@@ -41,7 +41,7 @@ const ReportController = {
                 ticketid: req.params.ticketId,
                 Agentrating : null
             };
-        } else {
+        } else if (ticket.status == "Closed"){
             // If closed, create a new report with closing time
             console.log("hiiiiiiiiiii")
             
@@ -55,6 +55,18 @@ const ReportController = {
                 ticketid: req.params.ticketId,
                 Agentrating : ticket.Agentrating
             };
+           
+        } else {
+          reportData = {
+            status : ticket.status,
+            openedtime: ticket.opendedtime,
+            closedtime: null  ,
+            rating: ticket.rating,
+            agentId: ticket.agentid,
+            resolutiontime : null,
+            ticketid: req.params.ticketId,
+            Agentrating : null
+        };
         }
 
         // Create a new report based on the provided data
