@@ -11,8 +11,10 @@ const ViewAllReports = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/report/view"
+        const response = await axios.get(
+          "http://localhost:3000/api/report/view", {
+            withCredentials:true
+          }
         );
         setReports(response.data); // Assuming response.data is an array of report objects
       } catch (error) {
@@ -24,9 +26,9 @@ const ViewAllReports = () => {
   }, []);
 
   return (
+    <>
+    <Navbar />
     <div className="report-container">
-      <Navbar />
-
       <Link to="/report " className="back-button">
         Go Back
       </Link>
@@ -54,7 +56,7 @@ const ViewAllReports = () => {
               <td>
                 {report.closedtime
                   ? new Date(report.closedtime).toLocaleString()
-                  : ""}
+                  : "not available"}
               </td>
               <td>{report.resolutiontime}</td>
               <td>{report.rating}</td>
@@ -66,6 +68,7 @@ const ViewAllReports = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

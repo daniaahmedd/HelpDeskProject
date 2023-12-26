@@ -472,13 +472,15 @@ const userController = {
       if(inputOTP == decodedOTP.code){
         const user = await userModel.findOne({ actualUserEmail });
         const userPass = await userModel.find({"email": actualUserEmail},{"password":1,"_id":0});
+        console.log("userPass",userPass)
 
         if (!(userPass[0].password == actualUserPassword)) {
           return res.status(405).send("incorect password");
         }
   
         const currentDateTime = new Date();
-        const expiresAt = new Date(+currentDateTime + 1800000); // expire in 3 minutes
+        const tims = currentDateTime.setFullYear(currentDateTime.getFullYear() + 1);; // expire in 3 minutes
+        const expiresAt = new Date(tims); // expire in 3 minutes
 
         const userId = await userModel.find({"email": actualUserEmail},{"_id":1});
         const userType = await userModel.find({"email": actualUserEmail},{"userType":1,"_id":0});
@@ -487,7 +489,7 @@ const userController = {
           { user: { userId: userId[0]._id, userType: userType[0].userType } },
           secretKey,
           {
-            expiresIn: 3 * 60 * 60,
+            expiresIn: 365 * 24 * 60,
           }
         );
         let newSession = new sessionModel({
@@ -497,7 +499,7 @@ const userController = {
         });
         await newSession.save();
         const actualUser = await userModel.find({"email": actualUserEmail});
-
+console.log(expiresAt);
         return res
           .cookie("token", token, {
             expires: expiresAt,

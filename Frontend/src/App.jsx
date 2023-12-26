@@ -1,12 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
+import Homepage from "./pages/Homepage";
+import Knowldgebasess from "./pages/Knowldgebases";
+import WorkFlowPage from "./pages/WorkFlowPage";
+import ReportPage from "./pages/ReportPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";
 import Getreports from "./components/view-reports";
 import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
-import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
 import Knowldgebasess from "./components/knowledgebases"
 import StartRestore from "./components/restore";
@@ -17,6 +20,8 @@ import AssignRole from "./pages/AssignRole";
 import Register from "./pages/Register";
 import VerifyOTPRegister from "./pages/VerifyOTPRegister";
 import CustomizationPage from "./pages/CustomizationPage";
+import UpdateTicket from "./components/UpdateTicket"
+
 
 function App() {
   return (
@@ -34,13 +39,14 @@ function App() {
                 <Route path="/chat" element={<LiveChat />} />
                 <Route path="/TicketHome" element={<TicketHome />} />
                 <Route path="/Ticket" element={<Ticket />} />
-                <Route path="/UpdateTicket" element={<UpdateTicket />} />
                 <Route path="/RateTicket" element={<RateTicket />} />
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
                 <Route path="/styleCustomize" element={<CustomizationPage />} />
                 <Route path="/restore" element={<StartRestore />} />
+                <Route path="/UpdateTicket" element={<UpdateTicket />} />
+
 
       </Routes>
     </>

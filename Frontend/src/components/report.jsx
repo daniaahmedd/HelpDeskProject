@@ -3,17 +3,27 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import "../stylesheets/report.css";
 import Navbar from "../components/navbar";
+import { useLocation } from "react-router-dom";
 
 const Report = () => {
+  const {state} = useLocation();
   const [tickets, setTickets] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  if(state){
+    console.log(state)
+    var { id, userName, userType, token, users } = state;
+}
+
   useEffect(() => {
     const getTickets = async () => {
+      
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/report/create"
+        const response = await axios.get(
+          "http://localhost:3000/api/report/create", {
+            withCredentials:true
+          }
         );
         setTickets(response.data);
       } catch (error) {
@@ -29,14 +39,15 @@ const Report = () => {
       const response = await axios.post(
         `http://localhost:3000/api/report/create/${_id}`,
         {
-          params: { _id: _id },
-        }
+          params: { _id: _id }, 
+        }, 
+        {withCredentials:true}
       );
 
       setSelectedItem(response.data);
       setShowModal(true); // Show the modal after report creation
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -49,10 +60,12 @@ const Report = () => {
     padding: "20px" // Adjust padding as needed
     // Add other styles as required
   };
-
+  
   return (
+    <> 
+   
+    <Navbar />
     <div className="container mt-4" style={containerStyle}>
-  <Navbar />
       <div className="header">
         <h1>Create A Report</h1>
       </div>
@@ -78,36 +91,50 @@ const Report = () => {
 
       {/* Modal */}
       <Modal show={showModal} onHide={closeModal} className="custom-modal">
-        <Modal.Header closeButton className="modal-header">
-          <Modal.Title className="modal-title">Report Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-body">
-          {selectedItem && (
-            <>
-                <p>Status: {selectedItem.status}</p>
-                <p>Opened Time: {selectedItem.openedtime}</p>
-                <p>Ticket ID: {selectedItem.ticketid}</p>
-              {selectedItem.status == "Closed" && (
-                <>
-                  <p>Closed Time: {selectedItem.closedtime}</p>
-                  <p>Agent ID: {selectedItem.agentid}</p>
-                  <p>Resolution Time: {selectedItem.resolutiontime}</p>
-                  <p>Agent Rating: {selectedItem.Agentrating}</p>
-                  
-                </>
-              )}
-            </>
-          )}
-        </Modal.Body>
+  <Modal.Header closeButton className="modal-header">
+    <Modal.Title className="modal-title">Report Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="modal-body">
+    {selectedItem && (
+      <>
+        <p>Status: {selectedItem.status}</p>
+        <p>Opened Time: {selectedItem.openedtime}</p>
+        <p>Ticket ID: {selectedItem._id}</p>
 
-        <Modal.Footer className="modal-footer">
-          <Button variant="secondary" onClick={closeModal}>
-            Close
-          </Button>
-          {/* You can add additional buttons or actions here */}
-        </Modal.Footer>
-      </Modal>
+        {selectedItem.status === "Closed" && (
+          <>
+            <p>Closed Time: {selectedItem.closedtime}</p>
+            <p>Agent ID: {selectedItem.agentid}</p>
+            <p>Resolution Time: {selectedItem.resolutiontime}</p>
+            <p>Agent Rating: {selectedItem.Agentrating}</p>
+          </>
+        )}
+
+        {selectedItem.status === "Open" && (
+          <>
+
+          </>
+        )}
+
+        {selectedItem.status === "Pending" && (
+          <>
+            <p>Agent ID: {selectedItem.agentid}</p>
+          
+          </>
+        )}
+      </>
+    )}
+  </Modal.Body>
+
+  <Modal.Footer className="modal-footer">
+    <Button variant="secondary" onClick={closeModal}>
+      Close
+    </Button>
+    {/* You can add additional buttons or actions here */}
+  </Modal.Footer>
+</Modal>
     </div>
+    </>
 
 );
 };

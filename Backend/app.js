@@ -24,6 +24,9 @@ const socketIO = require("socket.io");
 //   }
 // }).listen(4000);
 // module.exports= {io};
+const ticketRouter = require("./Routes/Ticket");
+app.use('/api/ticket', ticketRouter);
+
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api',knowledgeBaseRouter);
 const authRouter = require("./Routes/auth");
@@ -35,8 +38,6 @@ app.use(authenticationMiddleware);
 // const liveChat = require("./Routes/LiveChatRouter");
 // app.use("/api/chat", liveChat)
 
-const ticketRouter = require("./Routes/Ticket");
-app.use('/api/ticket', ticketRouter);
 
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
@@ -52,7 +53,7 @@ app.use('/api/report', reportRouter);
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/zeft';
+const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
 
 const connectionOptions = {
   useUnifiedTopology: true,
@@ -65,7 +66,7 @@ mongoose
   .catch((e) => console.log(e));
 
 app.use(function (req, res, next) {
-  return res.status(404).send(e.message);
+  //return res.status(404).send(e.message);
 });
 
 app.listen(process.env.PORT, () => console.log(`server started and listening on port`));  

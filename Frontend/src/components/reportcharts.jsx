@@ -12,7 +12,9 @@ const TicketCharts = () => {
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/report/tickets');
+        const response = await axios.get('http://localhost:3000/api/report/tickets',{
+          withCredentials:true
+        });
         const responseData = response.data;
 
         setData(responseData);
@@ -35,7 +37,7 @@ const TicketCharts = () => {
       createBarChart(categoryCtx, categories, categoryCounts, 'Categories');
 
       const statusCtx = document.getElementById('statusChart').getContext('2d');
-      createBarChart(statusCtx, status, statusCounts, 'Status');
+      createBarChart(statusCtx, status, statusCounts, 'SubCategories');
     }
   }, [data, showCharts]);
 
@@ -69,7 +71,6 @@ const TicketCharts = () => {
             },
           },
         },
-        // Other options...
       }
     });
   };
@@ -79,8 +80,10 @@ const TicketCharts = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="chart-container">
-          <Navbar/>
+         
 
       <button onClick={handleButtonClick}>
         {showCharts ? 'Hide Charts' : 'Show Charts'}
@@ -92,11 +95,12 @@ const TicketCharts = () => {
             <canvas id="categoryChart" width="400" height="300"></canvas>
           </div>
           <div className="chart">
-            <h2 className="chart-title">Status</h2>
+            <h2 className="chart-title">subCategories</h2>
             <canvas id="statusChart" width="400" height="300"></canvas>          </div>
         </div>
       )}
     </div>
+    </>
   );
 };
 
