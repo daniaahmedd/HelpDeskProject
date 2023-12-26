@@ -68,7 +68,13 @@ const Navbar = () => {
         token: token
     } });
     }
-
+    async function handleRestore(){
+      navigate("/restore", { state: { id: id, 
+        userName: userName, 
+        userType:  userType,
+        token: token
+    } });
+    }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position:'relative'}}>
       <a className="navbar-brand" href="/" style={{ marginLeft: 10 }}>
@@ -120,6 +126,7 @@ const Navbar = () => {
               <Dropdown.Item type="button" onClick={handleRegister}>Register User</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleAssignRole}>Assign Roles</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleNavUpdate}>Update Profile</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleRestore}>Recover Data</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleLogout}>Logout</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
