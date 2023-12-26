@@ -7,9 +7,10 @@ import user from "../assets/user.png";
 import send from "../assets/send.png";
 import "../stylesheets/homePageBackground.scss"
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 
 export default function LiveChat() {
-    const [myData, setMyData] = useState('');
     const [currentChat, setCurrentChat] = useState('');
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
@@ -18,22 +19,35 @@ export default function LiveChat() {
     const closeButton = useRef(null);
     const [userDictonairy, setUserDictonairy] = useState([{username: "", userid: "", chatid: ""}]);
     const [socket, setSocket] = useState(null);
+    const navigate = useNavigate();
+    const chatRef = useRef(currentChat)
+    const messagesRef = useRef(messages);
 
-    function scrollToBottom() {
-        chatBody.scrollTop = chatBody.scrollHeight; 
-      }
+    useEffect(() => {
+        messagesRef.current = messages;
+        chatRef.current= currentChat;
+    }, [messages, currentChat]);
+
+       function scrollToBottom() {
+          chatBody.scrollTop = chatBody.scrollHeight; 
+       }
 
       
        async function close() {
             socket.emit('user-disconnected', name);
             
-            await axios.put(`http://localhost:3000/api/chat/closechat/${currentChat}`, {withCredentials: true})
-            .then(()=> console.log("chat closed"))
+            await axios.put(`http://localhost:3000/api/chat/close/${chatRef.current}`, {withCredentials: true})
+            .then(()=> {
+                if (localStorage.getItem('userType')=="User"){
+                  navigate('/fakelogin')
+                }
+                console.log("chat closed")})
             .catch((e)=>console.log(e));
 
             setName('');
             await getChats();
         }
+
 
         async function getChats(){
             await axios.get("http://localhost:3000/api/chat/viewchat", {withCredentials: true})
@@ -46,46 +60,70 @@ export default function LiveChat() {
                 .catch((e)=>console.log(e));
         }
 
-        async function getMyData(){
-            await axios.get("http://localhost:3000/api/chat/user", {withCredentials: true})
-            .then((res)=>setMyData(res.data.user1))
-            .catch((e)=>console.log(e));
-        }
-
-
         async function currentChatDetails(){
             await axios.get(`http://localhost:3000/api/chat/currentchat`, {withCredentials: true})
-            .then((res)=>setName(res.data.chat.userdata.UserName))
+            .then((res)=>{setName(res.data.chat.userdata.UserName)
+            setCurrentChat(res.data.chat._id)
+            chatRef.current= res.data.chat._id;
+            setMessage([]);
+            // res.data.chat.messages.forEach(msg=>{
+            //    if (msg.senderID==localStorage.getItem('userId')){
+            //        setMessages(messages => [...messages, `You: ${msg.content}`]);
+            //    }
+            //    else{
+            //        setMessages(messages => [...messages, msg.content]);
+            //    }
+            // })
+        })
             .catch((e)=>console.log(e));
         }
-        
+
+        async function updateChat(){
+            console.log(currentChat);
+            await axios.get(`http://localhost:3000/api/chat/view/${chatRef.current}`, {withCredentials:true})
+            .then((res)=>{
+
+                setMessage([]);
+                //  res.data.chat.messages.forEach(msg=>{
+                //     if (msg.senderID==localStorage.getItem('userId')){
+                //         setMessages(messages => [...messages, `You: ${msg.content}`]);
+                //     }
+                //     else{
+                //         setMessages(messages => [...messages, msg.content]);
+                //     }
+                //  })
+               const chatMessages = res.data.chat.messages.map(msg => 
+                    msg.senderID==localStorage.getItem('userId')? `You: ${msg.content}`: msg.content)
+                setMessages(chatMessages);
+                messagesRef.current=chatMessages;
+            })
+            .catch(e=>console.log(e));
+        }   
+
     useEffect(() => {
-        getMyData();
+    
         currentChatDetails();
         getChats();
+       
 
         const newSocket = io('http://localhost:4000/api/chat');
 
         setSocket(newSocket);
 
+        let myData = {userType: localStorage.getItem('userType'), _id: localStorage.getItem('userId')};
 
-        let myID = myData._id
-        let myType = myData.userType
-
-        newSocket.emit('new-user',myID, myType);
+        newSocket.emit('new-user',myData);
 
 
-        newSocket.on('chat-message', data => {
-            setMessages(messages => [...messages, `${data.message}`]);
+        newSocket.on('chat-message', async ()=>{
+           await updateChat();  
         });
 
-        newSocket.on('user-disconnected', name => {
-            setMessages(messages => [...messages, `disconnected`]);
-            close(); 
+        newSocket.on('user-disconnected', async () => {
+            // setMessages(messages => [...messages, `disconnected`]);
+            await close(); 
         });
 
-
-       
         async function handleBeforeUnload () {
             await close();
         };
@@ -104,32 +142,33 @@ export default function LiveChat() {
     async function Send(e){
         e.preventDefault();
         if (!message) return;
-
-        let myID = myData._id
-
-        socket.emit('send-chat-message', message, myID, currentChat);
-
+  
         await axios.put("http://localhost:3000/api/chat/sendmessage", {id:currentChat, message: message}, {withCredentials: true})
         .then(()=> console.log("message sent"))
         .catch((e)=>console.log(e));
 
-        setMessages(messages => [...messages, `You: ${message}`]);
+        await updateChat();
+
         setMessage('');
         e.target.reset(); 
 
+        socket.emit('send-chat-message');
     };
     return ( 
         <div className="chat-main-div">
 
-{ myData.userType=="Agent" &&
+{ localStorage.getItem('userType')=="Agent" &&
           <div className="users--div">
             <h4 className="users--h4"> <img src={group} className="group--img"/>Users</h4>
             <div className="user--div--body">
 
               { (userDictonairy.length===1 && userDictonairy[0].chatid=="" && userDictonairy[0].userid=="" && userDictonairy[0].username=="")? null     
-              :userDictonairy.map(user=> <ChatUser key={user.userid} UserName={user.username} setName={ ()=>{
+              :userDictonairy.map(user=> <ChatUser key={user.userid} UserName={user.username} setName={ async ()=>{
                 setName(user.username); 
+                setMessages([]);
                 setCurrentChat(userDictonairy.find(userDic=> userDic.username==user.username).chatid);  
+                chatRef.current=userDictonairy.find(userDic=> userDic.username==user.username).chatid;
+                await updateChat();
                   }}/> )}
 
             </div>
@@ -148,7 +187,7 @@ export default function LiveChat() {
 
             <div className="chat--body">
 
-                    {messages.map((msg, index) => (
+                    {messagesRef.current.map((msg, index) => (
                         <>
                             <div className={msg.includes('You:') ? 'chat--message--mine' : 'chat--message'} key={index} ref={scrollToBottom}>
                                 {msg}
@@ -186,4 +225,3 @@ export default function LiveChat() {
     );
 }
 
-//test if the tab closes , the chat should be closed

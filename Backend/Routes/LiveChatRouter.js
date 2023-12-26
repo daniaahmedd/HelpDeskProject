@@ -19,89 +19,102 @@ liveChat.on("connection", socket=>
     const onlineUsers={};
     const user={};
 
-    // const chat = livechat.findOne({userid:req.User.userid, status:'Open'});
-
-    socket.on("send-chat-message", (message, myID, currentChat) => {
-      targetType = user[myID];
+    socket.on("send-chat-message",() => {
+     
+      // const chat = await livechat.findById(currentChat);
       
-      if(targetType=="Agent"){
-        
-        const chat = livechat.findOne({agentid:myID, _id:currentChat, status:'Open'});
 
-        socket.to(onlineUsers[chat.userid]).emit('chat-message', {message:message});
+      // console.log(onlineUsers);
+      
+      // if(myData.userType=="Agent"){
 
-       }
+      //   socket.join(chat._id);
+      //   console.log(socket.rooms[chat._id]);
+      //   socket.to(chat._id).broadcast.emit('chat-message', {message:message});
+      //   // socket.to(onlineUsers[chat.userid]).emit('chat-message', {message:message});
 
-       if(targetType=="User"){
-        const chat = livechat.findOne({userid:myID, _id:currentChat, status:'Open'});
+      //  }
 
-        socket.to(onlineUsers[chat.agentid]).emit('chat-message', {message:message});
-       }
+      //  if(myData.userType=="User"){
 
-      // socket.broadcast.emit('chat-message', {message:message});
+      //   console.log(socket.rooms[chat._id]);
+      //   socket.to(chat._id).broadcast.emit('chat-message', {message:message});
+      //   // socket.to(onlineUsers[chat.agentid]).emit('chat-message', {message:message});
+      //  }
+
+      socket.broadcast.emit("chat-message");
     });
 
 
-    socket.on('disconnect', ()=>{
+    socket.on('disconnect',async ()=>{
       let disconntedID = onlineUsers[socket.id];
       let disconntedType = user[disconntedID];
       
       if(disconntedType=="Agent"){
-        updateOnline(disconntedID, false);
-        const chat = livechat.find({agentid:disconntedID, status:'Open'});
-        console.log("chat is ", chat);
+        await agent.findOneAndUpdate({agentid:disconntedID}, {$set:{isOnline:false}}, {new:true});
 
-        for (let c of chat){
-          socket.to(onlineUsers[c.userid]).emit('user-disconnected');
-        }
+      //   const chat = await livechat.find({agentid:disconntedID, status:'Open'});
 
-       }
+      //   for (let c of chat){
+      //     // socket.to(onlineUsers[c.userid]).emit('user-disconnected');
+      //     if (c._id && socket.rooms[c._id]) {
 
-       if(disconntedType=="User"){
-        const chat = livechat.find({user:disconntedID, status:'Open'});
-        for (let c of chat){
-          socket.to(onlineUsers[c.agentid]).emit('user-disconnected');
-        }
-       }
+      //     socket.to(c._id).broadcast.emit('user-disconnected');
+      //     socket.leave(c._id);
+      //     }
+      //   }
 
-      socket.broadcast.emit('user-disconnected');
+      //   delete onlineUsers[socket.id];
+      //   delete user[disconntedID];
 
+      //  }
+
+      //  if(disconntedType=="User"){
+      //   const chat =await livechat.find({user:disconntedID, status:'Open'});
+
+      //   for (let c of chat){
+      //     if (c._id && socket.rooms[c._id]) {
+
+      //     // socket.to(onlineUsers[c.agentid]).emit('user-disconnected');
+      //     socket.to(c._id).broadcast.emit('user-disconnected');
+      //     socket.leave(c._id);
+      //   }
+      // }
+
+      //   delete onlineUsers[socket.id];
+      //   delete user[disconntedID];
+      //  }
+      }
     })
 
-    socket.on('new-user', (myID, myType)=>{
-      console.log("my id is ", myID);
-      console.log("my type is ", myType);
-           onlineUsers[socket.id]=myID;
-           user[myID]=myType;
+    socket.on('new-user', async (myData)=>{
+
+           onlineUsers[socket.id]=myData._id;
+           user[myData._id]=myData.userType;
            
-           if(myType=="Agent"){
-              updateOnline(myID,true);
+           if(myData.userType=="Agent"){
+             await agent.findOneAndUpdate({agentid:myData._id}, {$set:{isOnline:true}}, {new:true});
            }
-           
-           
+
+            if(myData.userType=="User"){
+              const chat = await livechat.findOne({userid:myData._id, status:'Open'});
+              socket.join(chat._id);
+            }
+
     })
 
 })
 
-async function updateOnline(id, status){
-  const currentAgent = await agent.findOneAndUpdate({agentid:id}, {$set:{isOnline:status}}, {new:true});
-  console.log("current agent is ", currentAgent);
-}
 
 router.post("/openchat",authorizationMiddleware(['User']) ,LiveChatController.openChat);
-router.put("/closechat/:id", authorizationMiddleware(['User','Agent']), LiveChatController.closeChat);
+router.put("/close/:id", authorizationMiddleware(['User','Agent']), LiveChatController.closeChat);
 router.get("/viewchat", authorizationMiddleware(['Agent']),  LiveChatController.viewChat); 
 router.put("/sendmessage", authorizationMiddleware(['User','Agent']),  LiveChatController.sendmessage);
-router.get("/view", authorizationMiddleware([]), LiveChatController.viewMessages);   //to get all agent chats see which role has access to this
+router.get("/view/:id", LiveChatController.viewMessages);  
 router.get("/user",authorizationMiddleware(['User','Agent']), LiveChatController.currentUser);
 router.get("/currentchat", authorizationMiddleware(['User']), LiveChatController.currentChat);
 
-// router.post ("/triallogin", LiveChatController.triallogin);
+router.post ("/triallogin", LiveChatController.triallogin);
 
 
 module.exports = router;
-
-//think about linking the agents IDs to the socketIds, and the user to the socketId
-//socket.emit to sent to the one who sent the event
-//io.emit to send to all 
-//socket.broadcast.emit to send to all except the one who sent the event
