@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "./navbar";
+import "../stylesheets/knowledgebase.css"
 
 const KnowledgeBaseSearch = () => {
   const [category, setCategory] = useState("");
@@ -29,6 +31,7 @@ const KnowledgeBaseSearch = () => {
 
   return (
     <div className="row g-3 container mx-auto">
+      <Navbar/>
       <div className="col-6">
         <label className="fw-bold mb-0 fs-4 text-body-emphasis">Category:</label>
         <input
@@ -50,19 +53,23 @@ const KnowledgeBaseSearch = () => {
       <div className="col-12 d-flex justify-content-center w-5">
         <button className="px-5 mx-auto" onClick={handleSearch}>Search</button>
       </div>
-      <div className="col-12">
-        <ul>
-          {Array.isArray(searchResults) &&
-            searchResults.map((result) => (
-              <div key={result.question_id}>
-                <p className="fw-bold mb-0 fs-4 text-body-emphasis">{result.question}</p>
-                <p>{result.solution}</p>
+      <div className="results">
+        {Array.isArray(searchResults) &&
+          searchResults.map((result, index) => (
+            <div key={result.question_id} className={`result-card card${index % 2 === 0 ? ' gradient-1' : ' gradient-2'}`}>
+              
+              <div className="card">
+                <div className="card-body">
+                  <p className="card-title fw-bold mb-0 fs-4 text-body-emphasis">{result.question}</p>
+                  <p className="card-text" style={{ color: '#ffffff' }}>{result.solution}</p>
+                </div>
               </div>
-            ))}
-        </ul>
+            </div>
+          ))}
       </div>
     </div>
   );
+
 };
 
 export default KnowledgeBaseSearch;
