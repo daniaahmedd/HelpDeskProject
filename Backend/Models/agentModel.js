@@ -18,7 +18,7 @@ const agentSchema = new mongoose.Schema(
         workload: { //represent the admin capacity to handle the tickets
             //decrement when the admin set a ticket status to close "MARINA's Part"
             type: Number,
-            default: 5
+            default: 0
         },
         Agentrating:{
             type: Number,

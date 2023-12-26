@@ -4,6 +4,8 @@ const ticketModel = require('../Models/ticketModel');
 const agentModel = require('../Models/agentModel');
 const ticketschema = require('../Models/ticketModel');
 const nodemailer = require('nodemailer');
+const sessionModel = require("../Models/sessionModel");
+const workflow = require("../controller/wf")
 const { default: mongoose } = require('mongoose');
 const {
   ObjectId
@@ -32,6 +34,8 @@ async function calcagentpreformance(userRating , agentId){
   console.log(countratingnum)
 }
 
+
+  //---------------------------------------------ticketcontroller -------------------------------------------------
 const TicketController = {
   createTicket: async (req, res) => {
     const valuePriorityMap = {
@@ -39,7 +43,20 @@ const TicketController = {
       2: 'Medium',
       3: 'Low'
     }
-    const { categories, subcategories, issueDescription } = req.body;
+      const reqCookie = req.headers.cookie;
+      const searchTerm = 'token=';
+      const searchIndex = reqCookie.indexOf(searchTerm);
+      const reqToken = reqCookie.substr(searchIndex + searchTerm.length)
+
+      const userSession = await sessionModel.find({token: reqToken},{"userId":1,"_id":0});
+
+      if(!userSession){
+        return res.status(400).send("error : user's session doesn't exist");
+      }
+
+      const userid =  userSession[0].userId
+
+    const { categories, subcategories, issueDescription} = req.body;
       let priority;
         if (subcategories === 'Desktops' || subcategories === 'Laptops' || subcategories === 'Operating system'
          || subcategories === 'Application software') {
@@ -74,6 +91,9 @@ const TicketController = {
           agentid: agentId,
           userid: userid,
         });
+
+       
+
         const newTicket = await ticket.save();
         return res.status(201).json(newTicket);
       } catch (e) {
@@ -82,7 +102,7 @@ const TicketController = {
    
     updateTicket:async(req,res)=>{
     try{
-    const {status,issueSolution}=req.body;
+    const {status, issueSolution, useremail}=req.body;
 
     if(status=="Close"&&issueSolution!=null){
 
@@ -106,7 +126,7 @@ const TicketController = {
   
     let message = {
       from: 'daniaahmed133@gmail.com',
-      to: 'alaa.rawan2020@gmail.com',
+      to: useremail,
       subject: "Ticket Update Confirmation",
       attachments: [
       ],
