@@ -65,7 +65,7 @@ mongoose
   .catch((e) => console.log(e));
 
 app.use(function (req, res, next) {
-  return res.status(404).send(e.message);
+  //return res.status(404).send(e.message);
 });
 
 app.listen(process.env.PORT, () => console.log(`server started and listening on port`));  

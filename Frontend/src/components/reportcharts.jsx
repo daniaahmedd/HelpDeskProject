@@ -12,7 +12,9 @@ const TicketCharts = () => {
   useEffect(() => {
     const fetchTicketData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/report/tickets');
+        const response = await axios.get('http://localhost:3000/api/report/tickets',{
+          withCredentials:true
+        });
         const responseData = response.data;
 
         setData(responseData);
@@ -69,7 +71,6 @@ const TicketCharts = () => {
             },
           },
         },
-        // Other options...
       }
     });
   };
@@ -79,8 +80,10 @@ const TicketCharts = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="chart-container">
-          <Navbar/>
+         
 
       <button onClick={handleButtonClick}>
         {showCharts ? 'Hide Charts' : 'Show Charts'}
@@ -97,6 +100,7 @@ const TicketCharts = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

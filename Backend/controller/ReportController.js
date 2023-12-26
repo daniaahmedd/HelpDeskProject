@@ -1,8 +1,5 @@
 
 const ticketschema = require('../Models/ticketModel');
-const D3Node = require('d3-node');
-const d3 = require('d3');
-const fs = require('fs');
 const sharp = require('sharp');
 const reportModel = require('../Models/reportModel');
 
@@ -36,7 +33,7 @@ const ReportController = {
                 openedtime: ticket.opendedtime,
                 closedtime: null  ,
                 rating: ticket.rating,
-                agentId: null,
+                agentid: null,
                 resolutiontime : null,
                 ticketid: req.params.ticketId,
                 Agentrating : null
@@ -50,27 +47,29 @@ const ReportController = {
                 openedtime: ticket.opendedtime,
                 closedtime: ticket.closetime ,
                 rating: ticket.rating,
-                agentId: ticket.agentid,
+                agentid: ticket.agentid,
                 resolutiontime : ticket.closetime - ticket.opendedtime ,
                 ticketid: req.params.ticketId,
                 Agentrating : ticket.Agentrating
             };
            
-        } else {
+        } else if(ticket.status == "Pending") {
+          console.log("heeeeeeeeeeeeeyyyyyyyyyyyyyyyy")
           reportData = {
             status : ticket.status,
             openedtime: ticket.opendedtime,
             closedtime: null  ,
             rating: ticket.rating,
-            agentId: ticket.agentid,
+            agentid: ticket.agentid,
             resolutiontime : null,
             ticketid: req.params.ticketId,
             Agentrating : null
         };
-        }
+        } //657b0ae8bcf59cbe6d7554ee
 
         // Create a new report based on the provided data
         const newReport = await reportModel.create(reportData);
+        console.log("report",newReport);
 
         return res.status(201).json(newReport);
     } catch (error) {

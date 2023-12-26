@@ -71,6 +71,10 @@ const ticketSchema = new mongoose.Schema(
         rating:{
             type: Number,
             required: false
+        },
+        Agentrating:{
+            type: Number,
+            required: false
         }
 
     },{
