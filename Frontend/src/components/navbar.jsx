@@ -132,8 +132,6 @@ const Navbar = () => {
             <Dropdown.Item type="button" onClick={handleRegister}>Register User</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleNavUpdate}>Update Profile</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleLogout}>Logout</Dropdown.Item>
-              <Dropdown.Item type="button" onClick={handleRestore}>Recover Data</Dropdown.Item>
-              <Dropdown.Item type="button" onClick={handleCustomization}>Style Customize</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleAssignRole}>Assign Roles</Dropdown.Item>
 
             
