@@ -115,12 +115,11 @@ const Navbar = () => {
         <ul className="navbar-nav" style={{marginTop:'-40px'}}>
           <li className="nav-item">
             <a className="nav-link" href="#"  style={{position:'absolute', zIndex:'1000'}}>
-              Features
             </a>
           </li>
           <li className="nav-item" style={{marginLeft:'75px', position:'absolute', zIndex:'1000'}}>
             <a className="nav-link" href="#">
-              Pricing
+              
             </a>
           </li>
           {state && userType && userType == 'User'&&
@@ -130,8 +129,14 @@ const Navbar = () => {
             </Dropdown.Toggle>
       
             <Dropdown.Menu>
+            <Dropdown.Item type="button" onClick={handleRegister}>Register User</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleNavUpdate}>Update Profile</Dropdown.Item>
               <Dropdown.Item type="button" onClick={handleLogout}>Logout</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleRestore}>Recover Data</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleCustomization}>Style Customize</Dropdown.Item>
+              <Dropdown.Item type="button" onClick={handleAssignRole}>Assign Roles</Dropdown.Item>
+
+            
             </Dropdown.Menu>
             </Dropdown>
           }
