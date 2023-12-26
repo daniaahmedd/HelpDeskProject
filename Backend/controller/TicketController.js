@@ -429,12 +429,16 @@ const TicketController = {
    
     updateTicket:async(req,res)=>{
     try{
+<<<<<<< Updated upstream
     const {status, issueSolution, useremail}=req.body;
+=======
+    const {status,issueSolution,emailuser}=req.body;
+>>>>>>> Stashed changes
 
     if(status=="Close"&&issueSolution!=null){
 
     const ticketid = await ticketschema.findByIdAndUpdate(
-      req.params.ticketId,
+      req.params.ticketid,
       { issueSolution:issueSolution },
       { new: true }
     );
@@ -453,7 +457,11 @@ const TicketController = {
   
     let message = {
       from: 'daniaahmed133@gmail.com',
+<<<<<<< Updated upstream
       to: useremail,
+=======
+      to: emailuser,
+>>>>>>> Stashed changes
       subject: "Ticket Update Confirmation",
       attachments: [
       ],
@@ -591,33 +599,7 @@ catch (e) {
 }
 
 },
-    // updateTicket: async (req, res) => {
-    //     const ticket = new ticketModel({
-    //         ticketId: req.body.ticketId,
-    //         status: req.body.status,
-    //         issueSolution: req.body.issueSolution,
-    //     });
-    //     try{
-    //     const updatedTicket = await ticketModel.findOneAndUpdate(
-    //         { _id: ticket.ticketId },
-    //         { status, issueSolution },
-    //         { new: true }
-    //       );
-    //     const userEmail = updatedTicket.userEmail; // Assuming you have the user's email stored in the ticket object
-    //     const emailContent = `Your ticket (ID: ${ticket.ticketId}) has been updated.\n\nStatus:
-    //      ${ticket.status}\n\nIssue Solution: ${ticket.issueSolution}`;
-
-    //     // Logic to send the email to the user (using a library or custom implementation)
-    //     sendEmail(userEmail, 'Ticket Update', emailContent);
-
-    //     // Return the updated ticket or a success message
-    //     res.json({ success: true, updatedTicket });
-
-    //     } catch (error) {
-    //     // Handle any errors that occur during the update or email sending
-    //     console.error('Error updating ticket:', error);
-    //     res.status(500).json({ success: false, error: 'Failed to update ticket and send email.' });
-    // }},
+   
     rateTicket: async (req, res) => {
         
         try {
@@ -643,17 +625,6 @@ catch (e) {
       return res.status(200).send("recieved");
     }
 };
-// Start the server
-  // app.listen(3000, () => {
-  // console.log('Server listening on port 3000');
-  //  });
-  //   if (subcategories) {
-  //       ticket.agentAssigned = availableAgent._id;
-  //       ticket.status = 'pending';
-  //       availableAgent.workload++;
-  //       availableAgent.availability = availableAgent.workload < 5;
-  //       await Promise.all([ticket.save(), availableAgent.save()]);
-  //   }
 
 module.exports = TicketController;
 
