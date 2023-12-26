@@ -25,7 +25,7 @@ const io = socketIO(server, {
 }).listen(4000);
 module.exports= {io};
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
-app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
+app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter);
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
 
