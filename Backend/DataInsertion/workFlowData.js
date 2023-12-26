@@ -1,4 +1,4 @@
-const workFlowModel = require('../Models/workFlowModel');
+const workFlowModel = require('../Models/WorkFlowModel');
 const mongoose = require('mongoose');
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
