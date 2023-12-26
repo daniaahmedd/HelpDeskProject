@@ -41,6 +41,7 @@ const reportSchema = new mongoose.Schema(
 
   }, {
     strict: true,
+    timestamps : false
  
   });
   module.exports= mongoose.model("Report", reportSchema)

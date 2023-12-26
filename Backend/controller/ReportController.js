@@ -5,25 +5,17 @@ const d3 = require('d3');
 const fs = require('fs');
 const sharp = require('sharp');
 const reportModel = require('../Models/reportModel');
+var moment = require('moment');
 
 const ReportController = {
-    gettickets:async (req, res) =>{
-        try {
-            const data = await ticketschema.find().lean().exec();
-            return res.status(200).json(data);
-          } catch (error) {
-            return res.status(500).json({ message: error.message });
-          }
-    },
   createReport : async (req, res) => {
 
     try {
       
         // Get the current time
         const ticket = await ticketschema.findById(req.params.ticketId);
-        const timeOfOpenedTicket = new Date();
 
-        let reportData;
+        var reportData;
         console.log("ticket =>", ticket)
        
 
@@ -36,21 +28,24 @@ const ReportController = {
                 openedtime: ticket.opendedtime,
                 closedtime: null  ,
                 rating: ticket.rating,
-                agentId: null,
+                agentid: null,
                 resolutiontime : null,
                 ticketId: req.params.ticketId,
+                Agentrating : null
             };
         } else {
             // If closed, create a new report with closing time
             console.log("hiiiiiiiiiii")
+            
             reportData = {
                 status : ticket.status,
                 openedtime: ticket.opendedtime,
                 closedtime: ticket.closetime ,
                 rating: ticket.rating,
-                agentId: ticket.agentid,
+                agentid: ticket.agentid,
                 resolutiontime : ticket.closetime - ticket.opendedtime ,
                 ticketId: req.params.ticketId,
+                Agentrating : ticket.Agentrating
             };
         }
 
@@ -59,6 +54,9 @@ const ReportController = {
 
         return res.status(201).json(newReport);
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message });
+        }
         return res.status(400).json({ message: error.message });
     }
 
@@ -73,7 +71,7 @@ module.exports = {
 
     getReport:async (req, res) =>{
         try {
-            const report = await report.findById(req.params.reportid);
+            const report = await reportModel.findById(req.params.reportid);
             return res.status(200).json(report);
           } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -82,95 +80,69 @@ module.exports = {
 
     getTrends: async (req, res) =>{
         try {
-            const starttime= req.body.starttime;
-            const closetime= req.body.closetime;
-            const reports = await report.find({opendtime:starttime , closedtime:closetime});
-            if(! reports){
-                return res.status(500).send("There is no reports in this time interval");
-            }
-            const ticketId = await reports.ticketId ; // array of ticketids
-            const categories = await ticketId.map(async (id)=>{
-                const ticket = await ticket.findById(id);
-                return ticket.categories
-            } )
-            const subcategories = await ticketId.map(async (id)=>{
-                const ticket = await ticket.findById(id);
-                return ticket.subcategories
-            } )
-            var os = 0;
-            var AppSoftware = 0;
-            var CustomSoftware = 0;
-            var IntegrationIssues = 0;
-            var  EmailIssues = 0;
-            var InternetConnection = 0;
-            var WebsiteErrors = 0;
-            var Desktops = 0;
-            var Laptops = 0;
-            var Printers = 0;
-            var Servers = 0;
-            var Networking = 0;
-            var Software = 0;
-            var Hardware = 0;
-            var Network = 0;
+            
+                const starttime = req.body.starttime;
+                const closetime = req.body.closetime;
+                const tikets = await ticketschema.find({opendedtime: starttime, closetime: closetime });
+            
+                if (!tikets || tikets.length === 0) {
+                    return res.status(500).send("There are no tickets in this time interval");
+                }
 
-            await subcategories.map((subcategories)=>{
-                switch(subcategories) {
-                    case "Desktops": 
-                        Desktops++ ;
-                        Hardware++;
-                        break;
-                    case "Laptops" : 
-                        Laptops++ ; 
-                        Hardware++;
-                        break;
-                    case "Printers" : 
-                        Printers++; 
-                        Hardware++;
-                        break;
-                    case "Servers": 
-                        Servers++; 
-                        Hardware++;
-                        break;
-                    case "Networking equipment": 
-                        Networking++;  
-                        Hardware++;
-                        break;
-                    case "Operating system" : 
-                        os++;  
-                        Software++;
-                        break;
-                    case "Application software": 
-                        AppSoftware++; 
-                        Software++;
-                        break;
-                    case "Custom software": 
-                        CustomSoftware++;  
-                        Software++;
-                        break;
-                    case "Integration issues" : 
-                        IntegrationIssues++; 
-                        Software++;
-                        break;
-                    case "Email issues" : 
-                        EmailIssues++;  
-                        Network++;
-                        break;
-                    case "Internet connection problems" : 
-                        InternetConnection++;  
-                        Network++;
-                        break;
-                    case "Website errors" : 
-                        WebsiteErrors++; 
-                        Network++;
-                        break;
-                }
-                subcateg = [os, AppSoftware, CustomSoftware, IntegrationIssues, EmailIssues, 
-                      InternetConnection, WebsiteErrors,Desktops, Laptops, Printers, Servers, Networking];
-                function solution(subcateg) {
-                    return Object.keys(subcateg).reduce((prev, cur) => subcateg[prev] > subcateg[cur] ? prev : cur);
-                }
-                solution(subcateg)
-            })
+                console.log("tikets", tikets)
+                const ticketIds = tikets.map((tikets) =>tikets._id);
+            
+                const subcategoriesPromises = ticketIds.map(async (id) => {
+                    const ticket = await ticketschema.findById(id);
+                    return ticket ? ticket.subcategories : null;
+                });
+            
+                const subcategories = await Promise.all(subcategoriesPromises);
+            
+                const categoriesCount = {
+                    os: 0,
+                    AppSoftware: 0,
+                    CustomSoftware: 0,
+                    IntegrationIssues: 0,
+                    EmailIssues: 0,
+                    InternetConnection: 0,
+                    WebsiteErrors: 0,
+                    Desktops: 0,
+                    Laptops: 0,
+                    Printers: 0,
+                    Servers: 0,
+                    Networking: 0,
+                };
+                var Hardware = 0;
+                var Software = 0;
+                var Network = 0;
+            
+                subcategories.forEach((subcategory) => {
+                    switch (subcategory) {
+                        case "Desktops":
+                        case "Laptops":
+                        case "Printers":
+                        case "Servers": 
+                        case "Networking equipment":
+                            Hardware++;
+                            break;
+                        case "Operating system":
+                        case "Application software":
+                        case "Custom software":
+                        case "Integration issues":
+                            Software++;
+                            break;
+                        case "Email issues":
+                        case "Internet connection problems":
+                        case "Website errors":
+                           Network++;
+                            break;
+                    }
+                    categoriesCount[subcategory]++;
+                });
+               
+               console.log("hardware=>",Hardware)
+                
             //==========creating categery histogram================ 
             const options = {
                 d3Module: d3,
@@ -328,49 +300,50 @@ module.exports = {
                 .attr('font-size', '20px')
                 .text('status');
             // Appending y-aixs
-            svg2.append('g')
-                .attr('transform', 'translate(50,0)')
-                .call(d3.axisLeft(yScale).tickFormat((d) => {
-                return `$${ d }`;
-                })
-                .ticks(5))
-                .append('text')
-                .attr('transform', 'rotate(-90)')
-                .attr('y', 150)
-                .attr('x', -150)
-                .attr('dy', '-9.1em')
-                .attr('text-anchor', 'end')
-                .attr('stroke', 'black')
-                .attr('font-size', '20px')
-                .text('values');
-             // Appending the bars
-            svg2.selectAll('.bar')
-                .data(tempData2)
-                .enter().append('rect')
-                .attr('transform', 'translate(50,0)')
-                .attr('class', 'bar')
-                .attr('x', (d) => { return xScale(d.status); })
-                .attr('y', (d) => { return yScale(d.value); })
-                .attr('width', xScale.bandwidth())
-                .attr('height', (d) => { return height - yScale(d.value); })
-                .style('fill', 'purple');
-            // Create a SVG. 
-            fs.writeFileSync('out2.svg', d3n.svgString());
+                svg2.append('g')
+                    .attr('transform', 'translate(50,0)')
+                    .call(d3.axisLeft(yScale2).tickFormat((d) => {
+                    return `$${ d }`;
+                    })
+                    .ticks(5))
+                    .append('text')
+                    .attr('transform', 'rotate(-90)')
+                    .attr('y', 150)
+                    .attr('x', -150)
+                    .attr('dy', '-9.1em')
+                    .attr('text-anchor', 'end')
+                    .attr('stroke', 'black')
+                    .attr('font-size', '20px')
+                    .text('values');
+                // Appending the bars
+                svg2.selectAll('.bar')
+                    .data(tempData2)
+                    .enter().append('rect')
+                    .attr('transform', 'translate(50,0)')
+                    .attr('class', 'bar')
+                    .attr('x', (d) => { return xScale2(d.status); })
+                    .attr('y', (d) => { return yScale2(d.value); })
+                    .attr('width', xScale2.bandwidth())
+                    .attr('height', (d) => { return height2 - yScale2(d.value); })
+                    .style('fill', 'purple');
+                // Create a SVG. 
+                fs.writeFileSync('graphs/out2.svg', d3n2.svgString());
+                sharp('graphs/out2.svg')
+                    .png()
+                    .toFile('graphs/sharp2.png')
+                    .then((info) => {
+                        console.log('Svg to Png conversion completed', info);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+  
 
-            // Convert the SVG into a PNG. 
-            sharp('out2.svg')
-                .png()
-                .toFile('sharp2.png')
-                .then((info) => {
-                    console.log('Svg to Png conversion completed', info);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });  
-                
-        }catch (error) {
-            return res.status(500).json({ message: error.message });
-        }
+                    return res.status(200).send("done")
+                } catch (error) {
+                    //console.error("Error during chart generation:", error);
+                    return res.status(400).json({ message: error.message });
+                }
     }
 };
 module.exports = ReportController ;

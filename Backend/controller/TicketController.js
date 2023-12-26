@@ -39,7 +39,7 @@ const TicketController = {
       2: 'medium',
       3: 'low'
     }
-    const { categories, subcategories, issueDescription,userid } = req.body;
+    const { categories, subcategories, issueDescription } = req.body;
       let priority;
         if (subcategories === 'Desktops' || subcategories === 'Laptops' || subcategories === 'Operating system'
          || subcategories === 'Application software') {
@@ -54,12 +54,8 @@ const TicketController = {
         priority = 0;
       }
       try {
-<<<<<<< Updated upstream
-        const agentId = null;
-=======
         const ticketId = new ObjectId();
         const agentId = req.params.agentId;
->>>>>>> Stashed changes
         const ticket = new ticketModel({
           ticketId: ticketId,
           categories: categories,

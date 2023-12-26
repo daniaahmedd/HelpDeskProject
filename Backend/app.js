@@ -26,7 +26,6 @@ const io = socketIO(server, {
 module.exports= {io};
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api/knowledgeBaseRoutes',knowledgeBaseRouter.viewknowledgeBase);
-
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
 app.use(authenticationMiddleware);
 
@@ -51,10 +50,7 @@ app.use('/api/users', usersRouter);
 const backupRouter = require("./Routes/backup");
 app.use('/api/backup', backupRouter);
 const reportRouter = require("./Routes/Report");
-const e = require("express");
 app.use('/api/report', reportRouter);
-const agentrooter = require("./Routes/Agent");
-app.use('/api/agent', agentrooter);
 
 
 
