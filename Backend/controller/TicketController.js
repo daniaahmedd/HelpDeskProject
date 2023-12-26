@@ -428,11 +428,7 @@ const TicketController = {
    
     updateTicket:async(req,res)=>{
     try{
-<<<<<<< Updated upstream
-    const {status, issueSolution, useremail}=req.body;
-=======
     const {status,issueSolution,emailuser}=req.body;
->>>>>>> Stashed changes
 
     if(status=="Close"&&issueSolution!=null){
 
@@ -456,11 +452,7 @@ const TicketController = {
   
     let message = {
       from: 'daniaahmed133@gmail.com',
-<<<<<<< Updated upstream
-      to: useremail,
-=======
       to: emailuser,
->>>>>>> Stashed changes
       subject: "Ticket Update Confirmation",
       attachments: [
       ],
