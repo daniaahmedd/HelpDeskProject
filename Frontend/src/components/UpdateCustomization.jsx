@@ -76,7 +76,7 @@ const UpdateCustomizationForm = () => {
       setError(null);
     } catch (error) {
       console.error("Error updating customization:", error.message);
-      setError("Looks like you don't have a customization");
+      setError("Looks like you don't have a customization!");
       setSuccess(null);
     } finally {
       setSubmitting(false);
