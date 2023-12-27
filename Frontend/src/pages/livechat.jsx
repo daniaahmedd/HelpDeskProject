@@ -5,9 +5,12 @@ import ChatUser from "../components/chatUser";
 import group from "../assets/group.png";
 import user from "../assets/user.png";
 import send from "../assets/send.png";
-import "../stylesheets/homePageBackground.scss"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../stylesheets/homePageBackground.scss";
+import "../stylesheets/homePage.css";
 import axios from 'axios';
 import { useNavigate,useLocation } from "react-router-dom";
+import Navbar from "../components/navbar"
 
 
 export default function LiveChat() {
@@ -145,6 +148,8 @@ export default function LiveChat() {
         socket.emit('send-chat-message');
     };
     return ( 
+        <>
+        <Navbar/>
         <div className="chat-main-div">
 
 { userType=="Agent" &&
@@ -211,7 +216,7 @@ export default function LiveChat() {
           </div>
 
         </div>
-
+        </>
     );
 }
 
