@@ -1,9 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
-import Homepage from "./pages/Homepage";
-import Knowldgebasess from "./pages/Knowldgebases";
-import WorkFlowPage from "./pages/WorkFlowPage";
-import ReportPage from "./pages/ReportPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";
@@ -14,7 +10,7 @@ import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
 import Knowldgebasess from "./components/knowledgebases"
 import StartRestore from "./components/restore";
-// import WorkFlowPage from "./pages/"
+import WorkFlowPage from "./pages/WorkFlowPage"
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
@@ -34,7 +30,7 @@ function App() {
                 <Route path="/api/auth/verifyOTPRegister" element={<VerifyOTPRegister />} />
                 <Route path="/FAQ" element={<Knowldgebasess/>} />
                 <Route path="/login" element={<Homepage />} />
-                {/* <Route path="/workflow" element={<WorkFlowPage />} /> */}
+                <Route path="/workflow" element={<WorkFlowPage />} />
                 <Route path="/chat" element={<LiveChat />} />
                 <Route path="/TicketHome" element={<TicketHome />} />
                 <Route path="/Ticket" element={<Ticket />} />
