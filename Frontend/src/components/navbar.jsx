@@ -108,6 +108,17 @@ const Navbar = () => {
       state: { id: id, userName: userName, userType: userType, token: token },
     });
   }
+
+  async function handleKB() {
+    navigate("/FAQ");
+  }
+
+  async function handleCreateTicket(){
+    navigate("/Ticket", {
+      state: { id: id, userName: userName, userType: userType, token: token },
+    });
+  }
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark bg-dark"
@@ -131,18 +142,18 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav" style={{ marginTop: "-40px" }}>
           <li className="nav-item">
-            <a
+            <p
               className="nav-link"
-              href="#"
+              role="button" onClick={handleKB}
               style={{ position: "absolute", zIndex: "1000" }}
-            ></a>
+            >Knowledge Base</p>
           </li>
-          <li
+          {/* <li
             className="nav-item"
             style={{ marginLeft: "75px", position: "absolute", zIndex: "1000" }}
           >
             <a className="nav-link" href="#"></a>
-          </li>
+          </li> */}
           {state && userType && userType == "User" && (
             <Dropdown
               style={{
@@ -170,6 +181,9 @@ const Navbar = () => {
                 </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handleAssignRole}>
                   Assign Roles
+                </Dropdown.Item>
+                <Dropdown.Item type="button" onClick={handleCreateTicket}>
+                  Create Ticket
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -202,6 +216,9 @@ const Navbar = () => {
                 <Dropdown.Item type="button" onClick={handleRestore}>
                   Recover Data
                 </Dropdown.Item>
+                <Dropdown.Item type="button" onClick={handleCreateTicket}>
+                  Create Ticket
+                </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handleLogout}>
                   Logout
                 </Dropdown.Item>
@@ -232,6 +249,9 @@ const Navbar = () => {
                 </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handleCreateReport}>
                   Create Report
+                </Dropdown.Item>
+                <Dropdown.Item type="button" onClick={handleCreateTicket}>
+                  Create Ticket
                 </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handlereportchart}>
                   Create Report

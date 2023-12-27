@@ -28,6 +28,10 @@ const agentSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
+        agentIdentifier:{
+            type: Number,
+            required: true
+        },
     },
     {
     strict: true,

@@ -25,7 +25,7 @@ const UpdateCustomizationForm = () => {
     headerBackgroundColor: "",
   });
 
-   const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 

@@ -372,25 +372,25 @@ async function assignTicket(ticket) {
 const TicketController = {
   createTicket: async (req, res) => {
     const valuePriorityMap = {
-      1: "High",
-      2: "Medium",
-      3: "Low",
+      1: "high",
+      2: "medium",
+      3: "low",
     };
-    const reqCookie = req.headers.cookie;
-    const searchTerm = "token=";
-    const searchIndex = reqCookie.indexOf(searchTerm);
-    const reqToken = reqCookie.substr(searchIndex + searchTerm.length);
+    // const reqCookie = req.headers.cookie;
+    // const searchTerm = "token=";
+    // const searchIndex = reqCookie.indexOf(searchTerm);
+    // const reqToken = reqCookie.substr(searchIndex + searchTerm.length);
 
-    const userSession = await sessionModel.find(
-      { token: reqToken },
-      { userId: 1, _id: 0 }
-    );
+    // const userSession = await sessionModel.find(
+    //   { token: reqToken },
+    //   { userId: 1, _id: 0 }
+    // );
 
-    if (!userSession) {
-      return res.status(400).send("error : user's session doesn't exist");
-    }
+    // if (!userSession) {
+    //   return res.status(400).send("error : user's session doesn't exist");
+    // }
 
-    const userid = userSession[0].userId;
+    // const userid = userSession[0].userId;
 
     const { categories, subcategories, issueDescription } = req.body;
     let priority;
@@ -427,7 +427,7 @@ const TicketController = {
     //return priority;
 
     try {
-      const agentId = req.params.agentId;
+      const userId = req.body.userid;
       const ticket = new ticketModel({
         categories: categories,
         subcategories: subcategories,
@@ -436,8 +436,7 @@ const TicketController = {
         status: "Open", // Assuming 'status' is a required field with a default value
         closetime: Date.now(),
         openedtime: Date.now(), // Assuming 'openedtime' is a required field with a default value,
-        agentid: agentId,
-        userid: userid,
+        userid: userId,
       });
       loadAgents();
       prioritiseTicket(ticket);

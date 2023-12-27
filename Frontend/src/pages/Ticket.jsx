@@ -1,6 +1,7 @@
 import Navbar from "../components/navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for React Router v6
 // import { useAuth } from '../authContext';
@@ -15,17 +16,26 @@ export default function Ticket() {
  const [issueDesc, setIssueDesc ] = useState("");
  const [result, setResult] = useState("");
  const navigate = useNavigate(); // Use useNavigate for navigation in React Router v6
+ const {state} = useLocation();
+
+ if(state){
+  console.log(state)
+  var { id, userName, userType, token } = state;
+}
 
  const handleCreate = async(event) => {
  console.log(categories, subcategories, issueDesc);
  event.preventDefault();
  try{
-    const response = await axios.post("http://localhost:3000/api/ticket/create", {
+    const response = await axios.post(`http://localhost:3000/api/ticket/create`, {
     categories: categories,
     subcategories: subcategories,
     issueDescription: issueDesc,
+    userid: id
     //userId: user ? user.id : null,
- })
+    }, {
+      withCredentials: true
+    })
  setResult(response.data);
  console.log(response.data);
  }catch(error) {
@@ -37,8 +47,8 @@ export default function Ticket() {
    };
     return (
         <>
-          <div>
             <Navbar />
+          <div>
             <h4>Create Ticket</h4>
             <p>Categories</p>
         <input type="text" className="form-control" placeholder="Enter Category" value={categories}
