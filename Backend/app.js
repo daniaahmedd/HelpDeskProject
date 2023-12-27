@@ -24,6 +24,9 @@ const socketIO = require("socket.io");
 //   }
 // }).listen(4000);
 // module.exports= {io};
+const ticketRouter = require("./Routes/Ticket");
+app.use('/api/ticket', ticketRouter);
+
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api',knowledgeBaseRouter);
 const authRouter = require("./Routes/auth");
@@ -35,8 +38,6 @@ app.use(authenticationMiddleware);
 // const liveChat = require("./Routes/LiveChatRouter");
 // app.use("/api/chat", liveChat)
 
-const ticketRouter = require("./Routes/Ticket");
-app.use('/api/ticket', ticketRouter);
 
 
 const customizationRouter = require("./Routes/customization");
@@ -56,7 +57,7 @@ app.use('/api/report', reportRouter);
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/tickets';
+const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
 
 const connectionOptions = {
   useUnifiedTopology: true,

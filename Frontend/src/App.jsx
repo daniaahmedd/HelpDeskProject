@@ -8,7 +8,6 @@ import Reportchart from "./components/reportcharts";
 import Getreports from "./components/view-reports";
 import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
-import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
 import StartRestore from "./components/restore";
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
@@ -20,6 +19,8 @@ import CustomizationCheck from "./components/CustomizationCheck";
 import Customizationform from "./components/CustomizationForm";
 import UpdateCustomization from "./components/UpdateCustomization";
 
+import CustomizationPage from "./pages/CustomizationPage";
+import UpdateTicket from "./components/UpdateTicket"
 
 
 function App() {
@@ -38,7 +39,6 @@ function App() {
                 <Route path="/chat" element={<LiveChat />} />
                 <Route path="/TicketHome" element={<TicketHome />} />
                 <Route path="/Ticket" element={<Ticket />} />
-                <Route path="/UpdateTicket" element={<UpdateTicket />} />
                 <Route path="/RateTicket" element={<RateTicket />} />
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
@@ -48,6 +48,8 @@ function App() {
                 <Route path="/UpdateCustomization" element={<UpdateCustomization />} />
 
                 <Route path="/restore" element={<StartRestore />} />
+                <Route path="/UpdateTicket" element={<UpdateTicket />} />
+
 
       </Routes>
     </>

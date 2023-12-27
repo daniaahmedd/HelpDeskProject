@@ -13,7 +13,7 @@ const WorkFlowPage = () => {
 
     const fetchWorkflows = async () => {
         try {
-            const response = await axios.post('/api/workflows', { category, subcategory });
+            const response = await axios.post('/api/workflow', { category, subcategory });
             setWorkflows(response.data.data);
             setErrorMessage('');
         } catch (error) {
