@@ -589,6 +589,15 @@ const TicketController = {
        </body>
       </html>`,
       };
+      // const ticket  = ticketschema.findById(req.params.ticketid);
+      // const assignedAgentId = ticket.agentid;
+      // const assignedAgent = await agentModel.findById(assignedAgentId);
+      // const prevWorkload = await agentModel.find({_id:assignedAgentId},{workload:1,_id:0});;
+      // const newAgentWorkload = await agentModel.findByIdAndUpdate(
+      //   assignedAgentId,
+      //   { workload: prevWorkload - 1},
+      //   { new: true }
+      // );
       transporter
         .sendMail(message)
         .then(() => {
