@@ -27,11 +27,7 @@ const agentSchema = new mongoose.Schema(
         isOnline:{
             type: Boolean,
             default: false
-        },
-        agentIdentifier:{
-            type: Number,
-            required: true
-        },
+        }
     },
     {
     strict: true,
