@@ -7,7 +7,9 @@ const CustomizationPage = () => {
   useEffect(() => {
     const fetchCustomizationData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/customization/styleCustomize/find");
+        const response = await axios.get("http://localhost:3000/api/customization/styleCustomize/find", {
+          withCredentials:true
+        });
         setHasCustomization(true);
         console.log("Fetched customization data:", response.data);
       } catch (error) {

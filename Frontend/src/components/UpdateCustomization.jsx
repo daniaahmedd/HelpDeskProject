@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./customization.css";
+import "../stylesheets/customization.css";
 
 const UpdateCustomizationForm = () => {
   const [customizationData, setCustomizationData] = useState({
@@ -32,9 +32,17 @@ const UpdateCustomizationForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/customization/styleCustomize/find");
+        const response = await axios.get("http://localhost:3000/api/customization/styleCustomize/find", {
+          withCredentials:true
+        });
+        const { _id, ...dataWithoutId ,__v ,...dataWithoutv } = response.data;
+        
+
+        setCustomizationData(dataWithoutId ,dataWithoutv );
+        
+
         console.log("Fetched Data:", response.data);
-        setCustomizationData(response.data); // Assuming the API returns the entire data
+        //setCustomizationData(response.data); // Assuming the API returns the entire data
         setError(null);
       } catch (error) {
         console.error("Error fetching customization data:", error.message);
@@ -60,7 +68,7 @@ const UpdateCustomizationForm = () => {
     try {
       const response = await axios.put(
         "http://localhost:3000/api/customization/styleCustomize/edit",
-        customizationData
+        customizationData , { withCredentials:true}
       );
 
       console.log("Server Response:", response.data);

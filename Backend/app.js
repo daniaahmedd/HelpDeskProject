@@ -38,6 +38,10 @@ app.use(authenticationMiddleware);
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
 
+
+const customizationRouter = require("./Routes/customization");
+app.use('/api/customization', customizationRouter);
+
 const workflowRouter = require("./Routes/workFlow");
 app.use('/api/workflow',workflowRouter);
 

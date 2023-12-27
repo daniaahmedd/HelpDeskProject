@@ -1,9 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
-import Homepage from "./pages/Homepage";
-import Knowldgebasess from "./pages/Knowldgebases";
+import Knowldgebasess from "./components/knowledgebases";
 import WorkFlowPage from "./pages/WorkFlowPage";
-import ReportPage from "./pages/ReportPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";
@@ -12,15 +10,17 @@ import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
 import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
-import Knowldgebasess from "./components/knowledgebases"
 import StartRestore from "./components/restore";
-// import WorkFlowPage from "./pages/"
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
 import Register from "./pages/Register";
 import VerifyOTPRegister from "./pages/VerifyOTPRegister";
-import CustomizationPage from "./pages/CustomizationPage";
+import CustomizationCheck from "./components/CustomizationCheck";
+import Customizationform from "./components/CustomizationForm";
+import UpdateCustomization from "./components/UpdateCustomization";
+
+
 
 function App() {
   return (
@@ -43,7 +43,10 @@ function App() {
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
-                <Route path="/styleCustomize" element={<CustomizationPage />} />
+                <Route path="/CustomizationCheck" element={<CustomizationCheck />} />
+                <Route path="/CustomizationForm" element={<Customizationform />} />
+                <Route path="/UpdateCustomization" element={<UpdateCustomization />} />
+
                 <Route path="/restore" element={<StartRestore />} />
 
       </Routes>

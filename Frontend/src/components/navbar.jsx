@@ -98,12 +98,7 @@ const Navbar = () => {
       });
       console.log('handleCustomization', response.data);
       if(response.status == 200){
-        navigate("/styleCustomize", { state: { id: id, 
-          userName: userName, 
-          userType:  userType,
-          token: token, 
-          users: response.data
-      } });
+        navigate("/styleCustomize");
       }
       
     }
