@@ -9,11 +9,17 @@ const Report = () => {
   const [tickets, setTickets] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getTickets = async () => {
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           "http://localhost:3000/api/ticket/gettickets"
         );
         setTickets(response.data);
@@ -39,6 +45,8 @@ const Report = () => {
     setShowModal(false);
     setSelectedItem(null);
   };
+ 
+  
 
   const handleUpdate = async () => {
     try {
@@ -56,10 +64,35 @@ const Report = () => {
       console.error("Error updating ticket:", error);
     }
   };
+  const handleSubmit = async (ticketId) => {
+    console.log("Submitting for ticket ID:", ticketId);
+    setSubmitting(true);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/ticket/rate/${ticketId}`,
+        {
+          rating: rating,
+        }
+        );
+        closeRatingModal();
+
+      console.log("Server Response:", response.data);
+      setSuccess(`Ticket ${ticketId} rated successfully!`);
+      setError(null);
+    } catch (error) {
+      console.error(`Error rating ticket ${ticketId}:`, error.message);
+      setError(`Error rating ticket ${ticketId}`);
+      setSuccess(null);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div>
-      <Navbar />
       <div className="container mt-4">
+        <Navbar />
         <div className="row">
           {tickets.map((ticket) => (
             <div key={ticket._id} className="col-md-4 mb-3">
@@ -71,6 +104,7 @@ const Report = () => {
                   <Button variant="secondary" onClick={() => openModal(ticket)}>
                     Update Ticket
                   </Button>
+    
                 </div>
               </div>
             </div>
@@ -116,7 +150,6 @@ const Report = () => {
               </Form>
             )}
           </Modal.Body>
-
           <Modal.Footer className="modal-footer">
             <Button variant="secondary" onClick={closeModal}>
               Close
@@ -126,9 +159,44 @@ const Report = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal
+          show={showRatingModal}
+          onHide={closeRatingModal}
+          className="custom-modal"
+        >
+          <Modal.Header closeButton className="modal-header">
+            <Modal.Title className="modal-title">Rate Ticket</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="modal-body">
+            {/* Form fields for rating the ticket */}
+            <Form>
+              <Form.Group controlId="formRating">
+                <Form.Label>Rating</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter rating"
+                  value={isNaN(rating) ? "" : rating}
+                  onChange={(e) => setRating(parseInt(e.target.value))}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer className="modal-footer">
+            <Button variant="secondary" onClick={closeRatingModal}>
+              Close
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => handleSubmit(selectedTicketId)}
+              disabled={submitting}
+            >
+              {submitting ? "Submitting..." : "Submit"}
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );
 };
-
 export default Report;

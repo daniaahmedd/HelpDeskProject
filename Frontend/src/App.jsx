@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
-import Knowldgebasess from "./components/knowledgebases";
 import WorkFlowPage from "./pages/WorkFlowPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
@@ -8,7 +7,7 @@ import Reportchart from "./components/reportcharts";
 import Getreports from "./components/view-reports";
 import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
-import RateTicket from "./pages/RateTicket";
+import RateTicket from "./components/rateticket";
 import StartRestore from "./components/restore";
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
@@ -18,9 +17,9 @@ import VerifyOTPRegister from "./pages/VerifyOTPRegister";
 import CustomizationCheck from "./components/CustomizationCheck";
 import Customizationform from "./components/CustomizationForm";
 import UpdateCustomization from "./components/UpdateCustomization";
-
 import CustomizationPage from "./pages/CustomizationPage";
 import UpdateTicket from "./components/UpdateTicket"
+import Knowldgebasess from "./components/knowledgebases"
 
 
 function App() {
@@ -46,7 +45,6 @@ function App() {
                 <Route path="/CustomizationCheck" element={<CustomizationCheck />} />
                 <Route path="/CustomizationForm" element={<Customizationform />} />
                 <Route path="/UpdateCustomization" element={<UpdateCustomization />} />
-
                 <Route path="/restore" element={<StartRestore />} />
                 <Route path="/UpdateTicket" element={<UpdateTicket />} />
 

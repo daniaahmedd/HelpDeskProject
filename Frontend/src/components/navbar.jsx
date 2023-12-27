@@ -98,6 +98,11 @@ const Navbar = () => {
       state: { id: id, userName: userName, userType: userType, token: token },
     });
   }
+  async function handelrateticket() {
+    navigate("/rateticket")
+  
+  }
+  
   async function handleRestore() {
     navigate("/restore", {
       state: { id: id, userName: userName, userType: userType, token: token },
@@ -153,6 +158,9 @@ const Navbar = () => {
               <Dropdown.Menu>
                 <Dropdown.Item type="button" onClick={handleRegister}>
                   Register User
+                </Dropdown.Item>
+                <Dropdown.Item type="button" onClick={handelrateticket}>
+                  Rate Ticket
                 </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handleNavUpdate}>
                   Update Profile
