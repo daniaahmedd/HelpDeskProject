@@ -65,6 +65,12 @@ const Navbar = () => {
     }
   }
 
+  async function handleOpenChat() {
+    navigate("/chat", {
+      state: { id: id, userName: userName, userType: userType, token: token },
+    });
+  }
+
   async function handleRegister() {
     navigate("/register", {
       state: { id: id, userName: userName, userType: userType, token: token },
@@ -261,6 +267,9 @@ const Navbar = () => {
               <Dropdown.Menu>
                 <Dropdown.Item type="button" onClick={handleNavUpdate}>
                   Update Profile
+                </Dropdown.Item>
+                <Dropdown.Item type="button" onClick={handleOpenChat}>
+                  Live Chat Support
                 </Dropdown.Item>
                 <Dropdown.Item type="button" onClick={handleLogout}>
                   Logout

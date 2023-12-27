@@ -20,27 +20,6 @@ liveChat.on("connection", socket=>
     const user={};
 
     socket.on("send-chat-message",() => {
-     
-      // const chat = await livechat.findById(currentChat);
-      
-
-      // console.log(onlineUsers);
-      
-      // if(myData.userType=="Agent"){
-
-      //   socket.join(chat._id);
-      //   console.log(socket.rooms[chat._id]);
-      //   socket.to(chat._id).broadcast.emit('chat-message', {message:message});
-      //   // socket.to(onlineUsers[chat.userid]).emit('chat-message', {message:message});
-
-      //  }
-
-      //  if(myData.userType=="User"){
-
-      //   console.log(socket.rooms[chat._id]);
-      //   socket.to(chat._id).broadcast.emit('chat-message', {message:message});
-      //   // socket.to(onlineUsers[chat.agentid]).emit('chat-message', {message:message});
-      //  }
 
       socket.broadcast.emit("chat-message");
     });
@@ -53,37 +32,6 @@ liveChat.on("connection", socket=>
       if(disconntedType=="Agent"){
         await agent.findOneAndUpdate({agentid:disconntedID}, {$set:{isOnline:false}}, {new:true});
 
-      //   const chat = await livechat.find({agentid:disconntedID, status:'Open'});
-
-      //   for (let c of chat){
-      //     // socket.to(onlineUsers[c.userid]).emit('user-disconnected');
-      //     if (c._id && socket.rooms[c._id]) {
-
-      //     socket.to(c._id).broadcast.emit('user-disconnected');
-      //     socket.leave(c._id);
-      //     }
-      //   }
-
-      //   delete onlineUsers[socket.id];
-      //   delete user[disconntedID];
-
-      //  }
-
-      //  if(disconntedType=="User"){
-      //   const chat =await livechat.find({user:disconntedID, status:'Open'});
-
-      //   for (let c of chat){
-      //     if (c._id && socket.rooms[c._id]) {
-
-      //     // socket.to(onlineUsers[c.agentid]).emit('user-disconnected');
-      //     socket.to(c._id).broadcast.emit('user-disconnected');
-      //     socket.leave(c._id);
-      //   }
-      // }
-
-      //   delete onlineUsers[socket.id];
-      //   delete user[disconntedID];
-      //  }
       }
     })
 
@@ -101,7 +49,6 @@ liveChat.on("connection", socket=>
               socket.join(chat._id);
             }
 
-          //  console.log(onlineUsers);           
     })
 
 })
@@ -114,9 +61,6 @@ router.put("/sendmessage", authorizationMiddleware(['User','Agent']),  LiveChatC
 router.get("/view/:id", LiveChatController.viewMessages);   //to get all agent chats see which role has access to this
 router.get("/user",authorizationMiddleware(['User','Agent']), LiveChatController.currentUser);
 router.get("/currentchat", authorizationMiddleware(['User']), LiveChatController.currentChat);
-
-router.post ("/triallogin", LiveChatController.triallogin);
-
 
 module.exports = router;
 

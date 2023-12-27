@@ -7,10 +7,11 @@ import user from "../assets/user.png";
 import send from "../assets/send.png";
 import "../stylesheets/homePageBackground.scss"
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 
 export default function LiveChat() {
+    const {state} = useLocation();
     const [currentChat, setCurrentChat] = useState('');
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
@@ -22,6 +23,11 @@ export default function LiveChat() {
     const navigate = useNavigate();
     const chatRef = useRef(currentChat)
     const messagesRef = useRef(messages);
+
+    if(state){
+        console.log(state)
+        var { id, userName, userType, token } = state;
+    }
 
     useEffect(() => {
         messagesRef.current = messages;
@@ -38,8 +44,8 @@ export default function LiveChat() {
             
             await axios.put(`http://localhost:3000/api/chat/close/${chatRef.current}`, {withCredentials: true})
             .then(()=> {
-                if (localStorage.getItem('userType')=="User"){
-                  navigate('/fakelogin')
+                if (userType=="User"){
+                  navigate('/')
                 }
                 console.log("chat closed")})
             .catch((e)=>console.log(e));
@@ -66,14 +72,6 @@ export default function LiveChat() {
             setCurrentChat(res.data.chat._id)
             chatRef.current= res.data.chat._id;
             setMessage([]);
-            // res.data.chat.messages.forEach(msg=>{
-            //    if (msg.senderID==localStorage.getItem('userId')){
-            //        setMessages(messages => [...messages, `You: ${msg.content}`]);
-            //    }
-            //    else{
-            //        setMessages(messages => [...messages, msg.content]);
-            //    }
-            // })
         })
             .catch((e)=>console.log(e));
         }
@@ -84,16 +82,8 @@ export default function LiveChat() {
             .then((res)=>{
 
                 setMessage([]);
-                //  res.data.chat.messages.forEach(msg=>{
-                //     if (msg.senderID==localStorage.getItem('userId')){
-                //         setMessages(messages => [...messages, `You: ${msg.content}`]);
-                //     }
-                //     else{
-                //         setMessages(messages => [...messages, msg.content]);
-                //     }
-                //  })
                const chatMessages = res.data.chat.messages.map(msg => 
-                    msg.senderID==localStorage.getItem('userId')? `You: ${msg.content}`: msg.content)
+                    msg.senderID==id? `You: ${msg.content}`: msg.content)
                 setMessages(chatMessages);
                 messagesRef.current=chatMessages;
             })
@@ -110,7 +100,7 @@ export default function LiveChat() {
 
         setSocket(newSocket);
 
-        let myData = {userType: localStorage.getItem('userType'), _id: localStorage.getItem('userId')};
+        let myData = {userType: userType, _id: id};
 
         newSocket.emit('new-user',myData);
 
@@ -157,7 +147,7 @@ export default function LiveChat() {
     return ( 
         <div className="chat-main-div">
 
-{ localStorage.getItem('userType')=="Agent" &&
+{ userType=="Agent" &&
           <div className="users--div">
             <h4 className="users--h4"> <img src={group} className="group--img"/>Users</h4>
             <div className="user--div--body">

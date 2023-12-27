@@ -12,8 +12,7 @@ const LiveChatController={ // to prevent opening a closed ticket, disable the bu
    currentChat: async(req,res)=>{ 
     try{
 
-        let chat = await livechat.findOne({userid:req.User.userid, status:'Open'});
-        // console.log('hi mn chat',!chat, 'who ', req.User.userType)
+        let chat = await livechat.findOne({userid:req.user.userid, status:'Open'});
         if(!chat){
             return res.status(404).json({message:"chat not found"});
         }
@@ -50,7 +49,7 @@ const LiveChatController={ // to prevent opening a closed ticket, disable the bu
         const chat = new livechat({
             ticketid:req.body.ticketid,
             messages:[],
-            userid:req.User.userid,
+            userid:req.user.userid,
             agentid:onlineAgent._id,
             status:'Open',        
         })
@@ -81,9 +80,9 @@ const LiveChatController={ // to prevent opening a closed ticket, disable the bu
 
    viewChat: async(req,res)=>{ //test with authentication
     try{
-       if (req.User.userType=="Agent"){
+       if (req.user.userType=="Agent"){
 
-        let chat = await livechat.find({agentid:req.User.userid, status:'Open'});  
+        let chat = await livechat.find({agentid:req.user.userid, status:'Open'});  
         if(chat.length!=0){
             for (let i=0; i<chat.length; i++){
                 const User = await user.findById(chat[i].userid);
@@ -110,7 +109,7 @@ const LiveChatController={ // to prevent opening a closed ticket, disable the bu
         }
         chat.messages.push({
             content:req.body.message,
-            senderID:req.User.userid,             
+            senderID:req.user.userid,             
             sendTime:Date.now(),
         })
         const savedChat = await chat.save();
@@ -131,40 +130,9 @@ const LiveChatController={ // to prevent opening a closed ticket, disable the bu
       }
    },
 
-   triallogin: async(req,res)=>{
-    try{
-     const {email} = req.body;
-     const user1 = await user.findOne({ email });
-     console.log(user1);
-     const currentDateTime = new Date();
-     const expiresAt = new Date(+currentDateTime + 1800000); 
-     const token = jwt.sign(
-       { User: { userid: user1._id, userType: user1.userType } },
-       secretKey,
-       {
-         expiresIn: 3 * 60 * 60,
-       }
-     );
-
-     return res
-       .cookie("token", token, {
-         expires: expiresAt,
-         withCredentials: true,
-         httpOnly: false,
-         SameSite:'none'
-       })
-       .status(200)
-       .json({user1});
-
-   } catch (error) {
-    console.log(error);
-     res.status(500).json({ message: "Server error" });
-   }
-   },
-
   currentUser:async(req,res)=>{ //fix authentication then test
     try{
-      const user1 = await user.findById(req.User.userid); 
+      const user1 = await user.findById(req.user.userid); 
       return res.status(200).json({user1});
     }catch(e){
       res.status(500).json({message:e.message})

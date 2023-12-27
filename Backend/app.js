@@ -18,26 +18,27 @@ app.use(
 const http = require('http');
 const server = http.createServer(app);
 const socketIO = require("socket.io");
-// const io = socketIO(server, {
-//   cors:{
-//     origin:'*'
-//   }
-// }).listen(4000);
-// module.exports= {io};
+const io = socketIO(server, {
+  cors:{
+    origin:'*'
+  }
+}).listen(4000);
+module.exports= {io};
+
+const authRouter = require("./Routes/auth");
+app.use("/api/auth", authRouter);
+
+const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+app.use(authenticationMiddleware);
+
 const ticketRouter = require("./Routes/Ticket");
 app.use('/api/ticket', ticketRouter);
 
 const knowledgeBaseRouter = require("./Routes/knowledgeBase");
 app.use('/api',knowledgeBaseRouter);
-const authRouter = require("./Routes/auth");
-app.use("/api/auth", authRouter);
-const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
-app.use(authenticationMiddleware);
 
-
-// const liveChat = require("./Routes/LiveChatRouter");
-// app.use("/api/chat", liveChat)
-
+const liveChat = require("./Routes/LiveChatRouter");
+app.use("/api/chat", liveChat)
 
 
 const customizationRouter = require("./Routes/customization");
@@ -57,7 +58,7 @@ app.use('/api/report', reportRouter);
 
 
 //const db_url = `mongodb+srv://Mariam:LW7ZrU0N8A25kWqB@cluster0.qebr03m.mongodb.net/Software`;
-const db_url = 'mongodb://127.0.0.1:27017/Helpdesk';
+const db_url = 'mongodb://127.0.0.1:27017/trial';
 
 const connectionOptions = {
   useUnifiedTopology: true,
@@ -70,7 +71,7 @@ mongoose
   .catch((e) => console.log(e));
 
 app.use(function (req, res, next) {
-  //return res.status(404).send(e.message);
+  return res.status(404).send(e.message);
 });
 
 app.listen(process.env.PORT, () => console.log(`server started and listening on port`));  
