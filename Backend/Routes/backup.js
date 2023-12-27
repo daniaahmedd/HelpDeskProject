@@ -4,7 +4,7 @@ const backupController = require('../controller/backupController');
 const authorizationMiddleware = require("../Middleware/authorizationMiddleware");
 
 // POST /backup/create
-router.post('/create',  authorizationMiddleware(['Admin']) ,backupController.createBackup);
+router.post('/create',backupController.createBackup);
 
 // POST /backup/restore
 router.post('/restore', authorizationMiddleware(['Admin']) , backupController.restoreBackup);

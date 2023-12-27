@@ -88,37 +88,16 @@ const Navbar = () => {
     });
   }
 
-  async function handleCustomization() {
-    const response = await axios.get(
-      `http://localhost:3000/api/customization/styleCustomize/find`,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log("handleCustomization", response.data);
-    if (response.status == 200) {
-      navigate("/styleCustomize", {
-        state: {
-          id: id,
-          userName: userName,
-          userType: userType,
-          token: token,
-          users: response.data,
-        },
-      });
-      console.log('handleCustomization', response.data);
-      if(response.status == 200){
-        navigate("/styleCustomize");
-      }
-      
-    }
-  }
   async function handleuodteticket() {
     navigate("/UpdateTicket")
      
     
   }
-
+  async function handleCustomization() {
+    navigate("/CustomizationCheck", {
+      state: { id: id, userName: userName, userType: userType, token: token },
+    });
+  }
   async function handleRestore() {
     navigate("/restore", {
       state: { id: id, userName: userName, userType: userType, token: token },

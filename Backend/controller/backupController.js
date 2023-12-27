@@ -23,7 +23,7 @@ const backupController = {
   restoreBackup: async (req, res) => {
     try {
       // Execute the mongorestore command
-      exec('mongorestore --gzip --uri="mongodb://127.0.0.1:27017/LocalHelpDesk"', (error, stdout, stderr) => {
+      exec('mongorestore --gzip --uri="mongodb+srv://blueparis169:YD2GmbuSDWRhdGRw@cluster0.coh00pn.mongodb.net/"', (error, stdout, stderr) => {
         if (error) {
           console.error(stderr);
           return res.status(500).json({ error: 'Restore failed' });
