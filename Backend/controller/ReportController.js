@@ -102,11 +102,11 @@ const ReportController = {
     getTicket: async (req, res) => {
         try {
           const categoryCounts = await ticketschema.aggregate([
-            { $group: { _id: '$mongodb://localhost:27017', count: { $sum: 1 } } },
+            { $group: { _id: '$categories', count: { $sum: 1 } } },
           ]);
       
           const statusCounts = await ticketschema.aggregate([
-            { $group: { _id: '$status', count: { $sum: 1 } } },
+            { $group: { _id: '$subcategories', count: { $sum: 1 } } },
           ]);
       
           const formattedCountsCat = {};

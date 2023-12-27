@@ -6,9 +6,9 @@ const CustomizationController = {
     try {
       const customization = new CustomizationModel(req.body);
       const newCustomization = await customization.save();
-      return res.status(201).json(newCustomization);
+      return res.status(201).json({  newCustomization });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ error: error.message });
     }
   },
 
@@ -24,14 +24,12 @@ const CustomizationController = {
       );
   
       if (!customization) {
-        return res.status(404).json({ msg: 'Customization not found' });
+        return res.status(404).json({ error: 'Customization not found' });
       }
   
-      return res
-        .status(200)
-        .json({ customization, msg: 'Customization updated successfully' });
+      return res.status(200).json({ customization, message: 'Customization updated successfully' });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ error: error.message });
     }
   },
   
@@ -40,16 +38,14 @@ const CustomizationController = {
       const customization = await CustomizationModel.findOne();
   
       if (!customization) {
-        return res.status(404).json({ message: 'Customization not found' });
+        return res.status(404).json({ error: 'Customization not found' });
       }
   
-      return res.status(200).json(customization);
+      return res.status(200).send( customization );
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res.status(500).json({ error: error.message });
     }
   }
 };
-
-
 
 module.exports = CustomizationController;

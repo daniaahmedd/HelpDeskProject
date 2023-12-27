@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./customization.css";
+import "../stylesheets/customization.css"
 
 const CustomizationForm = () => {
   const [customizationData, setCustomizationData] = useState({
@@ -40,7 +40,9 @@ const CustomizationForm = () => {
   const checkIfCustomizationExists = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/customization/styleCustomize/find`
+        `http://localhost:3000/api/customization/styleCustomize/find`,{
+          withCredentials:true
+        }
       );
       return response.data.exists;
     } catch (error) {

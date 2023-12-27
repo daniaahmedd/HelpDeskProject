@@ -8,11 +8,11 @@ const authorizationMiddleware = require('../Middleware/authorizationMiddleware')
 
 
 // POST /customization/styleCustomize
-router.post('/styleCustomize' ,authorizationMiddleware(['admin']),CustomizationController.createCustomization);
+router.post('/styleCustomize' ,authorizationMiddleware(['Admin']),CustomizationController.createCustomization);
 
 // PUT /customization/styleCustomize/edit
-router.put('/styleCustomize/edit', authorizationMiddleware(['admin']),CustomizationController.updateCustomization);
+router.put('/styleCustomize/edit', authorizationMiddleware(['Admin']),CustomizationController.updateCustomization);
 
-router.get('/styleCustomize/find' ,authorizationMiddleware(['admin']),CustomizationController.getCustomization);
+router.get('/styleCustomize/find' ,authorizationMiddleware(['Admin']),CustomizationController.getCustomization);
 
 module.exports = router; 

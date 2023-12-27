@@ -1,22 +1,27 @@
 import { Route, Routes } from "react-router-dom";
 import Homepage from "./pages/HomePage";
+import Knowldgebasess from "./components/knowledgebases";
+import WorkFlowPage from "./pages/WorkFlowPage";
 import LiveChat from "./pages/livechat";
 import Report from "./components/report";
 import Reportchart from "./components/reportcharts";
 import Getreports from "./components/view-reports";
 import TicketHome from "./pages/TicketHome";
 import Ticket from "./pages/Ticket";
-import UpdateTicket from "./pages/UpdateTicket";
 import RateTicket from "./pages/RateTicket";
-import Knowldgebasess from "./components/knowledgebases"
 import StartRestore from "./components/restore";
-import WorkFlowPage from "./pages/WorkFlowPage"
 import VerifyOTPLogin from "./pages/VerifyOTPLogin";
 import UpdateProfile from "./pages/UpdateProfile";
 import AssignRole from "./pages/AssignRole";
 import Register from "./pages/Register";
 import VerifyOTPRegister from "./pages/VerifyOTPRegister";
+import CustomizationCheck from "./components/CustomizationCheck";
+import Customizationform from "./components/CustomizationForm";
+import UpdateCustomization from "./components/UpdateCustomization";
+
 import CustomizationPage from "./pages/CustomizationPage";
+import UpdateTicket from "./components/UpdateTicket"
+
 
 function App() {
   return (
@@ -34,13 +39,17 @@ function App() {
                 <Route path="/chat" element={<LiveChat />} />
                 <Route path="/TicketHome" element={<TicketHome />} />
                 <Route path="/Ticket" element={<Ticket />} />
-                <Route path="/UpdateTicket" element={<UpdateTicket />} />
                 <Route path="/RateTicket" element={<RateTicket />} />
                 <Route path="/report" element={<Report />} />
                 <Route path="/charts" element={<Reportchart />} />
                 <Route path="/veiwreports" element={<Getreports />} />
-                <Route path="/styleCustomize" element={<CustomizationPage />} />
+                <Route path="/CustomizationCheck" element={<CustomizationCheck />} />
+                <Route path="/CustomizationForm" element={<Customizationform />} />
+                <Route path="/UpdateCustomization" element={<UpdateCustomization />} />
+
                 <Route path="/restore" element={<StartRestore />} />
+                <Route path="/UpdateTicket" element={<UpdateTicket />} />
+
 
       </Routes>
     </>
