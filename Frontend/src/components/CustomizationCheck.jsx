@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "../components/navbar";
 
 const CustomizationPage = () => {
   const [hasCustomization, setHasCustomization] = useState(null);
@@ -39,6 +40,7 @@ const CustomizationPage = () => {
 
   return (
     <div>
+      <Navbar/>
       <h1>Customization Page</h1>
       {hasCustomization === null ? (
         <p>Loading customization data...</p>

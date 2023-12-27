@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "../stylesheets/restore.css";
+import Navbar from "../components/navbar";
 
 const RestoreBackup = () => {
   const [restoreStatus, setRestoreStatus] = useState(null);
@@ -37,6 +38,7 @@ const RestoreBackup = () => {
 
   return (
     <div className="restore">
+      <Navbar />
       <div style={{ margin: "30px" }}>
         <Button onClick={restoreBackup}>Start Restoring</Button>
         <p>Status: {restoreStatus}</p>
