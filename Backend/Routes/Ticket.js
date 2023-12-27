@@ -8,5 +8,5 @@ router.post("/create/:agentid",authorizationMiddleware(['Manager']), TicketContr
 router.post("/create", authorizationMiddleware(['Manager','User','Admin']),TicketController.createTicket);
 router.put("/:ticketid",authorizationMiddleware(['Agent']) ,TicketController.updateTicket);
 router.put("/rate/:ticketid",authorizationMiddleware(['User']), TicketController.rateTicket);
-router.get("/gettickets",authorizationMiddleware(['Manager']),TicketController.gettickets)
+router.get("/gettickets",authorizationMiddleware(['Manager','User']),TicketController.gettickets)
 module.exports = router;
