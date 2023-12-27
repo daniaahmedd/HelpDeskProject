@@ -35,7 +35,7 @@ const UpdateCustomizationForm = () => {
         const response = await axios.get("http://localhost:3000/api/customization/styleCustomize/find", {
           withCredentials:true
         });
-        const { _id, ...dataWithoutId ,__v ,...dataWithoutv } = response.data;
+        const { __v, _id, ...dataWithoutId } = response.data;
         
 
         setCustomizationData(dataWithoutId ,dataWithoutv );
